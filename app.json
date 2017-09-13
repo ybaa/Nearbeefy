@@ -10,8 +10,9 @@
     "primaryColor": "#cccccc",
     "icon": "./assets/icons/RoundSmallLogo.png",
     "loading": {
-      "icon": "./assets/icons/RoundSmallLogo.png",
-      "hideExponentText": false
+      "icon": "./assets/icons/bigRectangleLogoWithTextTransparent.png",
+      "hideExponentText": false,
+      "backgroundColor": "#4caf50"
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]

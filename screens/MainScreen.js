@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, Platform, Text, Image} from 'react-native';
 import Expo from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
-import icon from '../assets/icons/transparentSmallLogo.png';
+import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import TestComponent from '../components/TestComponent'
+import { MaterialIcons } from '@expo/vector-icons'
+
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -24,10 +26,9 @@ class MainScreen extends Component {
       color: 'white'
     },
     headerLeft: (
-      <Image
-        source={icon}
+      <MaterialIcons name="menu" color="#fff" size={32}
         style={styles.imageStyle}
-       />
+      />
     )
   });
 
@@ -43,13 +44,14 @@ async _loadAssetsAsync() {
   const imagesAssets = cacheImage([icon]);
   await Promise.all([...imagesAssets]);
   this.setState({
-    appIsReady:   true
+    appIsReady: true
   })
 }
 
+
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#ddd' }}>
+      <View style={{ fontFamily: 'Quicksand-Light', flex: 1, backgroundColor: '#ddd' }}>
         <TestComponent />
       </View>
     );
@@ -58,10 +60,8 @@ async _loadAssetsAsync() {
 
 const styles = {
   imageStyle: {
-    marginTop: 20,
-    marginLeft: 10,
-    width: 40,
-    height:40
+    marginTop: 25,
+    marginLeft: 10
   }
 }
 
