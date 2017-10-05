@@ -5,19 +5,22 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {changeAddress} from '../actions/Index';
 
+
 const SCREE_WIDTH = Dimensions.get('window').width;
 
 class TestComponent extends Component {
+
   render() {
 
     return (
       <View>
-        <Text h3>{this.props.address}</Text>
+        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
         <Button
           onPress={()=>{console.log('button clicked');
           this.props.changeAddress('new address');
         }}
-          title="changeAddress"
+          title="click to change address"
+          fontFamily="Quicksand-Light"
           color="#000"
           backgroundColor="#4caf50"
       />

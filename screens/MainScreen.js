@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Platform, Text, Image} from 'react-native';
-import Expo from 'expo';
+import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import TestComponent from '../components/TestComponent'
@@ -33,8 +33,16 @@ class MainScreen extends Component {
   });
 
 state = {
-  appIsReady: false
+  appIsReady: false,
+  fontLoaded: false
 }
+
+async componentDidMount() {
+    await Font.loadAsync({
+      'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+    });
+    this.setState({ fontLoaded: true});
+  }
 
 componentWillMound() {
   this._loadAssetsAsync();
@@ -51,8 +59,15 @@ async _loadAssetsAsync() {
 
   render() {
     return (
-      <View style={{ fontFamily: 'Quicksand-Light', flex: 1, backgroundColor: '#ddd' }}>
-        <TestComponent />
+      <View style={{  flex: 1, backgroundColor: '#ddd' }}>
+      {
+        this.state.fontLoaded ? (
+        
+              <TestComponent style={{fontFamily: 'Quicksand-Light'}} />
+
+        ) : null
+      }
+
       </View>
     );
   }
