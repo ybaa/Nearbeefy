@@ -1,5 +1,5 @@
 export default function LocationReducer(state = {
-                                                  address: 'none'
+                                                  address: 'no address'
                                                 },
                                                 action) {
 
