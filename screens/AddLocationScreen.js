@@ -3,7 +3,6 @@ import { View, Platform, Text, Image} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
-import { MaterialIcons } from '@expo/vector-icons'
 import { Icon } from 'react-native-elements';
 
 const cacheImage = images => images.map( (image) => {
@@ -34,8 +33,12 @@ class AddLocationScreen extends Component {
       color: 'white'
     },
     headerLeft: (
-      <MaterialIcons name="menu" color="#fff" size={32}
-        style={styles.imageStyle}
+      <Icon
+        name='menu'
+        type='material-icons'
+        size= {32}
+        color='#fff'
+        style = {styles.imageStyle}
       />
     )
   });
