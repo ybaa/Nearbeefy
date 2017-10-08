@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Dimensions} from 'react-native';
-import {Text, Button, Slider, SearchBar } from 'react-native-elements';
+import {View, Dimensions, StyleSheet} from 'react-native';
+import {Text, Button, Slider, SearchBar, Icon } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {changeAddress} from '../actions/Index';
@@ -8,26 +8,42 @@ import {changeAddress} from '../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
-class TestComponent extends Component {
+class HomePageComponent extends Component {
   state = {
     distancePrecision: 0,
     typedAddress: ''
   }
-  render() {
 
+  render() {
     return (
       <View>
         <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
-        <SearchBar
-          value = {this.state.typedAddress}
-          onChangeText = { (newAddress) => {
-            this.setState({
-              typedAddress: newAddress
-            });
-          }}
-          lightTheme
-          placeholder='Type address here...'
-        />
+        <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
+          <View style= {{flex:4}}>
+          <SearchBar
+            value = {this.state.typedAddress}
+            onChangeText = { (newAddress) => {
+              this.setState({
+                typedAddress: newAddress
+              });
+            }}
+            lightTheme
+            placeholder='Type address here...'
+          />
+        </View>
+        <View style={{flex: 1}}>
+          <Icon
+            name='location'
+            type='evilicon'
+            size= {40}
+            color='#000'
+            onPress = {() => {
+              console.log('icon pressed');
+            }}
+          />
+        </View>
+        </View>
+      <View>
         <Slider
           maximumValue = {1000}
           value = {this.state.distancePrecision}
@@ -48,7 +64,9 @@ class TestComponent extends Component {
           color="#000"
           backgroundColor="#4caf50"
       />
+
       </View>
+    </View>
     );
   }
 }
@@ -65,4 +83,8 @@ function matchDispatchToProps(dispatch) {
     },dispatch)
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(TestComponent);
+export default connect(mapStatetoProps,matchDispatchToProps)(HomePageComponent);
+
+const style = StyleSheet.create({
+
+});

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, Image, Button} from 'react-native';
+import { View, Platform, Text, Image} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
-import HomePageComponent from '../components/HomePageComponent'
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons'
 import { Icon } from 'react-native-elements';
-
-
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -16,14 +13,14 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class MainScreen extends Component {
+class AddLocationScreen extends Component {
   static navigationOptions = () => ({
-    title: 'Find location',
-    tabBarLabel: 'Find',
+    title: 'Add location',
+    tabBarLabel: 'Add',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        name='search'
-        type='evilicon'
+        name='add-location'
+        type='material-icons'
         size= {28}
         color='#fff'
       />
@@ -44,8 +41,7 @@ class MainScreen extends Component {
   });
 
 state = {
-  appIsReady: false,
-  fontLoaded: false
+  appIsReady: false
 }
 
 async componentDidMount() {
@@ -71,17 +67,7 @@ async _loadAssetsAsync() {
   render() {
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        {/* <Button
-          onPress={() => this.props.navigation.navigate('AddLocation')}
-          title="go to add location screen"
-        /> */}
-      {
-        this.state.fontLoaded ? (
-
-              <HomePageComponent style={{fontFamily: 'Quicksand-Light'}} />
-
-        ) : null
-      }
+      <Text>add location screen</Text>
 
       </View>
     );
@@ -95,4 +81,4 @@ const styles = {
   }
 }
 
-export default MainScreen;
+export default AddLocationScreen;
