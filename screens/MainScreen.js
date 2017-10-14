@@ -57,7 +57,7 @@ class MainScreen extends Component {
         size= {32}
         color='#fff'
         style = {styles.imageStyle}
-        onPress = {() => {      
+        onPress = {() => {
            navigation.navigate('LogInScreen');
         }}
       />
@@ -105,6 +105,7 @@ async _loadAssetsAsync() {
     );
   }
 }
+
 
 const styles = {
   imageStyle: {

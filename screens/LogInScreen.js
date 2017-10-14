@@ -6,6 +6,10 @@ import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
 import LogIn from '../components/logIn/LogIn';
 import Registration from '../components/logIn/Registration';
+import {connect} from 'react-redux';
+import firebase from 'firebase';
+import {updateNav} from '../actions/Index';
+import {bindActionCreators} from 'redux';
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -18,17 +22,12 @@ class LogInScreen extends Component {
   constructor(props){
     super(props);
     this.state = {
-      appIsReady: false,
-      nav: 'LogIn'
+      appIsReady: false
+
     };
-    this.handler = this.handler.bind(this);
+
   }
 
-  handler(nav){
-      this.setState({
-        nav: nav
-      });
-  }
 
   static navigationOptions = (navigation) => ({
     title: 'Log in',
@@ -74,17 +73,21 @@ async _loadAssetsAsync() {
 
 
   render() {
+const { navigate } = this.props.navigation;
 
-  let toShow = '';
-  if(this.state.nav === 'LogIn'){
-    toShow = <LogIn action={this.handler} />
-  }
-  else if(this.state.nav === 'Profile'){
+  let toShow = <Text>nothing to show</Text>
+  if(this.props.nav === 'LogIn'){
+    toShow = <LogIn />
 
   }
-  else if(this.state.nav === 'Register'){
-    toShow = <Registration action={this.handler} />
+  else if(this.props.nav === 'Profile'){
+    toShow = <Text>it's gonna be the profile content</Text>
+
   }
+  else if(this.props.nav === 'Register'){
+    toShow = <Registration />
+  }
+
 
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
@@ -95,6 +98,20 @@ async _loadAssetsAsync() {
   }
 }
 
+function mapStatetoProps(state){
+    return{
+      nav: state.NavigationReducer.nav
+    };
+}
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators ( {
+      updateNav: updateNav
+    },dispatch)
+}
+
+
+
+
 const styles = {
   imageStyle: {
     marginTop: 25,
@@ -102,4 +119,4 @@ const styles = {
   }
 }
 
-export default LogInScreen;
+export default connect(mapStatetoProps,matchDispatchToProps)(LogInScreen);

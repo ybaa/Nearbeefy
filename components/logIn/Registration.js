@@ -4,6 +4,7 @@ import {Text, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firebase from 'firebase';
+import {updateNav} from '../../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -12,7 +13,7 @@ class Registration extends Component {
   constructor(props){
     super(props);
     state = {
-      username: '',
+      email: '',
       password: '',
       confirmPassword: ''
     }
@@ -37,8 +38,8 @@ class Registration extends Component {
           height: 50,
           color: '#fff'
         }}
-          placeholder = "username"
-          onChangeText = {(username) => {this.setState({ username: username})}}
+          placeholder = "email"
+          onChangeText = {(email) => {this.setState({ email: email})}}
           placeholderTextColor = '#fff'
         />
         <TextInput style={{
@@ -49,6 +50,7 @@ class Registration extends Component {
           placeholder = "password"
           onChangeText = {(password) => {this.setState({ password: password})}}
           placeholderTextColor = '#fff'
+          secureTextEntry = {true}
         />
         <TextInput style={{
           width: 210,
@@ -58,13 +60,14 @@ class Registration extends Component {
           placeholder = "confirm password"
           onChangeText = {(confirm) => {this.setState({ confirmPassword: confirm})}}
           placeholderTextColor = '#fff'
+          secureTextEntry = {true}
         />
         <Button
           onPress={()=>{
             if(this.state.password === this.state.confirmPassword){
-              firebase.auth().createUserWithEmailAndPassword(this.state.username, this.state.password).then(()=>{
+              firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((user)=>{
                 alert('Registration succeeded!');
-                this.props.action('LogIn');
+                this.props.updateNav('LogIn');
               }).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -82,7 +85,6 @@ class Registration extends Component {
             fontFamily="Quicksand-Light"
             color="#000"
             backgroundColor="#fdd835"
-            secureTextEntry = {true}
           />
       </View>
     );
@@ -91,12 +93,14 @@ class Registration extends Component {
 
 function mapStatetoProps(state){
     return{
-      username: state.UserConfigReducer.username
+      username: state.UserConfigReducer.username,
+      nav: state.NavigationReducer.nav
     };
 }
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
+      updateNav: updateNav
     },dispatch)
 }
 
