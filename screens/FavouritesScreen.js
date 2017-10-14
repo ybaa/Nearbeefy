@@ -13,6 +13,32 @@ const cacheImage = images => images.map( (image) => {
 });
 
 class FavouritesScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      appIsReady: false
+    };
+  };
+
+  async componentDidMount() {
+      await Font.loadAsync({
+        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+      });
+      this.setState({ fontLoaded: true});
+    }
+
+  componentWillMound() {
+    this._loadAssetsAsync();
+  }
+
+  async _loadAssetsAsync() {
+    const imagesAssets = cacheImage([icon]);
+    await Promise.all([...imagesAssets]);
+    this.setState({
+      appIsReady: true
+    })
+  }
+
   static navigationOptions = () => ({
     title: 'Favourites',
     tabBarLabel: 'Favourites',
@@ -42,30 +68,6 @@ class FavouritesScreen extends Component {
       />
     )
   });
-
-state = {
-  appIsReady: false
-}
-
-async componentDidMount() {
-    await Font.loadAsync({
-      'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-    });
-    this.setState({ fontLoaded: true});
-  }
-
-componentWillMound() {
-  this._loadAssetsAsync();
-}
-
-async _loadAssetsAsync() {
-  const imagesAssets = cacheImage([icon]);
-  await Promise.all([...imagesAssets]);
-  this.setState({
-    appIsReady: true
-  })
-}
-
 
   render() {
     return (

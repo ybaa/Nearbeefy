@@ -5,14 +5,16 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {changeAddress} from '../actions/Index';
 
-
 const SCREE_WIDTH = Dimensions.get('window').width;
 
 class HomePageComponent extends Component {
-  state = {
-    distancePrecision: 0,
-    typedAddress: ''
-  }
+  constructor(props){
+    super(props)
+    this.state = {
+      distancePrecision: 0,
+      typedAddress: ''
+    };
+  };
 
   render() {
     return (

@@ -67,6 +67,11 @@ class Registration extends Component {
             if(this.state.password === this.state.confirmPassword){
               firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((user)=>{
                 alert('Registration succeeded!');
+                if(user && user.emailVerified === false){
+                 user.sendEmailVerification().then(function(){
+                   console.log("email verification sent to user");
+                 });
+               }
                 this.props.updateNav('LogIn');
               }).catch(function(error) {
                 // Handle Errors here.

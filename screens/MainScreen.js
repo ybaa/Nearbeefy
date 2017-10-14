@@ -16,11 +16,34 @@ const cacheImage = images => images.map( (image) => {
 });
 
 class MainScreen extends Component {
+  constructor(props){
+    super(props);
+    this.  state = {
+        appIsReady: false,
+        fontLoaded: false
+      };
+  };
 
-  state = {
-    appIsReady: false,
-    fontLoaded: false
+  async componentDidMount() {
+      await Font.loadAsync({
+        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+      });
+      this.setState({ fontLoaded: true});
+    }
+
+  componentWillMound() {
+    this._loadAssetsAsync();
   }
+
+  async _loadAssetsAsync() {
+    const imagesAssets = cacheImage([icon]);
+    await Promise.all([...imagesAssets]);
+    this.setState({
+      appIsReady: true
+    })
+  }
+
+
 
   static navigationOptions = ( {navigation} ) => ({
     title: 'Find location',
@@ -66,38 +89,13 @@ class MainScreen extends Component {
 
 
 
-async componentDidMount() {
-    await Font.loadAsync({
-      'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-    });
-    this.setState({ fontLoaded: true});
-  }
-
-componentWillMound() {
-  this._loadAssetsAsync();
-}
-
-async _loadAssetsAsync() {
-  const imagesAssets = cacheImage([icon]);
-  await Promise.all([...imagesAssets]);
-  this.setState({
-    appIsReady: true
-  })
-}
-
 
   render() {
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        {/* <Button
-          onPress={() => this.props.navigation.navigate('AddLocation')}
-          title="go to add location screen"
-        /> */}
       {
         this.state.fontLoaded ? (
-
-              <HomePageComponent style={{fontFamily: 'Quicksand-Light'}} />
-
+            <HomePageComponent style={{fontFamily: 'Quicksand-Light'}} />
         ) : null
       }
 

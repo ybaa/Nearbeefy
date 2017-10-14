@@ -59,7 +59,11 @@ class LogIn extends Component {
         <Button
           onPress={()=>{
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
-              this.props.updateNav('Profile');
+              if(user && user.emailVerified){
+                this.props.updateNav('Profile');
+              }else{
+                alert("You have to verify your email first");
+              }   
             }).catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;

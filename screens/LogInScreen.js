@@ -23,11 +23,27 @@ class LogInScreen extends Component {
     super(props);
     this.state = {
       appIsReady: false
-
     };
-
   }
 
+  async componentDidMount() {
+      await Font.loadAsync({
+        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+      });
+      this.setState({ fontLoaded: true});
+    }
+
+  componentWillMound() {
+    this._loadAssetsAsync();
+  }
+
+  async _loadAssetsAsync() {
+    const imagesAssets = cacheImage([icon]);
+    await Promise.all([...imagesAssets]);
+    this.setState({
+      appIsReady: true
+    })
+  }
 
   static navigationOptions = (navigation) => ({
     title: 'Log in',
@@ -50,39 +66,14 @@ class LogInScreen extends Component {
     )
   });
 
-
-
-async componentDidMount() {
-    await Font.loadAsync({
-      'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-    });
-    this.setState({ fontLoaded: true});
-  }
-
-componentWillMound() {
-  this._loadAssetsAsync();
-}
-
-async _loadAssetsAsync() {
-  const imagesAssets = cacheImage([icon]);
-  await Promise.all([...imagesAssets]);
-  this.setState({
-    appIsReady: true
-  })
-}
-
-
   render() {
-const { navigate } = this.props.navigation;
 
   let toShow = <Text>nothing to show</Text>
   if(this.props.nav === 'LogIn'){
     toShow = <LogIn />
-
   }
   else if(this.props.nav === 'Profile'){
     toShow = <Text>it's gonna be the profile content</Text>
-
   }
   else if(this.props.nav === 'Register'){
     toShow = <Registration />
