@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-
+import * as firebase from 'firebase';
 import store from './store';
 import MainScreen from './screens/MainScreen';
 import AddLocationScreen from './screens/AddLocationScreen';
 import FavouritesScreen from './screens/FavouritesScreen';
+import LogInScreen from './screens/LogInScreen';
+
 
 export default class App extends Component {
   render() {
+    let config = {
+        apiKey: "AIzaSyB-H9xpLk9Zmt3JoGrx2Yx1LnnSXOj4qqQ",
+        authDomain: "nearbeefy.firebaseapp.com",
+        databaseURL: "https://nearbeefy.firebaseio.com",
+        projectId: "nearbeefy",
+        storageBucket: "nearbeefy.appspot.com",
+        messagingSenderId: "32273090789"
+      };
+  firebase.initializeApp(config);
 
 
           const Tabs = TabNavigator({
@@ -31,7 +42,8 @@ export default class App extends Component {
       const MainNavigator = StackNavigator({
         Main: { screen: Tabs },
         AddLocation: { screen: AddLocationScreen },
-        Favourites: {screen: FavouritesScreen}
+        Favourites: {screen: FavouritesScreen},
+        LogInScreen: {screen: LogInScreen}
       });
 
 

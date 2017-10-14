@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, Image, Button} from 'react-native';
+import { View, Platform, Text, Image} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
-import HomePageComponent from '../components/HomePageComponent'
 import { Icon } from 'react-native-elements';
-
-
+import LogIn from '../components/logIn/LogIn';
+import Registration from '../components/logIn/Registration';
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -15,24 +14,24 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class MainScreen extends Component {
-
-  state = {
-    appIsReady: false,
-    fontLoaded: false
+class LogInScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      appIsReady: false,
+      nav: 'LogIn'
+    };
+    this.handler = this.handler.bind(this);
   }
 
-  static navigationOptions = ( {navigation} ) => ({
-    title: 'Find location',
-    tabBarLabel: 'Find',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name='search'
-        type='evilicon'
-        size= {28}
-        color='#fff'
-      />
-   ),
+  handler(nav){
+      this.setState({
+        nav: nav
+      });
+  }
+
+  static navigationOptions = (navigation) => ({
+    title: 'Log in',
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -48,18 +47,6 @@ class MainScreen extends Component {
         size= {32}
         color='#fff'
         style = {styles.imageStyle}
-      />
-    ),
-    headerRight: (
-      <Icon
-        name='user'
-        type='evilicon'
-        size= {32}
-        color='#fff'
-        style = {styles.imageStyle}
-        onPress = {() => {      
-           navigation.navigate('LogInScreen');
-        }}
       />
     )
   });
@@ -87,19 +74,21 @@ async _loadAssetsAsync() {
 
 
   render() {
+
+  let toShow = '';
+  if(this.state.nav === 'LogIn'){
+    toShow = <LogIn action={this.handler} />
+  }
+  else if(this.state.nav === 'Profile'){
+
+  }
+  else if(this.state.nav === 'Register'){
+    toShow = <Registration action={this.handler} />
+  }
+
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        {/* <Button
-          onPress={() => this.props.navigation.navigate('AddLocation')}
-          title="go to add location screen"
-        /> */}
-      {
-        this.state.fontLoaded ? (
-
-              <HomePageComponent style={{fontFamily: 'Quicksand-Light'}} />
-
-        ) : null
-      }
+      {toShow}
 
       </View>
     );
@@ -113,4 +102,4 @@ const styles = {
   }
 }
 
-export default MainScreen;
+export default LogInScreen;
