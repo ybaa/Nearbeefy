@@ -63,7 +63,7 @@ class LogIn extends Component {
                 this.props.updateNav('Profile');
               }else{
                 alert("You have to verify your email first");
-              }   
+              }
             }).catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;
@@ -94,7 +94,10 @@ class LogIn extends Component {
             />
         <Text style={{color: '#fff'}}>  or </Text>
         <Button
-          title="Log in with Google+"
+          onPress = { () => {
+          alert('it is going to be implemented in the future')
+          }}
+          title="Log in with Google"
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#ef5350"

@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {View, Dimensions, StyleSheet} from 'react-native';
+import {View, Dimensions, StyleSheet, Platform} from 'react-native';
 import {Text, Button, Slider, SearchBar, Icon } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {changeAddress} from '../actions/Index';
+import {changeAddress,
+        updateLocationCoords} from '../actions/Index';
+import { Constants, Location, Permissions } from 'expo';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -12,9 +14,32 @@ class HomePageComponent extends Component {
     super(props)
     this.state = {
       distancePrecision: 0,
-      typedAddress: ''
+      typedAddress: '',
+      location: null,
+      errorMessage: null
     };
   };
+
+  componentWillMount() {
+   if (Platform.OS === 'android' && !Constants.isDevice) {
+     this.setState({
+       errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+     });
+   } else {
+     this._getLocationAsync();
+   }
+ }
+ _getLocationAsync = async () => {
+   let { status } = await Permissions.askAsync(Permissions.LOCATION);
+   if (status !== 'granted') {
+     this.setState({
+       errorMessage: 'Permission to access location was denied',
+     });
+   }
+
+   let location = await Location.getCurrentPositionAsync({});
+   this.setState({ location });
+ };
 
   render() {
     return (
@@ -40,7 +65,13 @@ class HomePageComponent extends Component {
             size= {40}
             color='#000'
             onPress = {() => {
-              console.log('icon pressed');
+              let text = 'Waiting..';
+               if (this.state.errorMessage) {
+                 text = this.state.errorMessage;
+               } else if (this.state.location) {
+                 this.props.updateLocationCoords(this.state.location.coords.latitude, this.state.location.coords.longitude);
+                 text = JSON.stringify(this.state.location);
+               }
             }}
           />
         </View>
@@ -75,13 +106,15 @@ class HomePageComponent extends Component {
 
 function mapStatetoProps(state){
     return{
-        address: state.LocationReducer.address
+        address: state.LocationReducer.address,
+        coords: state.LocationReducer.coords
     };
 }
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-        changeAddress: changeAddress
+        changeAddress: changeAddress,
+        updateLocationCoords: updateLocationCoords
     },dispatch)
 }
 

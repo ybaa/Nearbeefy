@@ -15,3 +15,13 @@ export const updateNav = (nav) => {
     }
   }
 };
+
+export const updateLocationCoords = (lat, long) => {
+  return {
+    type: 'UPDATE_LOCATION_COORDS',
+    payload: {
+      'lat': lat,
+      'long': long
+    }
+  }
+};
