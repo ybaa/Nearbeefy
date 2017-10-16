@@ -4,8 +4,10 @@ import {Text, Button, Slider, SearchBar, Icon } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {changeAddress,
-        updateLocationCoords} from '../actions/Index';
+        updateLocationCoords,
+        reverseCoordsEncoding } from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
+import axios from 'axios';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -88,9 +90,12 @@ class HomePageComponent extends Component {
         />
         <Text>distance precision: {this.state.distancePrecision} m</Text>
         <Button
-          onPress={()=>{console.log('button clicked');
-          this.props.changeAddress(this.state.typedAddress);
-          console.log("TYPED ADDRESS",this.state.typedAddress);
+          onPress={()=>{
+            this.props.reverseCoordsEncoding(this.props.coords.latitude, this.props.coords.longitude);
+            // console.log('button clicked');
+            // this.props.changeAddress(this.state.typedAddress);
+            // console.log("TYPED ADDRESS",this.state.typedAddress);
+
         }}
           title="click to change address"
           fontFamily="Quicksand-Light"
@@ -114,7 +119,8 @@ function mapStatetoProps(state){
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
         changeAddress: changeAddress,
-        updateLocationCoords: updateLocationCoords
+        updateLocationCoords: updateLocationCoords,
+        reverseCoordsEncoding: reverseCoordsEncoding
     },dispatch)
 }
 

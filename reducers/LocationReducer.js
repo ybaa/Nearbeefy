@@ -25,6 +25,18 @@ export default function LocationReducer(state = {
         console.log(state);
         break;
 
+        case 'REVERSE_COORDS_ENCODING_FULFILLED':
+        console.log('payload', action.payload);
+          state = Object.assign({}, state, {
+            address: action.payload.address,
+            coords: Object.assign({}, state.coords, {
+              longitude: state.coords.longitude,
+              latitude: state.coords.lati
+            })
+          });
+          console.log(state);
+          break;
+
       default:
       return state
     }

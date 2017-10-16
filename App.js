@@ -19,9 +19,10 @@ export default class App extends Component {
         storageBucket: "nearbeefy.appspot.com",
         messagingSenderId: "32273090789"
       };
-  firebase.initializeApp(config);
-
-
+      if (!firebase.apps.length) {
+        firebase.initializeApp(config);
+    }
+    
           const Tabs = TabNavigator({
                 Main: { screen: MainScreen },
                 AddLocation: { screen: AddLocationScreen },

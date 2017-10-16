@@ -5,6 +5,7 @@ import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
 
+
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
       return Image.prefetch(image);
