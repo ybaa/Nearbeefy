@@ -71,10 +71,15 @@ class HomePageComponent extends Component {
                if (this.state.errorMessage) {
                  text = this.state.errorMessage;
                } else if (this.state.location) {
-                 this.props.updateLocationCoords(this.state.location.coords.latitude, this.state.location.coords.longitude);
-                 text = JSON.stringify(this.state.location);
+                  this.props.updateLocationCoords(this.state.location.coords.latitude, this.state.location.coords.longitude);
+                   this.props.reverseCoordsEncoding(this.state.location.coords.latitude, this.state.location.coords.longitude).then( () => {
+                     this.setState({
+                       typedAddress: this.props.address
+                     });
+                   })
+                   text = JSON.stringify(this.state.location);
                }
-            }}
+          }}
           />
         </View>
         </View>
@@ -91,7 +96,11 @@ class HomePageComponent extends Component {
         <Text>distance precision: {this.state.distancePrecision} m</Text>
         <Button
           onPress={()=>{
-            this.props.reverseCoordsEncoding(this.props.coords.latitude, this.props.coords.longitude);
+            this.props.reverseCoordsEncoding(this.props.coords.latitude, this.props.coords.longitude).then( (result) => {
+              this.setState({
+                typedAddress: this.props.address  // jak nie bedzie dzialac to wypierdzielic
+              });
+            })
             // console.log('button clicked');
             // this.props.changeAddress(this.state.typedAddress);
             // console.log("TYPED ADDRESS",this.state.typedAddress);
