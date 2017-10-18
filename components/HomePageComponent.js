@@ -5,9 +5,13 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {changeAddress,
         updateLocationCoords,
-        reverseCoordsEncoding } from '../actions/Index';
+        reverseCoordsEncoding,
+        encodeAddress,
+        getPlacesNearby,
+        getPlacesNearbyNextPage } from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
 import axios from 'axios';
+import {API_KEY} from '../constants/index';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -15,7 +19,7 @@ class HomePageComponent extends Component {
   constructor(props){
     super(props)
     this.state = {
-      distancePrecision: 0,
+      distancePrecision: 100,
       typedAddress: '',
       location: null,
       errorMessage: null
@@ -44,6 +48,11 @@ class HomePageComponent extends Component {
  };
 
   render() {
+
+    if( this.props.showMore){
+      this.props.getPlacesNearbyNextPage(this.props.pageToken);
+    }
+
     return (
       <View>
         <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
@@ -52,6 +61,8 @@ class HomePageComponent extends Component {
           <SearchBar
             value = {this.state.typedAddress}
             onChangeText = { (newAddress) => {
+              // axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + newAddress + '&location=' + this.state.location.coords.latitude + ',' + this.state.location.coords.longitude +
+              // '&radius=600strictbounds&key=' + API_KEY).then( (res)=> {console.log(res.data) }); //pobieranie podpowiedzi
               this.setState({
                 typedAddress: newAddress
               });
@@ -85,7 +96,7 @@ class HomePageComponent extends Component {
         </View>
       <View>
         <Slider
-          maximumValue = {1000}
+          maximumValue = {500}
           value = {this.state.distancePrecision}
           onValueChange = { (value) => {
             this.setState({
@@ -96,17 +107,10 @@ class HomePageComponent extends Component {
         <Text>distance precision: {this.state.distancePrecision} m</Text>
         <Button
           onPress={()=>{
-            this.props.reverseCoordsEncoding(this.props.coords.latitude, this.props.coords.longitude).then( (result) => {
-              this.setState({
-                typedAddress: this.props.address  // jak nie bedzie dzialac to wypierdzielic
-              });
-            })
-            // console.log('button clicked');
-            // this.props.changeAddress(this.state.typedAddress);
-            // console.log("TYPED ADDRESS",this.state.typedAddress);
-
-        }}
-          title="click to change address"
+            this.props.encodeAddress(this.state.typedAddress);
+            this.props.getPlacesNearby(this.state.location.coords.latitude, this.state.location.coords.longitude, this.state.distancePrecision);
+          }}
+          title="get places nearby"
           fontFamily="Quicksand-Light"
           color="#000"
           backgroundColor="#4caf50"
@@ -121,7 +125,9 @@ class HomePageComponent extends Component {
 function mapStatetoProps(state){
     return{
         address: state.LocationReducer.address,
-        coords: state.LocationReducer.coords
+        coords: state.LocationReducer.coords,
+        showMore: state.LocationReducer.showMore,
+        pageToken: state.LocationReducer.pageToken
     };
 }
 
@@ -129,7 +135,10 @@ function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
         changeAddress: changeAddress,
         updateLocationCoords: updateLocationCoords,
-        reverseCoordsEncoding: reverseCoordsEncoding
+        reverseCoordsEncoding: reverseCoordsEncoding,
+        encodeAddress: encodeAddress,
+        getPlacesNearby: getPlacesNearby,
+        getPlacesNearbyNextPage: getPlacesNearbyNextPage
     },dispatch)
 }
 
