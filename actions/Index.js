@@ -67,6 +67,7 @@ export const getPlacesNearby = (lat, long, radius) => {
        payload:
            axios.get(query).then((response) => {
               console.log(response);
+              let pageToken;
               let showMore = false;
               if(response.data.next_page_token){
                 showMore = true;
@@ -75,7 +76,8 @@ export const getPlacesNearby = (lat, long, radius) => {
               let nearbyPlaces = response.data.results.map( (place) => {
                 return [{
                     'name': place.name,
-                    'type': place.types[0]
+                    'type': place.types[0],
+                    'icon': place.icon
                   }]
 
               })
@@ -103,7 +105,8 @@ export const getPlacesNearbyNextPage = (pageToken) => {
               let nearbyPlaces = response.data.results.map( (place) => {
                 return [{
                     'name': place.name,
-                    'type': place.types[0]
+                    'type': place.types[0],
+                    'icon': place.icon
                   }]
 
               })

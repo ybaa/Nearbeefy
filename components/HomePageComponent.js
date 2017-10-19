@@ -107,12 +107,21 @@ class HomePageComponent extends Component {
         <Text>distance precision: {this.state.distancePrecision} m</Text>
         <Button
           onPress={()=>{
-            this.props.encodeAddress(this.state.typedAddress);
-            this.props.getPlacesNearby(this.state.location.coords.latitude, this.state.location.coords.longitude, this.state.distancePrecision);
+            let promise = new Promise( (resolve) => {
+                let x = this.props.encodeAddress(this.state.typedAddress);
+                console.log("LOATION " , this.state.location.coords, this.props.coords);
+                resolve(x)
+            });
+
+            promise.then( () => {
+              console.log('then');
+              console.log("LOATION " , this.state.location, this.props.coords);
+              this.props.getPlacesNearby(this.props.coords.latitude, this.props.coords.longitude, this.state.distancePrecision);
+            })
           }}
           title="get places nearby"
           fontFamily="Quicksand-Light"
-          color="#000"
+          color="#fff"
           backgroundColor="#4caf50"
       />
 
