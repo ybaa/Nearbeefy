@@ -3,6 +3,7 @@ import MainScreen from '../screens/MainScreen';
 import AddLocationScreen from '../screens/AddLocationScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
 import LogInScreen from '../screens/LogInScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
   const Tabs = TabNavigator({
         Main: { screen: MainScreen },
@@ -25,7 +26,8 @@ import LogInScreen from '../screens/LogInScreen';
     Main: { screen: Tabs },
     AddLocation: { screen: AddLocationScreen },
     Favourites: {screen: FavouritesScreen},
-    LogInScreen: {screen: LogInScreen}
+    LogIn: {screen: LogInScreen},
+    Register: {screen: RegisterScreen}
   });
 
   export default MainNavigator;

@@ -4,8 +4,7 @@ import {Text, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firebase from 'firebase';
-import {StackNavigator} from 'react-navigation';
-import { NavigationActions } from 'react-navigation';
+import {StackNavigator, NavigationActions } from 'react-navigation';
 import {updateNav} from '../../actions/Index'
 
 
@@ -22,7 +21,7 @@ class LogIn extends Component {
   }
 
   render() {
-
+    console.log('n',this.props.navi);
 
 
     return (
@@ -85,7 +84,9 @@ class LogIn extends Component {
           <Text style={{color: '#fff'}}>  Do not have any account yet? </Text>
           <Button
             onPress={()=>{
-              this.props.updateNav('Register');
+              //navigate('Register');
+              const navigateAction = NavigationActions.navigate({routeName:'Register'});
+              this.props.navi.dispatch(navigateAction)
             }}
               title="Click here to register"
               fontFamily="Quicksand-Light"

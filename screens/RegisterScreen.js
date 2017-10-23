@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, Image, Button} from 'react-native';
+import { View, Platform, Text, Image} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
-import HomePageComponent from '../components/HomePageComponent'
 import { Icon } from 'react-native-elements';
-
-
+import LogIn from '../components/logIn/LogIn';
+import Registration from '../components/logIn/Registration';
+import {connect} from 'react-redux';
+import firebase from 'firebase';
+import {updateNav} from '../actions/Index';
+import {bindActionCreators} from 'redux';
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -15,14 +18,13 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class MainScreen extends Component {
+class RegisterScreen extends Component {
   constructor(props){
     super(props);
-    this.  state = {
-        appIsReady: false,
-        fontLoaded: false
-      };
-  };
+    this.state = {
+      appIsReady: false
+    };
+  }
 
   async componentDidMount() {
       await Font.loadAsync({
@@ -43,19 +45,8 @@ class MainScreen extends Component {
     })
   }
 
-
-
-  static navigationOptions = ( {navigation} ) => ({
-    title: 'Find location',
-    tabBarLabel: 'Find',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name='search'
-        type='evilicon'
-        size= {28}
-        color='#fff'
-      />
-   ),
+  static navigationOptions = (navigation) => ({
+    title: 'Log in',
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -72,37 +63,31 @@ class MainScreen extends Component {
         color='#fff'
         style = {styles.imageStyle}
       />
-    ),
-    headerRight: (
-      <Icon
-        name='user'
-        type='evilicon'
-        size= {32}
-        color='#fff'
-        style = {styles.imageStyle}
-        onPress = {() => {
-           navigation.navigate('LogIn');
-        }}
-      />
     )
   });
 
-
-
-
   render() {
+
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-      {
-        this.state.fontLoaded ? (
-            <HomePageComponent style={{fontFamily: 'Quicksand-Light'}} />
-        ) : null
-      }
-
+        <Registration />
       </View>
     );
   }
 }
+
+function mapStatetoProps(state){
+    return{
+      nav: state.NavigationReducer.nav
+    };
+}
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators ( {
+      updateNav: updateNav
+    },dispatch)
+}
+
+
 
 
 const styles = {
@@ -112,4 +97,4 @@ const styles = {
   }
 }
 
-export default MainScreen;
+export default connect(mapStatetoProps,matchDispatchToProps)(RegisterScreen);
