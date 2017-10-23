@@ -1,22 +1,20 @@
-export default function NavigationReducer(state = {
-                                                  nav: 'LogIn'
-                                                },
-                                                action) {
+import {NavigationActions} from 'react-navigation';
+import MainNavigator from '../routes/routes';
+import { StackNavigator} from 'react-navigation';
 
-  switch (action.type) {
+console.log('reducer');
+const initialNavState = MainNavigator.router.getStateForAction(NavigationActions.reset({
+	index: 0,
+	actions: [
+	  NavigationActions.navigate({
+		routeName: 'Main',
+	  }),
+	],
+}))
 
-    case 'UPDATE_NAV':
+//const initialState = MainNavigator.router.getStateForAction(NavigationActions.init());
 
-      state = Object.assign({}, state, {
-        nav: action.payload.nav
-      });
-
-      break;
-
-      default:
-      return state
-  }
-
-
-  return state
-}
+export default (state = initialNavState, action) => {
+  const nextState = MainNavigator.router.getStateForAction(action, state);
+  return nextState || state;
+};

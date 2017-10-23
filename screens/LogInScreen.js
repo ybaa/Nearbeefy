@@ -67,22 +67,22 @@ class LogInScreen extends Component {
   });
 
   render() {
-
-  let toShow = <Text>nothing to show</Text>
-  if(this.props.nav === 'LogIn'){
-    toShow = <LogIn />
-  }
-  else if(this.props.nav === 'Profile'){
-    toShow = <Text>it's gonna be the profile content</Text>
-  }
-  else if(this.props.nav === 'Register'){
-    toShow = <Registration />
-  }
+  //
+  // let toShow = <Text>nothing to show</Text>
+  // if(this.props.nav === 'LogIn'){
+  //   toShow = <LogIn />
+  // }
+  // else if(this.props.nav === 'Profile'){
+  //   toShow = <Text>it's gonna be the profile content</Text>
+  // }
+  // else if(this.props.nav === 'Register'){
+  //   toShow = <Registration />
+  // }
 
 
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-      {toShow}
+      <LogIn />
 
       </View>
     );
