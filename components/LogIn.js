@@ -5,8 +5,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firebase from 'firebase';
 import {StackNavigator, NavigationActions } from 'react-navigation';
-import {updateNav} from '../../actions/Index'
-
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -34,7 +32,7 @@ class LogIn extends Component {
           style={{width: 250,
                   height: 70
                 }}
-          source={require('../../assets/icons/bigRectangleLogoWithTextTransparent.png')}
+          source={require('../assets/icons/bigRectangleLogoWithTextTransparent.png')}
         />
         <TextInput style={{
           width: 210,
@@ -59,7 +57,8 @@ class LogIn extends Component {
           onPress={()=>{
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
               if(user && user.emailVerified){
-                this.props.updateNav('Profile');
+                const navigateAction = NavigationActions.navigate({routeName:'Main'});
+                this.props.navi.dispatch(navigateAction)
               }else{
                 alert("You have to verify your email first");
               }
@@ -110,14 +109,12 @@ class LogIn extends Component {
 
 function mapStatetoProps(state){
     return{
-      username: state.UserConfigReducer.username,
-      nav: state.NavigationReducer.nav
+      username: state.UserConfigReducer.username
     };
 }
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-      updateNav: updateNav
     },dispatch)
 }
 

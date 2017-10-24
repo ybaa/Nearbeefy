@@ -4,11 +4,10 @@ import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
-import LogIn from '../components/logIn/LogIn';
-import Registration from '../components/logIn/Registration';
+import LogIn from '../components/LogIn';
+import Registration from '../components/Registration';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
-import {updateNav} from '../actions/Index';
 import {bindActionCreators} from 'redux';
 
 const cacheImage = images => images.map( (image) => {
@@ -67,10 +66,19 @@ class LogInScreen extends Component {
   });
 
   render() {
-    console.log('LOGIN', this.props.navigation)
+    let redirect = <Text> Profile content</Text>
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      console.log('user',user);
+      if (user) {
+        redirect = <Text> Profile content</Text>
+      } else {
+        redirect = <LogIn navi={this.props.navigation}/>
+      }
+      });
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        <LogIn navi={this.props.navigation}/>
+        {redirect}
       </View>
     );
   }
@@ -78,17 +86,12 @@ class LogInScreen extends Component {
 
 function mapStatetoProps(state){
     return{
-      nav: state.NavigationReducer.nav
     };
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-      updateNav: updateNav
     },dispatch)
 }
-
-
-
 
 const styles = {
   imageStyle: {

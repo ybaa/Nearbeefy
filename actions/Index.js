@@ -10,14 +10,7 @@ export const changeAddress = (address) => {
   }
 };
 
-export const updateNav = (nav) => {
-  return {
-    type: 'UPDATE_NAV',
-    payload: {
-      'nav': nav
-    }
-  }
-};
+
 
 export const updateLocationCoords = (lat, long) => {
   return {

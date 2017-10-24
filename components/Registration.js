@@ -4,7 +4,7 @@ import {Text, Button} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firebase from 'firebase';
-import {updateNav} from '../../actions/Index';
+import {StackNavigator, NavigationActions } from 'react-navigation';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -31,7 +31,7 @@ class Registration extends Component {
           style={{width: 250,
                   height: 70
                 }}
-          source={require('../../assets/icons/bigRectangleLogoWithTextTransparent.png')}
+          source={require('../assets/icons/bigRectangleLogoWithTextTransparent.png')}
         />
         <TextInput style={{
           width: 210,
@@ -72,7 +72,8 @@ class Registration extends Component {
                    console.log("email verification sent to user");
                  });
                }
-                this.props.updateNav('LogIn');
+               const navigateAction = NavigationActions.navigate({routeName:'LogIn'});
+               this.props.navi.dispatch(navigateAction)
               }).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -98,14 +99,12 @@ class Registration extends Component {
 
 function mapStatetoProps(state){
     return{
-      username: state.UserConfigReducer.username,
-      nav: state.NavigationReducer.nav
+      username: state.UserConfigReducer.username
     };
 }
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-      updateNav: updateNav
     },dispatch)
 }
 

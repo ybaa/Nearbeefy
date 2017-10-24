@@ -12,6 +12,7 @@ import {changeAddress,
 import { Constants, Location, Permissions } from 'expo';
 import axios from 'axios';
 import {API_KEY} from '../constants/index';
+import {StackNavigator, NavigationActions } from 'react-navigation';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -49,9 +50,9 @@ class HomePageComponent extends Component {
 
   render() {
 
-    if( this.props.showMore){
-      this.props.getPlacesNearbyNextPage(this.props.pageToken);
-    }
+    // if( this.props.showMore){
+    //   this.props.getPlacesNearbyNextPage(this.props.pageToken);
+    // }
 
     return (
       <View>
@@ -116,7 +117,14 @@ class HomePageComponent extends Component {
             promise.then( () => {
               console.log('then');
               console.log("LOATION " , this.state.location, this.props.coords);
-              this.props.getPlacesNearby(this.props.coords.latitude, this.props.coords.longitude, this.state.distancePrecision);
+              let placesPromise = new Promise ( (resolve) => {
+                let places = this.props.getPlacesNearby(this.props.coords.latitude, this.props.coords.longitude, this.state.distancePrecision);
+                resolve(places);
+              });
+
+              placesPromise.then ( () => {
+                this.props.navi.dispatch(NavigationActions.navigate({routeName:'Results'}));
+              });
             })
           }}
           title="get places nearby"

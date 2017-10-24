@@ -3,8 +3,8 @@ import { View, Platform, Text, Image, Button} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
-import HomePageComponent from '../components/HomePageComponent';
 import { Icon } from 'react-native-elements';
+import ResultsComponent from '../components/ResultsComponent';
 
 
 
@@ -15,7 +15,7 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class MainScreen extends Component {
+class ResultsScreen extends Component {
   constructor(props){
     super(props);
     this.  state = {
@@ -46,16 +46,7 @@ class MainScreen extends Component {
 
 
   static navigationOptions = ( {navigation} ) => ({
-    title: 'Find location',
-    tabBarLabel: 'Find',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name='search'
-        type='evilicon'
-        size= {28}
-        color='#fff'
-      />
-   ),
+    title: 'Results',
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -91,11 +82,12 @@ class MainScreen extends Component {
 
 
   render() {
+    console.log("results screen");
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
       {
         this.state.fontLoaded ? (
-            <HomePageComponent navi={this.props.navigation} style={{fontFamily: 'Quicksand-Light'}} />
+            <ResultsComponent navi={this.props.navigation}/>
         ) : null
       }
 
@@ -112,4 +104,4 @@ const styles = {
   }
 }
 
-export default MainScreen;
+export default ResultsScreen;

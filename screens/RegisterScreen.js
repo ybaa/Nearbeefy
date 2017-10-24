@@ -4,8 +4,8 @@ import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
-import LogIn from '../components/logIn/LogIn';
-import Registration from '../components/logIn/Registration';
+import LogIn from '../components/LogIn';
+import Registration from '../components/Registration';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {updateNav} from '../actions/Index';
@@ -70,7 +70,7 @@ class RegisterScreen extends Component {
 
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        <Registration />
+        <Registration navi={this.props.navigation}/>
       </View>
     );
   }
