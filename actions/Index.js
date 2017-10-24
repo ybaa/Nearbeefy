@@ -67,11 +67,11 @@ export const getPlacesNearby = (lat, long, radius) => {
                 pageToken = response.data.next_page_token;
               }
               let nearbyPlaces = response.data.results.map( (place) => {
-                return [{
+                return {
                     'name': place.name,
                     'type': place.types[0],
                     'icon': place.icon
-                  }]
+                  }
 
               })
               return {
@@ -96,11 +96,11 @@ export const getPlacesNearbyNextPage = (pageToken) => {
                 showMore = true;
               }
               let nearbyPlaces = response.data.results.map( (place) => {
-                return [{
+                return {
                     'name': place.name,
                     'type': place.types[0],
                     'icon': place.icon
-                  }]
+                  }
 
               })
               return {

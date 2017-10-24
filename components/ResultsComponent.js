@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Dimensions, StyleSheet, Platform} from 'react-native';
+import {View, Dimensions, StyleSheet, Platform, ScrollView} from 'react-native';
 import {Text, Button, Slider, SearchBar, Icon, List, ListItem  } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -27,7 +27,7 @@ class ResultsComponent extends Component {
 constructor(props){
   super(props);
   this.state = {
-
+    isReady: false
   }
 };
 
@@ -35,26 +35,38 @@ constructor(props){
 
     if(this.props.showMore){
       this.props.getPlacesNearbyNextPage(this.props.pageToken);
+      // this.setState({
+      //   isReady: false
+      // });
     }
     else{
 
+      //
+      // this.setState({
+      //   isReady: true
+      // });
     }
 
+    let placesList = this.props.nearbyPlaces.map( (place, index) => {
+      return <ListItem
+        key = {index}
+        title = {place.name}
+        avatar={{uri:place.icon}}
+        subtitle={place.type}
+      />
+    });
+
+
     return (
-      <View>
+
+
+
+      <ScrollView>
         <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
         <List>
-        {
-          list.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.title}
-              leftIcon={{name: item.icon}}
-            />
-          ))
-        }
-</List>
-    </View>
+          {placesList}
+        </List>
+      </ScrollView>
     );
   }
 }
@@ -64,7 +76,8 @@ function mapStatetoProps(state){
         address: state.LocationReducer.address,
         coords: state.LocationReducer.coords,
         showMore: state.LocationReducer.showMore,
-        pageToken: state.LocationReducer.pageToken
+        pageToken: state.LocationReducer.pageToken,
+        nearbyPlaces: state.LocationReducer.nearbyPlaces
     };
 }
 
