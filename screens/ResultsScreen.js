@@ -84,7 +84,7 @@ class ResultsScreen extends Component {
   render() {
     console.log("results screen");
     return (
-      <View style={{  flex: 1, backgroundColor: '#ddd' }}>
+      <View style={{  flex: 1, backgroundColor: '#fff' }}>
       {
         this.state.fontLoaded ? (
             <ResultsComponent navi={this.props.navigation}/>

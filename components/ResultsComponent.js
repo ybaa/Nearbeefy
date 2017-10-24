@@ -35,38 +35,33 @@ constructor(props){
 
     if(this.props.showMore){
       this.props.getPlacesNearbyNextPage(this.props.pageToken);
-      // this.setState({
-      //   isReady: false
-      // });
+
     }
     else{
 
-      //
-      // this.setState({
-      //   isReady: true
-      // });
     }
 
     let placesList = this.props.nearbyPlaces.map( (place, index) => {
+
       return <ListItem
         key = {index}
         title = {place.name}
         avatar={{uri:place.icon}}
-        subtitle={place.type}
+        subtitle={place.types.join()}
+        avatarStyle = {{backgroundColor:'#fff'}}
       />
     });
 
 
     return (
-
-
-
-      <ScrollView>
+      <View>
         <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
-        <List>
-          {placesList}
-        </List>
-      </ScrollView>
+        <ScrollView>
+          <List>
+            {placesList}
+          </List>
+        </ScrollView>
+      </View>
     );
   }
 }

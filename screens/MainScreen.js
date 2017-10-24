@@ -102,7 +102,7 @@ class MainScreen extends Component {
 
   render() {
     return (
-      <View style={{  flex: 1, backgroundColor: '#ddd' }}>
+      <View style={{  flex: 1, backgroundColor: '#eee' }}>
       {
         this.state.fontLoaded ? (
             <HomePageComponent navi={this.props.navigation} style={{fontFamily: 'Quicksand-Light'}} />
