@@ -5,6 +5,7 @@ import FavouritesScreen from '../screens/FavouritesScreen';
 import LogInScreen from '../screens/LogInScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ResultsScreen from '../screens/ResultsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
   const Tabs = TabNavigator({
         Main: { screen: MainScreen },
@@ -29,7 +30,8 @@ import ResultsScreen from '../screens/ResultsScreen';
     Favourites: {screen: FavouritesScreen},
     LogIn: {screen: LogInScreen},
     Register: {screen: RegisterScreen},
-    Results: {screen: ResultsScreen}
+    Results: {screen: ResultsScreen},
+    Profile: {screen: ProfileScreen}
   });
 
   export default MainNavigator;

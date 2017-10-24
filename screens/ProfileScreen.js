@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, Image} from 'react-native';
+import { View, Platform, Text, Image, Button} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
-import LogIn from '../components/LogIn';
-import Registration from '../components/Registration';
-import {connect} from 'react-redux';
-import firebase from 'firebase';
-import {bindActionCreators} from 'redux';
+import MyProfileComponent from '../components/MyProfileComponent';
+
+
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -17,13 +15,14 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class LogInScreen extends Component {
+class ProfileScreen extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      appIsReady: false
-    };
-  }
+    this.  state = {
+        appIsReady: false,
+        fontLoaded: false
+      };
+  };
 
   async componentDidMount() {
       await Font.loadAsync({
@@ -44,8 +43,10 @@ class LogInScreen extends Component {
     })
   }
 
-  static navigationOptions = (navigation) => ({
-    title: 'Log in',
+
+
+  static navigationOptions = ( {navigation} ) => ({
+    title: 'Profile',
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -62,37 +63,39 @@ class LogInScreen extends Component {
         color='#fff'
         style = {styles.imageStyle}
       />
+    ),
+    headerRight: (
+      <Icon
+        name='user'
+        type='evilicon'
+        size= {32}
+        color='#fff'
+        style = {styles.imageStyle}
+        onPress = {() => {
+           navigation.navigate('LogIn');
+        }}
+      />
     )
   });
 
+
+
+
   render() {
-    //let redirect = <Text> Profile content</Text>
-    let navi = this.props.navigation;
-    firebase.auth().onAuthStateChanged(function(user) {
-      console.log('user',user);
-      if (user) {
-        
-      } else {
-
-      }
-      });
-
+    console.log("results screen");
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        <LogIn navi={this.props.navigation}/>
+      {
+        this.state.fontLoaded ? (
+            <MyProfileComponent navi={this.props.navigation}/>
+        ) : null
+      }
+
       </View>
     );
   }
 }
 
-function mapStatetoProps(state){
-    return{
-    };
-}
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators ( {
-    },dispatch)
-}
 
 const styles = {
   imageStyle: {
@@ -101,4 +104,4 @@ const styles = {
   }
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(LogInScreen);
+export default ProfileScreen;

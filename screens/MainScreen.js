@@ -5,7 +5,7 @@ import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import HomePageComponent from '../components/HomePageComponent';
 import { Icon } from 'react-native-elements';
-
+import firebase from 'firebase';
 
 
 const cacheImage = images => images.map( (image) => {
@@ -81,7 +81,17 @@ class MainScreen extends Component {
         color='#fff'
         style = {styles.imageStyle}
         onPress = {() => {
-           navigation.navigate('LogIn');
+          firebase.auth().onAuthStateChanged(function(user) {
+            console.log('user',user);
+            if (user) {
+              console.log("I'll load the profile screen")
+               navigation.navigate('Profile');
+            } else {
+              console.log("I'll load the login screen")
+                navigation.navigate('LogIn');
+            }
+            });
+
         }}
       />
     )

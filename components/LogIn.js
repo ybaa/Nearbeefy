@@ -57,8 +57,17 @@ class LogIn extends Component {
           onPress={()=>{
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
               if(user && user.emailVerified){
-                const navigateAction = NavigationActions.navigate({routeName:'Main'});
-                this.props.navi.dispatch(navigateAction)
+                const resetAction = NavigationActions.reset({
+                  index: 0,
+                  actions: [
+                    NavigationActions.navigate({ routeName: 'Main'})
+                  ]
+                })
+                this.props.navi.dispatch(resetAction)
+
+                //
+                // const navigateAction = NavigationActions.navigate({routeName:'Main'});
+                // this.props.navi.dispatch(navigateAction)
               }else{
                 alert("You have to verify your email first");
               }

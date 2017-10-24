@@ -7,53 +7,40 @@ import { getPlacesNearbyNextPage } from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
 import axios from 'axios';
 import {API_KEY} from '../constants/index';
-
+import firebase from 'firebase';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
-const list = [
-  {
-    title: 'Appointments',
-    icon: 'av-timer'
-  },
-  {
-    title: 'Trips',
-    icon: 'flight-takeoff'
-  }
-]
 
+class MyProfileComponent extends Component {
 
-class ResultsComponent extends Component {
-constructor(props){
-  super(props);
-  this.state = {
-
-  }
-};
 
   render() {
 
-    if(this.props.showMore){
-      this.props.getPlacesNearbyNextPage(this.props.pageToken);
-    }
-    else{
-
-    }
-
     return (
       <View>
-        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
-        <List>
-        {
-          list.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.title}
-              leftIcon={{name: item.icon}}
-            />
-          ))
-        }
-</List>
+        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>My Profile content</Text>
+        <Button
+          onPress={()=>{
+            firebase.auth().signOut().then(function() {
+              const resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({ routeName: 'Main'})
+              ]
+            })
+            this.props.navi.dispatch(resetAction)
+
+            }).catch(function(error) {
+              // An error happened.
+            });
+
+          }}
+          title="sign out"
+          fontFamily="Quicksand-Light"
+          color="#fff"
+          backgroundColor="#4caf50"
+      />
     </View>
     );
   }
@@ -74,4 +61,4 @@ function matchDispatchToProps(dispatch) {
     },dispatch)
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(ResultsComponent);
+export default connect(mapStatetoProps,matchDispatchToProps)(MyProfileComponent);
