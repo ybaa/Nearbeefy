@@ -70,7 +70,10 @@ export const getPlacesNearby = (lat, long, radius) => {
                 return {
                     'name': place.name,
                     'types': place.types,
-                    'icon': place.icon
+                    'icon': place.icon,
+                    'address': place.vicinity,
+                    'latitude': place.geometry.location.lat,
+                    'longitude': place.geometry.location.lng
                   }
 
               })
@@ -99,7 +102,10 @@ export const getPlacesNearbyNextPage = (pageToken) => {
                 return {
                     'name': place.name,
                     'types': place.types,
-                    'icon': place.icon
+                    'icon': place.icon,
+                    'address': place.vicinity,
+                    'latitude': place.geometry.location.lat,
+                    'longitude': place.geometry.location.lng
                   }
 
               })
@@ -110,4 +116,21 @@ export const getPlacesNearbyNextPage = (pageToken) => {
 
           })
     }
+};
+
+export const getDistance = (origin, destinations) => {
+  query = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations=" + destinations + "&mode=walking&key=" + API_KEY;
+  return {
+    type: "GET_DISTANCE",
+    payload:
+      axios.get(query).then( (response) => {
+        console.log('DISTANCE ',response);
+        return {
+          'data': response.data.rows[0].elements
+          // 'distance': response.data.rows[0].elements[0].distance.text,
+          // 'duration': response.data.rows[0].elements[0].duration.text,
+          // 'destination': destination
+        }
+      })
+  }
 };

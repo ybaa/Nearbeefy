@@ -9,7 +9,7 @@ import {StackNavigator, NavigationActions } from 'react-navigation';
 const SCREE_WIDTH = Dimensions.get('window').width;
 
 
-class Registration extends Component {
+class RegistrationComponent extends Component {
   constructor(props){
     super(props);
     state = {
@@ -28,35 +28,21 @@ class Registration extends Component {
                     backgroundColor: '#4caf50'
       }}>
         <Image
-          style={{width: 250,
-                  height: 70
-                }}
+          style={style.bigLogo}
           source={require('../assets/icons/bigRectangleLogoWithTextTransparent.png')}
         />
-        <TextInput style={{
-          width: 210,
-          height: 50,
-          color: '#fff'
-        }}
+        <TextInput style={style.inputStyle}
           placeholder = "email"
           onChangeText = {(email) => {this.setState({ email: email})}}
           placeholderTextColor = '#fff'
         />
-        <TextInput style={{
-          width: 210,
-          height: 50,
-          color: '#fff'
-        }}
+        <TextInput style={style.inputStyle}
           placeholder = "password"
           onChangeText = {(password) => {this.setState({ password: password})}}
           placeholderTextColor = '#fff'
           secureTextEntry = {true}
         />
-        <TextInput style={{
-          width: 210,
-          height: 50,
-          color: '#fff'
-        }}
+        <TextInput style={style.inputStyle}
           placeholder = "confirm password"
           onChangeText = {(confirm) => {this.setState({ confirmPassword: confirm})}}
           placeholderTextColor = '#fff'
@@ -90,7 +76,10 @@ class Registration extends Component {
             title="Register"
             fontFamily="Quicksand-Light"
             color="#000"
-            backgroundColor="#fdd835"
+            backgroundColor="#ffee58"
+            buttonStyle = {style.registerButton}
+            icon={{name: 'user-follow', type: 'simple-line-icon', color: '#000'}}
+            borderRadius={3}
           />
       </View>
     );
@@ -108,8 +97,25 @@ function matchDispatchToProps(dispatch) {
     },dispatch)
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(Registration);
+export default connect(mapStatetoProps,matchDispatchToProps)(RegistrationComponent);
 
 const style = StyleSheet.create({
-
+  bigLogo: {
+    width: 250,
+    height: 70,
+    marginTop: 16,
+    marginBottom: 10,
+    marginLeft: 10
+  },
+  inputStyle: {
+    width: 210,
+    height: 50,
+    color: '#fff',
+    fontFamily: 'Quicksand-Light'
+  },
+  registerButton: {
+    marginTop: 20,
+    marginBottom: 10,
+    width: 210
+  }
 });

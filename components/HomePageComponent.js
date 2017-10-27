@@ -3,16 +3,13 @@ import {View, Dimensions, StyleSheet, Platform} from 'react-native';
 import {Text, Button, Slider, SearchBar, Icon } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {changeAddress,
-        updateLocationCoords,
+import {updateLocationCoords,
         reverseCoordsEncoding,
         encodeAddress,
-        getPlacesNearby,
-        getPlacesNearbyNextPage } from '../actions/Index';
+        getPlacesNearby
+} from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
-import axios from 'axios';
-import {API_KEY} from '../constants/index';
-import {StackNavigator, NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -30,7 +27,7 @@ class HomePageComponent extends Component {
   componentWillMount() {
    if (Platform.OS === 'android' && !Constants.isDevice) {
      this.setState({
-       errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+       errorMessage: 'This will not work on an Android emulator. Try it on your device!',
      });
    } else {
      this._getLocationAsync();
@@ -49,74 +46,73 @@ class HomePageComponent extends Component {
  };
 
   render() {
-
-    // if( this.props.showMore){
-    //   this.props.getPlacesNearbyNextPage(this.props.pageToken);
-    // }
-
     return (
-      <View>
-        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
-        <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
+      <View style={ style.mainCardStyle }>
+        <View style={ style.searchBarAndIcon }>
           <View style= {{flex:4}}>
-          <SearchBar
-            value = {this.state.typedAddress}
-            onChangeText = { (newAddress) => {
-              // axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + newAddress + '&location=' + this.state.location.coords.latitude + ',' + this.state.location.coords.longitude +
-              // '&radius=600strictbounds&key=' + API_KEY).then( (res)=> {console.log(res.data) }); //pobieranie podpowiedzi
-              this.setState({
-                typedAddress: newAddress
-              });
-            }}
-            lightTheme
-            placeholder='Type address here...'
-          />
-        </View>
-        <View style={{flex: 1}}>
-          <Icon
-            name='location'
-            type='evilicon'
-            size= {40}
-            color='#000'
-            onPress = {() => {
-              let text = 'Waiting..';
-               if (this.state.errorMessage) {
-                 text = this.state.errorMessage;
-               } else if (this.state.location) {
-                  this.props.updateLocationCoords(this.state.location.coords.latitude, this.state.location.coords.longitude);
-                   this.props.reverseCoordsEncoding(this.state.location.coords.latitude, this.state.location.coords.longitude).then( () => {
-                     this.setState({
-                       typedAddress: this.props.address
-                     });
-                   })
-                   text = JSON.stringify(this.state.location);
-               }
-          }}
-          />
-        </View>
+            <SearchBar
+              value = {this.state.typedAddress}
+              onChangeText = { (newAddress) => {
+                this.setState({
+                  typedAddress: newAddress
+                });
+              }}
+              placeholder='Type address here...'
+              containerStyle = {style.searchBarStyle}
+              inputStyle= {style.searchBarInput}
+            />
+          </View>
+          <View style={{flex: 1}}>
+            <Icon
+              name='location'
+              type='evilicon'
+              size= {47}
+              style={style.getLocationIconStyle}
+              color='#000'
+              onPress = {() => {
+                let text = 'Waiting..';
+                 if (this.state.errorMessage) {
+                   text = this.state.errorMessage;
+                 } else if (this.state.location) {
+                    this.props.updateLocationCoords(this.state.location.coords.latitude, this.state.location.coords.longitude);
+                     this.props.reverseCoordsEncoding(this.state.location.coords.latitude, this.state.location.coords.longitude).then( () => {
+                       this.setState({
+                         typedAddress: this.props.address
+                       });
+                     })
+                     text = JSON.stringify(this.state.location);
+                 }
+              }}
+            />
+          </View>
         </View>
       <View>
         <Slider
           maximumValue = {500}
           value = {this.state.distancePrecision}
+            thumbTintColor = '#ffee58'
+          style={style.sliderStyle}
+          minimumTrackTintColor= '#494949'
+          thumbStyle = {style.sliderThumbStyle}
           onValueChange = { (value) => {
             this.setState({
               distancePrecision: parseInt(value)
             })
           }}
         />
-        <Text>distance precision: {this.state.distancePrecision} m</Text>
+        <Text
+          style={style.radiusValue}
+        >
+          Search in radius: {this.state.distancePrecision} m
+        </Text>
         <Button
           onPress={()=>{
             let promise = new Promise( (resolve) => {
                 let x = this.props.encodeAddress(this.state.typedAddress);
-                console.log("LOATION " , this.state.location.coords, this.props.coords);
                 resolve(x)
             });
 
             promise.then( () => {
-              console.log('then');
-              console.log("LOATION " , this.state.location, this.props.coords);
               let placesPromise = new Promise ( (resolve) => {
                 let places = this.props.getPlacesNearby(this.props.coords.latitude, this.props.coords.longitude, this.state.distancePrecision);
                 resolve(places);
@@ -131,8 +127,10 @@ class HomePageComponent extends Component {
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
-      />
-
+          buttonStyle = {style.getPlacesButton}
+          icon={{name: 'directions', type: 'simple-line-icon'}}
+          borderRadius={1}
+        />
       </View>
     </View>
     );
@@ -150,17 +148,61 @@ function mapStatetoProps(state){
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-        changeAddress: changeAddress,
         updateLocationCoords: updateLocationCoords,
         reverseCoordsEncoding: reverseCoordsEncoding,
         encodeAddress: encodeAddress,
-        getPlacesNearby: getPlacesNearby,
-        getPlacesNearbyNextPage: getPlacesNearbyNextPage
+        getPlacesNearby: getPlacesNearby
     },dispatch)
 }
 
 export default connect(mapStatetoProps,matchDispatchToProps)(HomePageComponent);
 
 const style = StyleSheet.create({
-
+  mainCardStyle: {
+    margin:10,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 3,
+    borderRightColor: '#ddd',
+    borderRightWidth: 3,
+    borderTopColor: '#ddd',
+    borderTopWidth: 1,
+    borderLeftColor: '#ddd',
+    borderLeftWidth: 1,
+    backgroundColor: '#eee',
+    padding:20
+  },
+  searchBarAndIcon: {
+    flexDirection: 'row',
+    alignItems: 'stretch'
+  },
+  searchBarStyle: {
+    backgroundColor:'#eee',
+    borderTopWidth:0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#bbb'
+  },
+  searchBarInput: {
+    backgroundColor: '#eee',
+    fontFamily: "Quicksand-Light",
+    marginBottom: 1
+  },
+  getLocationIconStyle: {
+    paddingTop: 12,
+    paddingLeft: 5
+  },
+  sliderStyle: {
+    marginTop: 8
+  },
+  sliderThumbStyle: {
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  radiusValue: {
+    fontFamily:"Quicksand-Light"
+  },
+  getPlacesButton: {
+    marginTop: 15,
+    marginLeft: 0,
+    paddingLeft: 0
+  }
 });

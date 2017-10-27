@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { View, Platform, Text, Image} from 'react-native';
-import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
-import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
-import LogIn from '../components/LogIn';
-import Registration from '../components/Registration';
+import RegistrationComponent from '../components/RegistrationComponent';
 import {connect} from 'react-redux';
-import firebase from 'firebase';
-import {updateNav} from '../actions/Index';
 import {bindActionCreators} from 'redux';
 
 const cacheImage = images => images.map( (image) => {
@@ -26,25 +21,6 @@ class RegisterScreen extends Component {
     };
   }
 
-  async componentDidMount() {
-      await Font.loadAsync({
-        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-      });
-      this.setState({ fontLoaded: true});
-    }
-
-  componentWillMound() {
-    this._loadAssetsAsync();
-  }
-
-  async _loadAssetsAsync() {
-    const imagesAssets = cacheImage([icon]);
-    await Promise.all([...imagesAssets]);
-    this.setState({
-      appIsReady: true
-    })
-  }
-
   static navigationOptions = (navigation) => ({
     title: 'Log in',
     headerStyle: {
@@ -57,11 +33,15 @@ class RegisterScreen extends Component {
     },
     headerLeft: (
       <Icon
-        name='menu'
-        type='material-icons'
+        name='ios-arrow-back'
+        type='ionicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.backIconStyle}
+        onPress= {() => {
+          console.log('navigation', navigation);
+          navigation.navigation.goBack();
+        }}
       />
     )
   });
@@ -70,7 +50,7 @@ class RegisterScreen extends Component {
 
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        <Registration navi={this.props.navigation}/>
+        <RegistrationComponent navi={this.props.navigation}/>
       </View>
     );
   }
@@ -78,22 +58,18 @@ class RegisterScreen extends Component {
 
 function mapStatetoProps(state){
     return{
-      nav: state.NavigationReducer.nav
     };
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators ( {
-      updateNav: updateNav
     },dispatch)
 }
 
 
-
-
-const styles = {
-  imageStyle: {
+const style = {
+  backIconStyle: {
     marginTop: 25,
-    marginLeft: 10
+    marginLeft: 20
   }
 }
 

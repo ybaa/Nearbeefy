@@ -4,8 +4,7 @@ import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
-import LogIn from '../components/LogIn';
-import Registration from '../components/Registration';
+import LogInComponent from '../components/LogInComponent';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {bindActionCreators} from 'redux';
@@ -24,13 +23,6 @@ class LogInScreen extends Component {
       appIsReady: false
     };
   }
-
-  async componentDidMount() {
-      await Font.loadAsync({
-        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-      });
-      this.setState({ fontLoaded: true});
-    }
 
   componentWillMound() {
     this._loadAssetsAsync();
@@ -56,30 +48,24 @@ class LogInScreen extends Component {
     },
     headerLeft: (
       <Icon
-        name='menu'
-        type='material-icons'
+        name='ios-arrow-back'
+        type='ionicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.backIconStyle}
+        onPress= {() => {
+          console.log('navigation', navigation);
+          navigation.navigation.goBack();
+        }}
       />
     )
   });
 
   render() {
-    //let redirect = <Text> Profile content</Text>
     let navi = this.props.navigation;
-    firebase.auth().onAuthStateChanged(function(user) {
-      console.log('user',user);
-      if (user) {
-        
-      } else {
-
-      }
-      });
-
     return (
       <View style={{  flex: 1, backgroundColor: '#ddd' }}>
-        <LogIn navi={this.props.navigation}/>
+        <LogInComponent navi={this.props.navigation}/>
       </View>
     );
   }
@@ -94,10 +80,10 @@ function matchDispatchToProps(dispatch) {
     },dispatch)
 }
 
-const styles = {
-  imageStyle: {
+const style = {
+  backIconStyle: {
     marginTop: 25,
-    marginLeft: 10
+    marginLeft: 20
   }
 }
 

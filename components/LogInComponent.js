@@ -9,7 +9,7 @@ import {StackNavigator, NavigationActions } from 'react-navigation';
 const SCREE_WIDTH = Dimensions.get('window').width;
 
 
-class LogIn extends Component {
+class LogInComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -19,35 +19,18 @@ class LogIn extends Component {
   }
 
   render() {
-    console.log('n',this.props.navi);
-
-
     return (
-      <View style={{flex:1,
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    backgroundColor: '#4caf50'
-      }}>
+      <View style={style.mainView}>
         <Image
-          style={{width: 250,
-                  height: 70
-                }}
+          style={style.bigLogo}
           source={require('../assets/icons/bigRectangleLogoWithTextTransparent.png')}
         />
-        <TextInput style={{
-          width: 210,
-          height: 50,
-          color: '#fff'
-        }}
+        <TextInput style={style.inputStyle}
           placeholder = "email"
           onChangeText = {(email) => {this.setState({ email: email})}}
           placeholderTextColor = '#fff'
         />
-        <TextInput style={{
-          width: 210,
-          height: 50,
-          color: '#fff'
-        }}
+        <TextInput style={style.inputStyle}
           placeholder = "password"
           onChangeText = {(password) => {this.setState({ password: password})}}
           placeholderTextColor = '#fff'
@@ -64,15 +47,10 @@ class LogIn extends Component {
                   ]
                 })
                 this.props.navi.dispatch(resetAction)
-
-                //
-                // const navigateAction = NavigationActions.navigate({routeName:'Main'});
-                // this.props.navi.dispatch(navigateAction)
               }else{
                 alert("You have to verify your email first");
               }
             }).catch(function(error) {
-              // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
               if (errorCode === 'auth/wrong-password') {
@@ -80,37 +58,31 @@ class LogIn extends Component {
               } else {
                 alert(errorMessage);
               }
-              console.log(error);
             });
           }}
             title="Log in"
             fontFamily="Quicksand-Light"
             color="#000"
-            backgroundColor="#fdd835"
+            backgroundColor="#ffee58"
+            buttonStyle = {style.logInButton}
+            icon={{name: 'login', type: 'simple-line-icon', color: '#000'}}
+            borderRadius={3}
           />
 
-          <Text style={{color: '#fff'}}>  Do not have any account yet? </Text>
+          <Text style={style.goToRegistrationText}>  Do not have any account yet? </Text>
           <Button
             onPress={()=>{
-              //navigate('Register');
               const navigateAction = NavigationActions.navigate({routeName:'Register'});
               this.props.navi.dispatch(navigateAction)
             }}
               title="Click here to register"
               fontFamily="Quicksand-Light"
               color="#fff"
-              backgroundColor="#4fc3f7"
+              backgroundColor="#2979ff"
+              borderRadius={3}
+              buttonStyle = {style.logInButton}
+              icon={{name: 'user-follow', type: 'simple-line-icon'}}
             />
-        <Text style={{color: '#fff'}}>  or </Text>
-        <Button
-          onPress = { () => {
-          alert('it is going to be implemented in the future')
-          }}
-          title="Log in with Google"
-          fontFamily="Quicksand-Light"
-          color="#fff"
-          backgroundColor="#ef5350"
-      />
       </View>
     );
   }
@@ -118,7 +90,6 @@ class LogIn extends Component {
 
 function mapStatetoProps(state){
     return{
-      username: state.UserConfigReducer.username
     };
 }
 
@@ -127,8 +98,36 @@ function matchDispatchToProps(dispatch) {
     },dispatch)
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(LogIn);
+export default connect(mapStatetoProps,matchDispatchToProps)(LogInComponent);
 
 const style = StyleSheet.create({
-
+  mainView: {
+    flex:1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#4caf50'
+  },
+  bigLogo: {
+    width: 250,
+    height: 70,
+    marginTop: 16,
+    marginBottom: 10,
+    marginLeft: 10
+  },
+  inputStyle: {
+    width: 210,
+    height: 50,
+    color: '#fff',
+    fontFamily: 'Quicksand-Light'
+  },
+  logInButton: {
+    marginTop: 10,
+    marginBottom: 10,
+    width: 210
+  },
+  goToRegistrationText: {
+    color: '#fff',
+    marginTop:15,
+    marginBottom: 5
+  }
 });

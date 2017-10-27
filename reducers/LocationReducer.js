@@ -82,6 +82,42 @@ export default function LocationReducer(state = {
                 console.log(state);
                 break;
 
+              case 'GET_DISTANCE_FULFILLED':
+                let newState = state.nearbyPlaces.map( (place, index) => {
+                  if(typeof action.payload.data[index].distance !== 'undefined'){
+                    return {
+                      'name': place.name,
+                      'types': place.types,
+                      'icon': place.icon,
+                      'address': place.address,
+                      'distance': action.payload.data[index].distance.text,
+                      'duration': action.payload.data[index].duration.text
+                    }
+                  }
+                  else{
+                    return place;
+                  }
+                });
+                  // let newState = state.nearbyPlaces.map( place => {
+                  //   if(place.address === action.payload.destination){
+                  //     return {
+                  //       'name': place.name,
+                  //       'types': place.types,
+                  //       'icon': place.icon,
+                  //       'address': place.address,
+                  //       'distance': action.payload.distance,
+                  //       'duration': action.payload.duration
+                  //     }
+                  //   }
+                  //     else{
+                  //       return place
+                  //     }
+                  // });
+                  state = Object.assign({}, state, {
+                    nearbyPlaces: newState
+                  });
+              break;
+
       default:
       return state
     }

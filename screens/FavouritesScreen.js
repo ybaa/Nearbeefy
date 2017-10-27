@@ -4,6 +4,7 @@ import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
+import firebase from 'firebase'
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -13,43 +14,18 @@ const cacheImage = images => images.map( (image) => {
 });
 
 class FavouritesScreen extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      appIsReady: false
-    };
-  };
 
-  async componentDidMount() {
-      await Font.loadAsync({
-        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
-      });
-      this.setState({ fontLoaded: true});
-    }
-
-  componentWillMound() {
-    this._loadAssetsAsync();
-  }
-
-  async _loadAssetsAsync() {
-    const imagesAssets = cacheImage([icon]);
-    await Promise.all([...imagesAssets]);
-    this.setState({
-      appIsReady: true
-    })
-  }
-
-  static navigationOptions = () => ({
+  static navigationOptions = ( {navigation} ) => ({
     title: 'Favourites',
     tabBarLabel: 'Favourites',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        name='favorite-border'
-        type='material-icons'
-        size= {25}
+       name='favorite-border'
+       type='material-icons'
+       size= {25}
         color='#fff'
       />
-   ),
+    ),
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -60,29 +36,79 @@ class FavouritesScreen extends Component {
     },
     headerLeft: (
       <Icon
-        name='menu'
-        type='material-icons'
+        name='ios-arrow-back'
+        type='ionicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.backIconStyle}
+        onPress= {() => {
+          navigation.navigate('Main');
+        }}
       />
+    ),
+    headerRight: (
+      <View
+        style={style.navHeaderRight}>
+      <Icon
+        name='user'
+        type='evilicon'
+        size= {32}
+        color='#fff'
+        style = {style.headerRightIconUser}
+        onPress = {() => {
+          firebase.auth().onAuthStateChanged( (user) => {
+            if (user) {
+               navigation.navigate('Profile');
+            } else {
+                navigation.navigate('LogIn');
+            }
+          });
+        }}
+      />
+      <Icon
+        name='md-more'
+        type='ionicon'
+        size= {32}
+        color='#fff'
+        style = {style.headerRightIconDots}
+      />
+    </View>
     )
   });
 
   render() {
     return (
       <View style={{  flex: 1, backgroundColor: '#eee' }}>
-      <Text>favourites screen</Text>
-
+        <Text>favourites screen</Text>
       </View>
     );
   }
 }
 
-const styles = {
-  imageStyle: {
+const style = {
+  backIconStyle: {
     marginTop: 25,
-    marginLeft: 10
+    marginLeft: 20
+  },
+  navHeaderLeft: {
+    width: 40,
+    height: 40,
+    marginLeft: 15,
+    marginTop: 20
+  },
+  navHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'stretch'
+  },
+  headerRightIconUser: {
+    marginRight: 10,
+    marginTop:25,
+    marginLeft:10
+  },
+  headerRightIconDots: {
+    marginRight: 20,
+    marginTop:22,
+    marginLeft:10
   }
 }
 

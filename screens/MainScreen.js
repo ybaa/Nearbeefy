@@ -18,7 +18,7 @@ const cacheImage = images => images.map( (image) => {
 class MainScreen extends Component {
   constructor(props){
     super(props);
-    this.  state = {
+    this.state = {
         appIsReady: false,
         fontLoaded: false
       };
@@ -43,8 +43,6 @@ class MainScreen extends Component {
     })
   }
 
-
-
   static navigationOptions = ( {navigation} ) => ({
     title: 'Find location',
     tabBarLabel: 'Find',
@@ -65,60 +63,77 @@ class MainScreen extends Component {
       color: 'white'
     },
     headerLeft: (
-      <Icon
-        name='menu'
-        type='material-icons'
-        size= {32}
-        color='#fff'
-        style = {styles.imageStyle}
+      <Image
+        source={require('../assets/icons/transparentSmallLogo.png')}
+        style={style.navHeaderLeft}
       />
     ),
     headerRight: (
+      <View
+        style={style.navHeaderRight}>
       <Icon
         name='user'
         type='evilicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.headerRightIconUser}
         onPress = {() => {
-          firebase.auth().onAuthStateChanged(function(user) {
-            console.log('user',user);
+          firebase.auth().onAuthStateChanged( (user) => {
             if (user) {
-              console.log("I'll load the profile screen")
                navigation.navigate('Profile');
             } else {
-              console.log("I'll load the login screen")
                 navigation.navigate('LogIn');
             }
-            });
-
+          });
         }}
       />
+      <Icon
+        name='md-more'
+        type='ionicon'
+        size= {32}
+        color='#fff'
+        style = {style.headerRightIconDots}
+      />
+    </View>
     )
   });
 
 
-
-
   render() {
     return (
-      <View style={{  flex: 1, backgroundColor: '#eee' }}>
+      <View
+        style={{flex: 1, backgroundColor: '#eee' }}>
       {
         this.state.fontLoaded ? (
             <HomePageComponent navi={this.props.navigation} style={{fontFamily: 'Quicksand-Light'}} />
         ) : null
       }
-
       </View>
     );
   }
 }
 
 
-const styles = {
-  imageStyle: {
-    marginTop: 25,
-    marginLeft: 10
+const style = {
+  navHeaderLeft: {
+    width: 40,
+    height: 40,
+    marginLeft: 15,
+    marginTop: 20
+  },
+  navHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'stretch'
+  },
+  headerRightIconUser: {
+    marginRight: 10,
+    marginTop:25,
+    marginLeft:10
+  },
+  headerRightIconDots: {
+    marginRight: 20,
+    marginTop:22,
+    marginLeft:10
   }
 }
 
