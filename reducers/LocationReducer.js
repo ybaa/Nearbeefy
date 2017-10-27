@@ -91,7 +91,9 @@ export default function LocationReducer(state = {
                       'icon': place.icon,
                       'address': place.address,
                       'distance': action.payload.data[index].distance.text,
-                      'duration': action.payload.data[index].duration.text
+                      'duration': action.payload.data[index].duration.text,
+                      'latitude': place.latitude,
+                      'longitude': place.longitude
                     }
                   }
                   else{

@@ -21,7 +21,12 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.nearbeefy.nearbeefy"
+      "package": "com.nearbeefy.nearbeefy",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyB-H9xpLk9Zmt3JoGrx2Yx1LnnSXOj4qqQ"
+        }
+      }
     }
   }
 }

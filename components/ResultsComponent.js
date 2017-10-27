@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Dimensions, StyleSheet, Platform, ScrollView, Modal, Image} from 'react-native';
+import {View, Dimensions, StyleSheet, Platform, ScrollView, Modal, Image, ActivityIndicator } from 'react-native';
 import {Text, Button, Slider, SearchBar, Icon, List, ListItem  } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -7,6 +7,8 @@ import { getPlacesNearbyNextPage, getDistance } from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
 import axios from 'axios';
 import {API_KEY} from '../constants/index';
+import MapView from 'react-native-maps';
+// import { MapView } from 'expo';
 
 
 
@@ -31,7 +33,8 @@ constructor(props){
     isReady: false,
     distancesDownloaded: false,
     modalVisible: false,
-    modalContent: <View/>
+    modalContent: <View/>,
+    loadingCircle: <View style={{flexDirection: 'row', marginTop:5}}><Text>Loading distances...</Text><ActivityIndicator/></View>
   }
 };
 
@@ -41,9 +44,7 @@ constructor(props){
       this.props.getPlacesNearbyNextPage(this.props.pageToken);
     }
     else{
-      console.log('else', this.state.distancesDownloaded);
         if(this.state.distancesDownloaded === false){
-          console.log('jestem w ifie', this.state.distancesDownloaded);
           this.setState({
             distancesDownloaded: true
           });
@@ -51,10 +52,11 @@ constructor(props){
             return place.latitude + ',' + place.longitude;
           });
           destinations = destinations.join('|');
-          console.log('joined', destinations)
           this.props.getDistance(this.props.address, destinations).then( () => {
-            console.log('done');
-          })
+            this.setState({
+              loadingCircle: <View/>
+            })
+          });
          }
     }
 
@@ -98,8 +100,23 @@ constructor(props){
                fontFamily: 'Quicksand-Light',
                fontSize: 14,
                textAlign: 'center',
-               marginTop: 20
-             }}>duration: {place.duration}</Text>
+               marginTop: 20,
+               marginBottom: 10
+             }}>time to get there: {place.duration}</Text>
+             <Button
+               onPress={()=>{
+                 this.setState({
+                    //navigate to map view screen
+                 });
+               }}
+                 title="Click to check it on map"
+                 fontFamily="Quicksand-Light"
+                 color="#fff"
+                 backgroundColor="#4caf50"
+                 borderRadius={3}
+                 buttonStyle = {style.logInButton}
+                 icon={{name: 'google-maps', type: 'material-community'}}
+               />
              <Button
                onPress={()=>{
                  this.setState({
@@ -124,9 +141,10 @@ constructor(props){
 
     return (
       <View>
-        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24}}>{this.props.address}</Text>
+        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24, marginTop:5, marginBottom:7}}>{this.props.address}</Text>
+          {this.state.loadingCircle}
         <Modal
-            animationType="fade"
+            animationType="slide"
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={() => { this.setState({modalVisible:false})}}
@@ -144,7 +162,6 @@ constructor(props){
              backgroundColor: '#fff'
            }}>
           {this.state.modalContent}
-
           </View>
            </View>
           </Modal>
