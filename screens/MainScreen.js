@@ -27,6 +27,7 @@ class MainScreen extends Component {
   async componentDidMount() {
       await Font.loadAsync({
         'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+        'Quicksand-Regular': require('../assets/fonts/Quicksand-Regular.ttf'),
       });
       this.setState({ fontLoaded: true});
     }

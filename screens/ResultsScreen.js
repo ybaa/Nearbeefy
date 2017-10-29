@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { View, Platform, Text, Image, Button} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
-import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
 import { Icon } from 'react-native-elements';
 import ResultsComponent from '../components/ResultsComponent';
-
-
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -18,7 +15,7 @@ const cacheImage = images => images.map( (image) => {
 class ResultsScreen extends Component {
   constructor(props){
     super(props);
-    this.  state = {
+    this.state = {
         appIsReady: false,
         fontLoaded: false
       };
@@ -30,19 +27,6 @@ class ResultsScreen extends Component {
       });
       this.setState({ fontLoaded: true});
     }
-
-  componentWillMound() {
-    this._loadAssetsAsync();
-  }
-
-  async _loadAssetsAsync() {
-    const imagesAssets = cacheImage([icon]);
-    await Promise.all([...imagesAssets]);
-    this.setState({
-      appIsReady: true
-    })
-  }
-
 
 
   static navigationOptions = ( {navigation} ) => ({
@@ -57,32 +41,47 @@ class ResultsScreen extends Component {
     },
     headerLeft: (
       <Icon
-        name='menu'
-        type='material-icons'
+        name='ios-arrow-back'
+        type='ionicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.backIconStyle}
+        onPress= {() => {
+          navigation.navigate('Main');
+        }}
       />
     ),
     headerRight: (
+      <View
+        style={style.navHeaderRight}>
       <Icon
         name='user'
         type='evilicon'
         size= {32}
         color='#fff'
-        style = {styles.imageStyle}
+        style = {style.headerRightIconUser}
         onPress = {() => {
-           navigation.navigate('LogIn');
+          firebase.auth().onAuthStateChanged( (user) => {
+            if (user) {
+               navigation.navigate('Profile');
+            } else {
+                navigation.navigate('LogIn');
+            }
+          });
         }}
       />
+      <Icon
+        name='md-more'
+        type='ionicon'
+        size= {32}
+        color='#fff'
+        style = {style.headerRightIconDots}
+      />
+    </View>
     )
   });
 
-
-
-
   render() {
-    console.log("results screen");
     return (
       <View style={{  flex: 1, backgroundColor: '#fff' }}>
       {
@@ -90,17 +89,36 @@ class ResultsScreen extends Component {
             <ResultsComponent navi={this.props.navigation}/>
         ) : null
       }
-
       </View>
     );
   }
 }
 
 
-const styles = {
-  imageStyle: {
+const style = {
+  backIconStyle: {
     marginTop: 25,
-    marginLeft: 10
+    marginLeft: 20
+  },
+  navHeaderLeft: {
+    width: 40,
+    height: 40,
+    marginLeft: 15,
+    marginTop: 20
+  },
+  navHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'stretch'
+  },
+  headerRightIconUser: {
+    marginRight: 10,
+    marginTop:25,
+    marginLeft:10
+  },
+  headerRightIconDots: {
+    marginRight: 20,
+    marginTop:22,
+    marginLeft:10
   }
 }
 

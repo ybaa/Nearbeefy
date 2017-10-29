@@ -8,23 +8,11 @@ import { Constants, Location, Permissions } from 'expo';
 import axios from 'axios';
 import {API_KEY} from '../constants/index';
 import MapView from 'react-native-maps';
-// import { MapView } from 'expo';
-
+import {StackNavigator, NavigationActions } from 'react-navigation';
+import MapViewComponent from './MapViewComponent';
 
 
 const SCREE_WIDTH = Dimensions.get('window').width;
-
-const list = [
-  {
-    title: 'Appointments',
-    icon: 'av-timer'
-  },
-  {
-    title: 'Trips',
-    icon: 'flight-takeoff'
-  }
-]
-
 
 class ResultsComponent extends Component {
 constructor(props){
@@ -57,7 +45,7 @@ constructor(props){
               loadingCircle: <View/>
             })
           });
-         }
+        }
     }
 
 
@@ -68,71 +56,45 @@ constructor(props){
         avatar={{uri:place.icon}}
         subtitle={place.types.join(', ')}
         avatarStyle = {{backgroundColor:'#fff'}}
-        badge={{value: place.distance, containerStyle: { marginTop: 5, backgroundColor:'#fff' }, textStyle: { color: '#4caf50' }}}
+        subtitleStyle = {{fontWeight: "100"}}
+        fontFamily = "Quicksand-Regular"
+        badge={{
+          value: place.distance,
+          containerStyle: { marginTop: 5, backgroundColor:'#fff' },
+          textStyle: { color: '#4caf50', fontFamily: 'Quicksand-Regular' }
+        }}
         hideChevron={true}
         onPress = { () => {
           this.setState({
             modalVisible: true,
-            modalContent: <View style={{
-            alignItems: 'center'
+            modalContent: <View
+              style={{
+                alignItems: 'center'
             }}>
-             <Text style={{
-               fontFamily: 'Quicksand-Light',
-               fontSize: 20,
-               marginTop: 25,
-               marginBottom: 20,
-               marginLeft: 20,
-               marginRight: 20,
-               textAlign: 'center'
-             }}>{place.name}</Text>
-             <Text style={{
-               fontFamily: 'Quicksand-Light',
-               fontSize: 14,
-               textAlign: 'center'
-             }}>types: {place.types.join(', ')}</Text>
-             <Text style={{
-               fontFamily: 'Quicksand-Light',
-               fontSize: 14,
-               textAlign: 'center',
-               marginTop: 20
-             }}>distance: {place.distance}</Text>
-             <Text style={{
-               fontFamily: 'Quicksand-Light',
-               fontSize: 14,
-               textAlign: 'center',
-               marginTop: 20,
-               marginBottom: 10
-             }}>time to get there: {place.duration}</Text>
-             <Button
-               onPress={()=>{
-                 this.setState({
-                    //navigate to map view screen
-                 });
-               }}
-                 title="Click to check it on map"
-                 fontFamily="Quicksand-Light"
-                 color="#fff"
-                 backgroundColor="#4caf50"
-                 borderRadius={3}
-                 buttonStyle = {style.logInButton}
-                 icon={{name: 'google-maps', type: 'material-community'}}
-               />
+             <Text style={ style.modalName }> {place.name} </Text>
+             <Text style={ style.modalTypes }> types: {place.types.join(', ')} </Text>
+             <Text style={ style.modalDistance }> distance: {place.distance}</Text>
+             <Text style={ style.modalDuration }> time to get there: {place.duration}</Text>
+             <MapViewComponent
+                destinationLatitude={place.latitude}
+                destinationLongitude={place.longitude}
+                originLatitude={this.props.coords.latitude}
+                originLongitude={this.props.coords.longitude} />
              <Button
                onPress={()=>{
                  this.setState({
                    modalVisible: false
                  });
                }}
-                 title="Close"
-                 fontFamily="Quicksand-Light"
-                 color="#fff"
-                 backgroundColor="#e57373"
-                 borderRadius={3}
-                 buttonStyle = {style.logInButton}
-                 icon={{name: 'ios-arrow-back', type: 'ionicon'}}
-               />
+               title="Close"
+               fontFamily="Quicksand-Light"
+               color="#fff"
+               backgroundColor="#e57373"
+               borderRadius={3}
+               buttonStyle = {style.logInButton}
+               icon={{name: 'ios-arrow-back', type: 'ionicon'}}
+            />
           </View>
-
           })
         }}
       />
@@ -141,30 +103,22 @@ constructor(props){
 
     return (
       <View>
-        <Text style={{ fontFamily: 'Quicksand-Light', fontSize: 24, marginTop:5, marginBottom:7}}>{this.props.address}</Text>
+        <Text
+          style={style.address}>{this.props.address}
+        </Text>
           {this.state.loadingCircle}
         <Modal
             animationType="slide"
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={() => { this.setState({modalVisible:false})}}
-            >
-           <View style={{
-              flex:1,
-             backgroundColor: 'rgba(0,0,0,0.5)'
-           }}>
-           <View style={{
-             flex:1,
-             marginTop:25,
-             marginBottom: 25,
-             marginLeft: 25,
-             marginRight: 25,
-             backgroundColor: '#fff'
-           }}>
-          {this.state.modalContent}
-          </View>
+        >
+           <View style={ style.modalStyle }>
+             <View style={ style.modalContentStyle }>
+               {this.state.modalContent}
+             </View>
            </View>
-          </Modal>
+        </Modal>
         <ScrollView style={{marginBottom:27}}>
           <List>
             {placesList}
@@ -197,8 +151,52 @@ export default connect(mapStatetoProps,matchDispatchToProps)(ResultsComponent);
 
 const style = {
   logInButton: {
-    marginTop: 10,
+    marginTop: 300,
     marginBottom: 10,
     width: 210
+  },
+  address: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 24, marginTop:5,
+    marginBottom:7
+  },
+  modalStyle: {
+    flex:1,
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  modalContentStyle: {
+    flex:1,
+    marginTop:25,
+    marginBottom: 25,
+    marginLeft: 25,
+    marginRight: 25,
+    backgroundColor: '#fff'
+  },
+  modalName: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 20,
+    marginTop: 25,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'center'
+  },
+  modalTypes: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  modalDistance: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 20
+  },
+  modalDuration: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 10
   }
 }

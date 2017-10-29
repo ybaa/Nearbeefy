@@ -78,7 +78,7 @@ class FavouritesScreen extends Component {
 
   render() {
     return (
-      <View style={{  flex: 1, backgroundColor: '#eee' }}>
+      <View style={{  flex: 1, backgroundColor: '#fff' }}>
         <Text>favourites screen</Text>
       </View>
     );
