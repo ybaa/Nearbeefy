@@ -100,25 +100,85 @@ export default function LocationReducer(state = {
                     return place;
                   }
                 });
-                  // let newState = state.nearbyPlaces.map( place => {
-                  //   if(place.address === action.payload.destination){
-                  //     return {
-                  //       'name': place.name,
-                  //       'types': place.types,
-                  //       'icon': place.icon,
-                  //       'address': place.address,
-                  //       'distance': action.payload.distance,
-                  //       'duration': action.payload.duration
-                  //     }
-                  //   }
-                  //     else{
-                  //       return place
-                  //     }
-                  // });
                   state = Object.assign({}, state, {
                     nearbyPlaces: newState
                   });
               break;
+
+              case 'SORT_RESULTS':
+              if(action.payload.distanceAsc){
+                newState = [...state.nearbyPlaces];
+                newState.sort((a, b) => {
+                  let distanceA = a.distance;
+                  let distanceB = b.distance;
+
+                  // w skrocie to mam liczby w formie '10 m' lub '0.1 km' wiec zamieniam wszystko
+                  // na metry i biore sama liczbe
+                  let isDistanceAInKilometers = distanceA.match(/km/g);
+                  if(isDistanceAInKilometers !== null){
+                    distanceA = distanceA.match(/\d+(\.\d+)?/g);
+                    distanceA = parseInt(distanceA *= 1000);
+                  } else {
+                    distanceA = distanceA.match(/\d+(\.\d+)?/g);
+                    distanceA = parseInt(distanceA);
+                  }
+
+                  let isDistanceBInKilometers = distanceB.match(/km/g);
+                  if(isDistanceBInKilometers !== null){
+                    distanceB = distanceB.match(/\d+(\.\d+)?/g);
+                    distanceB = parseInt(distanceB *= 1000);
+                  } else {
+                    distanceB = distanceB.match(/\d+(\.\d+)?/g);
+                    distanceB = parseInt(distanceB);
+                  }
+
+                  console.log('distance ab', distanceA, distanceB)
+                  return distanceA - distanceB;
+                })
+              }else if(action.payload.distanceDesc){
+                newState = [...state.nearbyPlaces];
+                newState.sort((a, b) => {
+                  let distanceA = a.distance;
+                  let distanceB = b.distance;
+
+                  // w skrocie to mam liczby w formie '10 m' lub '0.1 km' wiec zamieniam wszystko
+                  // na metry i biore sama liczbe
+                  let isDistanceAInKilometers = distanceA.match(/km/g);
+                  if(isDistanceAInKilometers !== null){
+                    distanceA = distanceA.match(/\d+(\.\d+)?/g);
+                    distanceA = parseInt(distanceA *= 1000);
+                  } else {
+                    distanceA = distanceA.match(/\d+(\.\d+)?/g);
+                    distanceA = parseInt(distanceA);
+                  }
+
+                  let isDistanceBInKilometers = distanceB.match(/km/g);
+                  if(isDistanceBInKilometers !== null){
+                    distanceB = distanceB.match(/\d+(\.\d+)?/g);
+                    distanceB = parseInt(distanceB *= 1000);
+                  } else {
+                    distanceB = distanceB.match(/\d+(\.\d+)?/g);
+                    distanceB = parseInt(distanceB);
+                  }
+              
+                  console.log('distance ab', distanceA, distanceB)
+                  return distanceB - distanceA;
+                })
+              }else if(action.payload.category){
+
+              }else{
+
+              }
+
+              console.log("sorted Places: ", newState)
+
+
+
+                  state = Object.assign({}, state, {
+                    nearbyPlaces: newState
+                  });
+              break;
+
 
       default:
       return state

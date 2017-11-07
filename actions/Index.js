@@ -124,13 +124,20 @@ export const getDistance = (origin, destinations) => {
     type: "GET_DISTANCE",
     payload:
       axios.get(query).then( (response) => {
-        console.log('DISTANCE ',response);
         return {
           'data': response.data.rows[0].elements
-          // 'distance': response.data.rows[0].elements[0].distance.text,
-          // 'duration': response.data.rows[0].elements[0].duration.text,
-          // 'destination': destination
         }
       })
   }
+};
+
+export const sortResults = (distanceAsc, distanceDesc, category) => {
+  return {
+    type: "SORT_RESULTS",
+    payload: {
+        distanceAsc: distanceAsc,
+        distanceDesc: distanceDesc,
+        category: category
+    }
+    }
 };

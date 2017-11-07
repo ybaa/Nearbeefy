@@ -91,7 +91,7 @@ constructor(props){
                color="#fff"
                backgroundColor="#e57373"
                borderRadius={3}
-               buttonStyle = {style.logInButton}
+               buttonStyle = {style.closeModalButton}
                icon={{name: 'ios-arrow-back', type: 'ionicon'}}
             />
           </View>
@@ -150,7 +150,7 @@ export default connect(mapStatetoProps,matchDispatchToProps)(ResultsComponent);
 
 
 const style = {
-  logInButton: {
+  closeModalButton: {
     marginTop: 300,
     marginBottom: 10,
     width: 210

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Platform, Text, Image} from 'react-native';
+import { View, Platform, Text, Image, Button} from 'react-native';
 import Expo, { Font} from 'expo';
 import { STATUS_BAR_HEIGHT } from '../constants';
 import icon from '../assets/icons/bigRectangleLogoWithTextTransparent.png';
+import MapViewComponent from '../components/MapViewComponent';
 import { Icon } from 'react-native-elements';
-import firebase from 'firebase'
+import firebase from 'firebase';
+
 
 const cacheImage = images => images.map( (image) => {
     if(typeof image === 'string')
@@ -13,19 +15,36 @@ const cacheImage = images => images.map( (image) => {
       return Expo.Asset.fromModule(image).downloadAsync();
 });
 
-class FavouritesScreen extends Component {
+class MapViewScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        appIsReady: false,
+        fontLoaded: false
+      };
+  };
+
+  async componentDidMount() {
+      await Font.loadAsync({
+        'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
+      });
+      this.setState({ fontLoaded: true});
+    }
+
+  componentWillMound() {
+    this._loadAssetsAsync();
+  }
+
+  async _loadAssetsAsync() {
+    const imagesAssets = cacheImage([icon]);
+    await Promise.all([...imagesAssets]);
+    this.setState({
+      appIsReady: true
+    })
+  }
 
   static navigationOptions = ( {navigation} ) => ({
-    title: 'Favourites',
-    tabBarLabel: 'Favourites',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-       name='favorite-border'
-       type='material-icons'
-       size= {25}
-        color='#fff'
-      />
-    ),
+    title: 'Map',
     headerStyle: {
       height: Platform.OS === 'android' ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: '#4caf50'
@@ -42,7 +61,8 @@ class FavouritesScreen extends Component {
         color='#fff'
         style = {style.backIconStyle}
         onPress= {() => {
-          navigation.navigate('Main');
+          console.log('navigation', navigation);
+          navigation.navigation.goBack();
         }}
       />
     ),
@@ -76,14 +96,14 @@ class FavouritesScreen extends Component {
     )
   });
 
+
   render() {
     return (
-      <View style={{  flex: 1, backgroundColor: '#eee' }}>
-        <Text>favourites screen</Text>
-      </View>
+      <MapViewComponent/>
     );
   }
 }
+
 
 const style = {
   backIconStyle: {
@@ -112,4 +132,4 @@ const style = {
   }
 }
 
-export default FavouritesScreen;
+export default MapViewScreen;
