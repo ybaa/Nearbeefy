@@ -106,14 +106,13 @@ export default function LocationReducer(state = {
               break;
 
               case 'SORT_RESULTS':
+              newState = [...state.nearbyPlaces];
+
               if(action.payload.distanceAsc){
-                newState = [...state.nearbyPlaces];
                 newState.sort((a, b) => {
                   let distanceA = a.distance;
                   let distanceB = b.distance;
 
-                  // w skrocie to mam liczby w formie '10 m' lub '0.1 km' wiec zamieniam wszystko
-                  // na metry i biore sama liczbe
                   let isDistanceAInKilometers = distanceA.match(/km/g);
                   if(isDistanceAInKilometers !== null){
                     distanceA = distanceA.match(/\d+(\.\d+)?/g);
@@ -136,13 +135,10 @@ export default function LocationReducer(state = {
                   return distanceA - distanceB;
                 })
               }else if(action.payload.distanceDesc){
-                newState = [...state.nearbyPlaces];
                 newState.sort((a, b) => {
                   let distanceA = a.distance;
                   let distanceB = b.distance;
 
-                  // w skrocie to mam liczby w formie '10 m' lub '0.1 km' wiec zamieniam wszystko
-                  // na metry i biore sama liczbe
                   let isDistanceAInKilometers = distanceA.match(/km/g);
                   if(isDistanceAInKilometers !== null){
                     distanceA = distanceA.match(/\d+(\.\d+)?/g);
@@ -160,23 +156,27 @@ export default function LocationReducer(state = {
                     distanceB = distanceB.match(/\d+(\.\d+)?/g);
                     distanceB = parseInt(distanceB);
                   }
-              
+
                   console.log('distance ab', distanceA, distanceB)
                   return distanceB - distanceA;
                 })
               }else if(action.payload.category){
+                newState.sort((a, b) => {
+                  let typeA = a.types[0];
+                  let typeB = b.types[0];
+                  if(typeA < typeB){
+                    return -1;
+                  } else if( typeA > typeB){
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+              })
+            }
 
-              }else{
-
-              }
-
-              console.log("sorted Places: ", newState)
-
-
-
-                  state = Object.assign({}, state, {
-                    nearbyPlaces: newState
-                  });
+              state = Object.assign({}, state, {
+                nearbyPlaces: newState
+              });
               break;
 
 
