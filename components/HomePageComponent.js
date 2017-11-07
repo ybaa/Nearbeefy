@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Dimensions, StyleSheet, Platform} from 'react-native';
-import {Text, Button, Slider, SearchBar, Icon } from 'react-native-elements';
+import {View, Dimensions, StyleSheet, Platform, Modal, ScrollView} from 'react-native';
+import {Text, Button, Slider, SearchBar, Icon, CheckBox } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {updateLocationCoords,
@@ -10,6 +10,7 @@ import {updateLocationCoords,
 } from '../actions/Index';
 import { Constants, Location, Permissions } from 'expo';
 import { NavigationActions } from 'react-navigation';
+import categories from '../constants/categories'
 
 const SCREE_WIDTH = Dimensions.get('window').width;
 
@@ -20,7 +21,8 @@ class HomePageComponent extends Component {
       distancePrecision: 100,
       typedAddress: '',
       location: null,
-      errorMessage: null
+      errorMessage: null,
+      modalVisible: false
     };
   };
 
@@ -46,8 +48,50 @@ class HomePageComponent extends Component {
  };
 
   render() {
+    let categoriesCheckBoxes = categories.map( (current) => {
+      return  <CheckBox
+         title={current}
+         checked={false}
+         fontFamily = 'Quicksand-Light'
+         textStyle={{fontWeight: '100'}}
+         onPress = { () => {
+          console.log('nothing to do');
+         }}
+       />
+    })
+
+
     return (
       <View style={ style.mainCardStyle }>
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => { this.setState({modalVisible:false})}}
+        >
+           <ScrollView style={ style.modalStyle }>
+             <View style={ style.modalContentStyle }>
+                  <Text style = {style.modalTitle}> Sort </Text>
+                  <View style = {style.checkboxesStyle}>
+                    {categoriesCheckBoxes}
+                  </View>
+                 <Button
+                   onPress={()=>{
+                     this.setState({
+                       modalVisible: false
+                     });
+                   }}
+                   title="Accept and close"
+                   fontFamily="Quicksand-Light"
+                   color="#000"
+                   backgroundColor="#ffee58"
+                   borderRadius={3}
+                   buttonStyle = {style.acceptButton}
+                   icon={{name: 'ios-arrow-back', type: 'ionicon', color:'#000'}}
+                />
+             </View>
+           </ScrollView>
+        </Modal>
         <View style={ style.searchBarAndIcon }>
           <View style= {{flex:4}}>
             <SearchBar
@@ -100,11 +144,29 @@ class HomePageComponent extends Component {
             })
           }}
         />
-        <Text
-          style={style.radiusValue}
-        >
-          Search in radius: {this.state.distancePrecision} m
-        </Text>
+          <View style={ style.searchBarAndIcon }>
+              <View style= {{flex:4}}>
+                <Text
+                  style={style.radiusValue}
+                >
+                  Search in radius: {this.state.distancePrecision} m
+                </Text>
+              </View>
+              <View style={{flex: 1}}>
+                <Icon
+                  name='filter'
+                  type='material-community'
+                  size= {20}
+                  color='#000'
+                  onPress = { () => {
+                    this.setState({
+                      modalVisible: true
+                    });
+                  }}
+                />
+              </View>
+          </View>
+
         <Button
           onPress={()=>{
             let promise = new Promise( (resolve) => {
@@ -198,11 +260,44 @@ const style = StyleSheet.create({
     borderWidth: 1
   },
   radiusValue: {
-    fontFamily:"Quicksand-Light"
+    fontFamily:"Quicksand-Light",
+    marginTop: 3
   },
   getPlacesButton: {
     marginTop: 15,
     marginLeft: 0,
     paddingLeft: 0
+  },
+  modalStyle: {
+    flex:1,
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  modalContentStyle: {
+    flex:1,
+    marginTop:25,
+    marginBottom: 25,
+    marginLeft: 25,
+    marginRight: 25,
+    backgroundColor: '#fff',
+
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontFamily: 'Quicksand-Light',
+    fontSize: 20,
+    marginTop: 25,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'center'
+  },
+  checkboxesStyle: {
+    marginLeft: 10,
+    marginRight: 10,
+    width:240
+  },
+  acceptButton: {
+    marginTop: 20,
+    width: 210
   }
 });
