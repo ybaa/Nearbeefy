@@ -1,13 +1,13 @@
-export default function UserConfigReducer(state = {
-                                                  username: ''
-                                                },
-                                                action) {
-
+export default function UserConfigReducer(
+  state = {
+    username: ""
+  },
+  action
+) {
   switch (action.type) {
-  
-      default:
-      return state
+    default:
+      return state;
   }
 
-  return state
+  return state;
 }

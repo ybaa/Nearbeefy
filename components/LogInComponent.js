@@ -1,20 +1,19 @@
-import React, {Component} from 'react';
-import {View, Dimensions, StyleSheet, Image, TextInput} from 'react-native';
-import {Text, Button} from 'react-native-elements';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import firebase from 'firebase';
-import {StackNavigator, NavigationActions } from 'react-navigation';
+import React, { Component } from "react";
+import { View, Dimensions, StyleSheet, Image, TextInput } from "react-native";
+import { Text, Button } from "react-native-elements";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import firebase from "firebase";
+import { StackNavigator, NavigationActions } from "react-navigation";
 
-const SCREE_WIDTH = Dimensions.get('window').width;
-
+const SCREE_WIDTH = Dimensions.get("window").width;
 
 class LogInComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: ''
+      email: "",
+      password: ""
     };
   }
 
@@ -23,89 +22,100 @@ class LogInComponent extends Component {
       <View style={style.mainView}>
         <Image
           style={style.bigLogo}
-          source={require('../assets/icons/bigRectangleLogoWithTextTransparent.png')}
+          source={require("../assets/icons/bigRectangleLogoWithTextTransparent.png")}
         />
-        <TextInput style={style.inputStyle}
-          placeholder = "email"
-          onChangeText = {(email) => {this.setState({ email: email})}}
-          placeholderTextColor = '#fff'
+        <TextInput
+          style={style.inputStyle}
+          placeholder="email"
+          onChangeText={email => {
+            this.setState({ email: email });
+          }}
+          placeholderTextColor="#fff"
         />
-        <TextInput style={style.inputStyle}
-          placeholder = "password"
-          onChangeText = {(password) => {this.setState({ password: password})}}
-          placeholderTextColor = '#fff'
-          secureTextEntry = {true}
+        <TextInput
+          style={style.inputStyle}
+          placeholder="password"
+          onChangeText={password => {
+            this.setState({ password: password });
+          }}
+          placeholderTextColor="#fff"
+          secureTextEntry={true}
         />
         <Button
-          onPress={()=>{
-            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
-              if(user && user.emailVerified){
-                const resetAction = NavigationActions.reset({
-                  index: 0,
-                  actions: [
-                    NavigationActions.navigate({ routeName: 'Main'})
-                  ]
-                })
-                this.props.navi.dispatch(resetAction)
-              }else{
-                alert("You have to verify your email first");
-              }
-            }).catch(function(error) {
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              if (errorCode === 'auth/wrong-password') {
-                alert('Wrong password.');
-              } else {
-                alert(errorMessage);
-              }
-            });
+          onPress={() => {
+            firebase
+              .auth()
+              .signInWithEmailAndPassword(this.state.email, this.state.password)
+              .then(user => {
+                if (user && user.emailVerified) {
+                  const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: "Main" })]
+                  });
+                  this.props.navi.dispatch(resetAction);
+                } else {
+                  alert("You have to verify your email first");
+                }
+              })
+              .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode === "auth/wrong-password") {
+                  alert("Wrong password.");
+                } else {
+                  alert(errorMessage);
+                }
+              });
           }}
-            title="Log in"
-            fontFamily="Quicksand-Light"
-            color="#000"
-            backgroundColor="#ffee58"
-            buttonStyle = {style.logInButton}
-            icon={{name: 'login', type: 'simple-line-icon', color: '#000'}}
-            borderRadius={3}
-          />
+          title="Log in"
+          fontFamily="Quicksand-Light"
+          color="#000"
+          backgroundColor="#ffee58"
+          buttonStyle={style.logInButton}
+          icon={{ name: "login", type: "simple-line-icon", color: "#000" }}
+          borderRadius={3}
+        />
 
-          <Text style={style.goToRegistrationText}>  Do not have any account yet? </Text>
-          <Button
-            onPress={()=>{
-              const navigateAction = NavigationActions.navigate({routeName:'Register'});
-              this.props.navi.dispatch(navigateAction)
-            }}
-              title="Click here to register"
-              fontFamily="Quicksand-Light"
-              color="#fff"
-              backgroundColor="#2979ff"
-              borderRadius={3}
-              buttonStyle = {style.logInButton}
-              icon={{name: 'user-follow', type: 'simple-line-icon'}}
-            />
+        <Text style={style.goToRegistrationText}>
+          {" "}
+          Do not have any account yet?{" "}
+        </Text>
+        <Button
+          onPress={() => {
+            const navigateAction = NavigationActions.navigate({
+              routeName: "Register"
+            });
+            this.props.navi.dispatch(navigateAction);
+          }}
+          title="Click here to register"
+          fontFamily="Quicksand-Light"
+          color="#fff"
+          backgroundColor="#2979ff"
+          borderRadius={3}
+          buttonStyle={style.logInButton}
+          icon={{ name: "user-follow", type: "simple-line-icon" }}
+        />
       </View>
     );
   }
 }
 
-function mapStatetoProps(state){
-    return{
-    };
+function mapStatetoProps(state) {
+  return {};
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators ( {
-    },dispatch)
+  return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStatetoProps,matchDispatchToProps)(LogInComponent);
+export default connect(mapStatetoProps, matchDispatchToProps)(LogInComponent);
 
 const style = StyleSheet.create({
   mainView: {
-    flex:1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: '#4caf50'
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#4caf50"
   },
   bigLogo: {
     width: 250,
@@ -117,8 +127,8 @@ const style = StyleSheet.create({
   inputStyle: {
     width: 210,
     height: 50,
-    color: '#fff',
-    fontFamily: 'Quicksand-Light'
+    color: "#fff",
+    fontFamily: "Quicksand-Light"
   },
   logInButton: {
     marginTop: 10,
@@ -126,8 +136,8 @@ const style = StyleSheet.create({
     width: 210
   },
   goToRegistrationText: {
-    color: '#fff',
-    marginTop:15,
+    color: "#fff",
+    marginTop: 15,
     marginBottom: 5
   }
 });
