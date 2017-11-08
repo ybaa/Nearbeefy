@@ -23,7 +23,8 @@ class HomePageComponent extends Component {
       location: null,
       errorMessage: null,
       modalVisible: false,
-      categoriesState: categories
+      categoriesState: categories,
+      categoryToSearch: null
     };
   };
 
@@ -56,17 +57,22 @@ class HomePageComponent extends Component {
          fontFamily = 'Quicksand-Light'
          textStyle={{fontWeight: '100'}}
          onPress = { () => {
-          console.log('nothing to do', this.state.categoriesState);
           let newState = this.state.categoriesState.map( category => {
             if(category.name === current.name){
+              this.setState({
+                categoryToSearch: current.name
+              })
               return {
                 name: current.name,
                 checked: !current.checked
               }
             }
             else{
-            return category;
-          }
+              return{
+                name: category.name,
+                checked: false
+              }
+            }
         });
         this.setState({
           categoriesState: newState
@@ -86,7 +92,7 @@ class HomePageComponent extends Component {
         >
            <ScrollView style={ style.modalStyle }>
              <View style={ style.modalContentStyle }>
-                  <Text style = {style.modalTitle}> Sort </Text>
+                  <Text style = {style.modalTitle}> Choose type:  </Text>
                   <View style = {style.checkboxesStyle}>
                     {categoriesCheckBoxes}
                   </View>
