@@ -1,92 +1,272 @@
 [
-  "accounting",
-  "airport",
-  "amusement_park",
-  "aquarium",
-  "art_gallery",
-  "atm",
-  "bakery",
-  "bank",
-  "bar",
-  "beauty_salon",
-  "bicycle_store",
-  "book_store",
-  "bowling_alley",
-  "bus_station",
-  "cafe",
-  "campground",
-  "car_dealer",
-  "car_rental",
-  "car_repair",
-  "car_wash",
-  "casino",
-  "cemetery",
-  "church",
-  "city_hall",
-  "clothing_store",
-  "convenience_store",
-  "courthouse",
-  "dentist",
-  "department_store",
-  "doctor",
-  "electrician",
-  "electronics_store",
-  "embassy",
-  "fire_station",
-  "florist",
-  "funeral_home",
-  "furniture_store",
-  "gas_station",
-  "gym",
-  "hair_care",
-  "hardware_store",
-  "hindu_temple",
-  "home_goods_store",
-  "hospital",
-  "insurance_agency",
-  "jewelry_store",
-  "laundry",
-  "lawyer",
-  "library",
-  "liquor_store",
-  "local_government_office",
-  "locksmith",
-  "lodging",
-  "meal_delivery",
-  "meal_takeaway",
-  "mosque",
-  "movie_rental",
-  "movie_theater",
-  "moving_company",
-  "museum",
-  "night_club",
-  "painter",
-  "park",
-  "parking",
-  "pet_store",
-  "pharmacy",
-  "physiotherapist",
-  "plumber",
-  "police",
-  "post_office",
-  "real_estate_agency",
-  "restaurant",
-  "roofing_contractor",
-  "rv_park",
-  "school",
-  "shoe_store",
-  "shopping_mall",
-  "spa",
-  "stadium",
-  "storage",
-  "store",
-  "subway_station",
-  "synagogue",
-  "taxi_stand",
-  "train_station",
-  "transit_station",
-  "travel_agency",
-  "university",
-  "veterinary_care",
-  "zoo"
+  {"name": "accounting",
+   "checked": false
+  },
+  {"name": "airport",
+   "checked": false
+  },
+  {"name": "amusement_park",
+   "checked": false
+  },
+  {"name": "aquarium",
+   "checked": false
+  },
+  {"name": "art_gallery",
+   "checked": false
+  },
+  {"name": "atm",
+   "checked": false
+  },
+  {"name": "bakery",
+   "checked": false
+  },
+  {"name": "bank",
+   "checked": false
+  },
+  {"name": "bar",
+   "checked": false
+  },
+  {"name": "beauty_salon",
+   "checked": false
+  },
+  {"name": "bicycle_store",
+   "checked": false
+  },
+  {"name": "book_store",
+   "checked": false
+  },
+  {"name": "bowling_alley",
+   "checked": false
+  },
+  {"name": "bus_station",
+   "checked": false
+  },
+  {"name": "cafe",
+   "checked": false
+  },
+  {"name": "campground",
+   "checked": false
+  },
+  {"name": "car_dealer",
+   "checked": false
+  },
+  {"name": "car_rental",
+   "checked": false
+  },
+  {"name": "car_repair",
+   "checked": false
+  },
+  {"name": "car_wash",
+   "checked": false
+  },
+  {"name": "casino",
+   "checked": false
+  },
+  {"name": "cemetery",
+   "checked": false
+  },
+  {"name": "church",
+   "checked": false
+  },
+  {"name": "city_hall",
+   "checked": false
+  },
+  {"name": "clothing_store",
+   "checked": false
+  },
+  {"name": "convenience_store",
+   "checked": false
+  },
+  {"name": "courthouse",
+   "checked": false
+  },
+  {"name": "dentist",
+   "checked": false
+  },
+  {"name": "department_store",
+   "checked": false
+  },
+  {"name": "doctor",
+   "checked": false
+  },
+  {"name": "electrician",
+   "checked": false
+  },
+  {"name": "electronics_store",
+   "checked": false
+  },
+  {"name": "embassy",
+   "checked": false
+  },
+  {"name": "fire_station",
+   "checked": false
+  },
+  {"name": "florist",
+   "checked": false
+  },
+  {"name": "funeral_home",
+   "checked": false
+  },
+  {"name": "furniture_store",
+   "checked": false
+  },
+  {"name": "gas_station",
+   "checked": false
+  },
+  {"name": "gym",
+   "checked": false
+  },
+  {"name": "hair_care",
+   "checked": false
+  },
+  {"name": "hardware_store",
+   "checked": false
+  },
+  {"name": "hindu_temple",
+   "checked": false
+  },
+  {"name": "home_goods_store",
+   "checked": false
+  },
+  {"name": "hospital",
+   "checked": false
+  },
+  {"name": "insurance_agency",
+   "checked": false
+  },
+  {"name": "jewelry_store",
+   "checked": false
+  },
+  {"name": "laundry",
+   "checked": false
+  },
+  {"name": "lawyer",
+   "checked": false
+  },
+  {"name": "library",
+   "checked": false
+  },
+  {"name": "liquor_store",
+   "checked": false
+  },
+  {"name": "local_government_office",
+   "checked": false
+  },
+  {"name": "locksmith",
+   "checked": false
+  },
+  {"name": "lodging",
+   "checked": false
+  },
+  {"name": "meal_delivery",
+   "checked": false
+  },
+  {"name": "meal_takeaway",
+   "checked": false
+  },
+  {"name": "mosque",
+   "checked": false
+  },
+  {"name": "movie_rental",
+   "checked": false
+  },
+  {"name": "movie_theater",
+   "checked": false
+  },
+  {"name": "moving_company",
+   "checked": false
+  },
+  {"name": "museum",
+   "checked": false
+  },
+  {"name": "night_club",
+   "checked": false
+  },
+  {"name": "painter",
+   "checked": false
+  },
+  {"name": "park",
+   "checked": false
+  },
+  {"name": "parking",
+   "checked": false
+  },
+  {"name": "pet_store",
+   "checked": false
+  },
+  {"name": "pharmacy",
+   "checked": false
+  },
+  {"name": "physiotherapist",
+   "checked": false
+  },
+  {"name": "plumber",
+   "checked": false
+  },
+  {"name": "police",
+   "checked": false
+  },
+  {"name": "post_office",
+   "checked": false
+  },
+  {"name": "real_estate_agency",
+   "checked": false
+  },
+  {"name": "restaurant",
+   "checked": false
+  },
+  {"name": "roofing_contractor",
+   "checked": false
+  },
+  {"name": "rv_park",
+   "checked": false
+  },
+  {"name": "school",
+   "checked": false
+  },
+  {"name": "shoe_store",
+   "checked": false
+  },
+  {"name": "shopping_mall",
+   "checked": false
+  },
+  {"name": "spa",
+   "checked": false
+  },
+  {"name": "stadium",
+   "checked": false
+  },
+  {"name": "storage",
+   "checked": false
+  },
+  {"name": "store",
+   "checked": false
+  },
+  {"name": "subway_station",
+   "checked": false
+  },
+  {"name": "synagogue",
+   "checked": false
+  },
+  {"name": "taxi_stand",
+   "checked": false
+  },
+  {"name": "train_station",
+   "checked": false
+  },
+  {"name": "transit_station",
+   "checked": false
+  },
+  {"name": "travel_agency",
+   "checked": false
+  },
+  {"name": "university",
+   "checked": false
+  },
+  {"name": "veterinary_care",
+   "checked": false
+  },
+  {"name": "zoo",
+   "checked": false
+  }
 ]

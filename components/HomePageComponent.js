@@ -22,7 +22,8 @@ class HomePageComponent extends Component {
       typedAddress: '',
       location: null,
       errorMessage: null,
-      modalVisible: false
+      modalVisible: false,
+      categoriesState: categories
     };
   };
 
@@ -48,14 +49,28 @@ class HomePageComponent extends Component {
  };
 
   render() {
-    let categoriesCheckBoxes = categories.map( (current) => {
+    let categoriesCheckBoxes = this.state.categoriesState.map( (current) => {
       return  <CheckBox
-         title={current}
-         checked={false}
+         title={current.name}
+         checked={current.checked}
          fontFamily = 'Quicksand-Light'
          textStyle={{fontWeight: '100'}}
          onPress = { () => {
-          console.log('nothing to do');
+          console.log('nothing to do', this.state.categoriesState);
+          let newState = this.state.categoriesState.map( category => {
+            if(category.name === current.name){
+              return {
+                name: current.name,
+                checked: !current.checked
+              }
+            }
+            else{
+            return category;
+          }
+        });
+        this.setState({
+          categoriesState: newState
+        })
          }}
        />
     })
@@ -298,6 +313,7 @@ const style = StyleSheet.create({
   },
   acceptButton: {
     marginTop: 20,
-    width: 210
+    width: 210,
+    marginBottom: 20
   }
 });
