@@ -76,13 +76,11 @@ class ResultsScreen extends Component {
             color="#fff"
             style={style.headerRightIconUser}
             onPress={() => {
-              firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                  navigation.navigate("Profile");
-                } else {
-                  navigation.navigate("LogIn");
-                }
-              });
+              if(firebase.auth().currentUser !== null){
+                navigation.navigate("Profile");
+              } else {
+                navigation.navigate("LogIn");
+              }
             }}
           />
 
@@ -138,8 +136,7 @@ class ResultsScreen extends Component {
                     textStyle={{ fontWeight: "100" }}
                     onPress={() => {
                       this.setState({
-                        sortDistanceAscending: !this.state
-                          .sortDistanceAscending,
+                        sortDistanceAscending: !this.state.sortDistanceAscending,
                         sortDistanceDescending: false,
                         sortByCategory: false
                       });
@@ -153,8 +150,7 @@ class ResultsScreen extends Component {
                     onPress={() => {
                       this.setState({
                         sortDistanceAscending: false,
-                        sortDistanceDescending: !this.state
-                          .sortDistanceDescending,
+                        sortDistanceDescending: !this.state.sortDistanceDescending,
                         sortByCategory: false
                       });
                     }}

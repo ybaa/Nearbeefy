@@ -27,12 +27,23 @@ import { API_KEY } from "../constants/index";
 import MapView from "react-native-maps";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
+import firebase from 'firebase';
+
+function addAddressToFavourites(email, address) {
+  firebase.database().ref('users/').set({
+      email: email,
+      favourites: [
+        address, address
+      ]
+  });
+}
 
 class ResultsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       distancesDownloaded: false,
+      iconColor: 'black',
       modalVisible: false,
       modalContent: <View />,
       loadingCircle: (
@@ -45,6 +56,8 @@ class ResultsComponent extends Component {
   }
 
   render() {
+    var database = firebase.database();
+
     if (this.props.showMore) {
       this.props.getPlacesNearbyNextPage(this.props.pageToken);
     } else {
@@ -128,10 +141,45 @@ class ResultsComponent extends Component {
       );
     });
 
+
     return (
       <View>
-        <Text style={style.address}>{this.props.address}</Text>
-        {this.state.loadingCircle}
+        <View style={style.addressStyle}>
+          <View style ={{flex:8}}>
+            <Text style={style.address}>{this.props.address}</Text>
+          </View>
+          <View style={{flex:1}}>
+            <Icon
+              name="star-outline"
+              type="material-community"
+              style = {style.starStyle}
+              size={32}
+              color={this.state.iconColor}
+              border = 'black'
+              onPress={() => {
+                if(firebase.auth().currentUser !== null){
+                  if(this.state.iconColor === '#fbc02d'){
+                    this.setState({
+                      iconColor: 'black'
+                    })
+                  }
+                  else{
+                    addAddressToFavourites(firebase.auth().currentUser.email, this.props.address);
+                    this.setState({
+                      iconColor: '#fbc02d'
+                    })
+                  }
+                } else {
+                  alert("You have to be signed in to add an address to favourites");
+                }
+
+              }}
+            />
+          </View>
+        </View>
+        <View style={style.loadingCircleStyle}>
+          {this.state.loadingCircle}
+        </View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -177,6 +225,18 @@ function matchDispatchToProps(dispatch) {
 export default connect(mapStatetoProps, matchDispatchToProps)(ResultsComponent);
 
 const style = {
+  addressStyle: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    marginRight: 10,
+    marginLeft: 10
+  },
+  starStyle: {
+    paddingTop: 5
+  },
+  loadingCircleStyle: {
+    marginLeft:10
+  },
   closeModalButton: {
     marginTop: 300,
     marginBottom: 10,

@@ -74,8 +74,7 @@ class ProfileScreen extends Component {
     )
   });
 
-  render() {
-    console.log("results screen");
+  render() {      
     return (
       <View style={{ flex: 1, backgroundColor: "#ddd" }}>
         {this.state.fontLoaded ? (

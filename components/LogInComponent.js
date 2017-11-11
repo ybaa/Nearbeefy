@@ -32,7 +32,7 @@ class LogInComponent extends Component {
           }}
           placeholderTextColor="#fff"
         />
-        <TextInput
+        <TextInput          
           style={style.inputStyle}
           placeholder="password"
           onChangeText={password => {

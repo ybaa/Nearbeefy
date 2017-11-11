@@ -6,6 +6,8 @@ import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import HomePageComponent from "../components/HomePageComponent";
 import { Icon } from "react-native-elements";
 import firebase from "firebase";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 const cacheImage = images =>
   images.map(image => {
@@ -72,13 +74,11 @@ class MainScreen extends Component {
           color="#fff"
           style={style.headerRightIconUser}
           onPress={() => {
-            firebase.auth().onAuthStateChanged(user => {
-              if (user) {
-                navigation.navigate("Profile");
-              } else {
-                navigation.navigate("LogIn");
-              }
-            });
+            if(firebase.auth().currentUser !== null){
+              navigation.navigate("Profile");
+            } else {
+              navigation.navigate("LogIn");
+            }
           }}
         />
         <Icon
@@ -129,4 +129,19 @@ const style = {
   }
 };
 
-export default MainScreen;
+function mapStatetoProps(state) {
+  return {
+    navigateToMainScreen: state.UserConfigReducer.navigateToMainScreen
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStatetoProps, matchDispatchToProps)(MainScreen);

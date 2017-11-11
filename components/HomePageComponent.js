@@ -52,6 +52,7 @@ class HomePageComponent extends Component {
     } else {
       this._getLocationAsync();
     }
+  
   }
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -66,6 +67,8 @@ class HomePageComponent extends Component {
   };
 
   render() {
+
+
     let categoriesCheckBoxes = this.state.categoriesState.map(current => {
       return (
         <CheckBox
@@ -258,7 +261,8 @@ function mapStatetoProps(state) {
     address: state.LocationReducer.address,
     coords: state.LocationReducer.coords,
     showMore: state.LocationReducer.showMore,
-    pageToken: state.LocationReducer.pageToken
+    pageToken: state.LocationReducer.pageToken,
+    navigateToMainScreen: state.UserConfigReducer.navigateToMainScreen
   };
 }
 
@@ -274,9 +278,7 @@ function matchDispatchToProps(dispatch) {
   );
 }
 
-export default connect(mapStatetoProps, matchDispatchToProps)(
-  HomePageComponent
-);
+export default connect(mapStatetoProps, matchDispatchToProps)(HomePageComponent);
 
 const style = StyleSheet.create({
   mainCardStyle: {

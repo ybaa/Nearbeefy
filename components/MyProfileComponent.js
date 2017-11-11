@@ -16,6 +16,7 @@ import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
 import firebase from "firebase";
+import { NavigationActions } from "react-navigation";
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -28,18 +29,18 @@ class MyProfileComponent extends Component {
         </Text>
         <Button
           onPress={() => {
-            firebase
-              .auth()
-              .signOut()
-              .then(function() {
+            console.log("popsuo sie");
+            firebase.auth().signOut().then( (resp) => {
+                console.log('popsulo sie 2', resp)
                 const resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [NavigationActions.navigate({ routeName: "Main" })]
                 });
+
                 this.props.navi.dispatch(resetAction);
               })
-              .catch(function(error) {
-                // An error happened.
+              .catch( (error) => {
+                console.log("ERROR:", error);
               });
           }}
           title="sign out"
@@ -70,6 +71,4 @@ function matchDispatchToProps(dispatch) {
   );
 }
 
-export default connect(mapStatetoProps, matchDispatchToProps)(
-  MyProfileComponent
-);
+export default connect(mapStatetoProps, matchDispatchToProps)(MyProfileComponent);

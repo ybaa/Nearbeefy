@@ -2,7 +2,6 @@ import { NavigationActions } from "react-navigation";
 import MainNavigator from "../routes/routes";
 import { StackNavigator } from "react-navigation";
 
-console.log("reducer");
 const initialNavState = MainNavigator.router.getStateForAction(
   NavigationActions.reset({
     index: 0,

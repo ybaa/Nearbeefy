@@ -74,13 +74,11 @@ class MapViewScreen extends Component {
           color="#fff"
           style={style.headerRightIconUser}
           onPress={() => {
-            firebase.auth().onAuthStateChanged(user => {
-              if (user) {
-                navigation.navigate("Profile");
-              } else {
-                navigation.navigate("LogIn");
-              }
-            });
+            if(firebase.auth().currentUser !== null){
+              navigation.navigate("Profile");
+            } else {
+              navigation.navigate("LogIn");
+            }
           }}
         />
         <Icon
