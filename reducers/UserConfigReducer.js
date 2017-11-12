@@ -23,12 +23,8 @@ export default function UserConfigReducer(
         break;
 
       case "ADD_FAVOURITE":
-      let newaFav = state.favourites.map( (current) => {
-        return current;
-      })
-      newaFav.push(action.payload.fav);
         state = Object.assign({}, state, {
-          favourites: newaFav
+          favourites: action.payload
         });
         break;
 

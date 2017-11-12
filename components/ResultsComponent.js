@@ -29,17 +29,6 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
 import firebase from 'firebase';
 
-function addAddressToFavourites(user, address, uid) {
-  let favs = user.favourites;
-  favs.push(address);
-  return new Promise( resolve => {
-    resolve(firebase.database().ref().child('users').child(uid).set({
-      email: user.email,
-      favourites: favs,
-      lastSearched: user.lastSearched
-    }))
-  });
- }
 
 class ResultsComponent extends Component {
   constructor(props) {
@@ -174,20 +163,17 @@ class ResultsComponent extends Component {
               onPress={() => {
                 if(firebase.auth().currentUser !== null){
                   if(this.state.iconColor === '#fbc02d'){
+                    //removeFromFavourites
                     this.setState({
                       iconColor: 'black'
                     })
                   }
                   else{
-
-                    //this.props.addFavourite(this.props.address);
-                    addAddressToFavourites(this.props.userData, this.props.address, firebase.auth().currentUser.uid).then( () => {
+                    this.props.addFavourite(firebase.auth().currentUser.uid, this.props.address, this.props.userData).then( () => {
                       this.setState({
-                        iconColor: '#fbc02d'
-                      });
-                      this.props.addFavourite(this.props.address);
+                         iconColor: '#fbc02d'
+                       });
                     })
-
                   }
                 } else {
                   alert("You have to be signed in to add an address to favourites");

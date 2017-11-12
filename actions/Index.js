@@ -158,12 +158,23 @@ export const setUserId = (id) => {
   };
 };
 
-export const addFavourite = (fav) => {
+export const addFavourite = (uid, address, userData) => {
+  let favs = userData.favourites;
+  favs.push(address);
+  let promise = new Promise( resolve => {
+    resolve(firebase.database().ref().child('users').child(uid).set({
+      email: userData.email,
+      favourites: favs,
+      lastSearched: userData.lastSearched
+    }))
+  });
+
+
   return {
     type: "ADD_FAVOURITE",
-    payload: {
-      fav: fav
-    }
+    payload: promise.then( () => {
+      return favs
+    })
   };
 };
 
@@ -177,7 +188,7 @@ export const setInitialDataFetched = (fetched) => {
 };
 
 
-export const setUserData = (userId) => {  
+export const setUserData = (userId) => {
   let promise = new Promise( resolve => {
     resolve( firebase.database().ref().child('users').child(userId).once('value') )
   });
