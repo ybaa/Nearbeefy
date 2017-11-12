@@ -21,11 +21,15 @@ import {
   updateLocationCoords,
   reverseCoordsEncoding,
   encodeAddress,
-  getPlacesNearby
+  getPlacesNearby,
+  setEmail,
+  setUserData,
+  setInitialDataFetched
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
 import categories from "../constants/categories";
+import firebase from 'firebase';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -52,7 +56,9 @@ class HomePageComponent extends Component {
     } else {
       this._getLocationAsync();
     }
-  
+
+
+
   }
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -67,7 +73,12 @@ class HomePageComponent extends Component {
   };
 
   render() {
-
+    if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
+      let user = firebase.auth().currentUser;
+      this.props.setUserData(user.uid).then( () => {
+          this.props.setInitialDataFetched(true);
+      })
+    }
 
     let categoriesCheckBoxes = this.state.categoriesState.map(current => {
       return (
@@ -262,7 +273,7 @@ function mapStatetoProps(state) {
     coords: state.LocationReducer.coords,
     showMore: state.LocationReducer.showMore,
     pageToken: state.LocationReducer.pageToken,
-    navigateToMainScreen: state.UserConfigReducer.navigateToMainScreen
+    fetchedInitialData: state.UserConfigReducer.fetchedInitialData
   };
 }
 
@@ -272,7 +283,10 @@ function matchDispatchToProps(dispatch) {
       updateLocationCoords: updateLocationCoords,
       reverseCoordsEncoding: reverseCoordsEncoding,
       encodeAddress: encodeAddress,
-      getPlacesNearby: getPlacesNearby
+      getPlacesNearby: getPlacesNearby,
+      setEmail: setEmail,
+      setUserData: setUserData,
+      setInitialDataFetched: setInitialDataFetched
     },
     dispatch
   );

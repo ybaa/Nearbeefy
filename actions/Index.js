@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_KEY } from '../constants/index';
+import firebase from 'firebase';
 
 export const changeAddress = (address) => {
   return {
@@ -136,5 +137,54 @@ export const sortResults = (distanceAsc, distanceDesc, category) => {
       distanceDesc: distanceDesc,
       category: category
     }
+  };
+};
+
+export const setEmail = (email) => {
+  return {
+    type: "SET_EMAIL",
+    payload: {
+      email: email
+    }
+  };
+};
+
+export const setUserId = (id) => {
+  return {
+    type: "SET_USER_ID",
+    payload: {
+      id: id
+    }
+  };
+};
+
+export const addFavourite = (fav) => {
+  return {
+    type: "ADD_FAVOURITE",
+    payload: {
+      fav: fav
+    }
+  };
+};
+
+export const setInitialDataFetched = (fetched) => {
+  return {
+    type: "SET_INITIAL_DATA_FETCHED",
+    payload: {
+      fetched: fetched
+    }
+  };
+};
+
+
+export const setUserData = (userId) => {  
+  let promise = new Promise( resolve => {
+    resolve( firebase.database().ref().child('users').child(userId).once('value') )
+  });
+  return {
+    type: "SET_USER_DATA",
+    payload: promise.then( (resp) => {
+      return resp.val();
+    } )
   };
 };

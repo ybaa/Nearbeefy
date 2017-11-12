@@ -5,8 +5,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
+import {setEmail, setUserData, setInitialDataFetched} from '../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
+
 
 class LogInComponent extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class LogInComponent extends Component {
           }}
           placeholderTextColor="#fff"
         />
-        <TextInput          
+        <TextInput
           style={style.inputStyle}
           placeholder="password"
           onChangeText={password => {
@@ -48,6 +50,10 @@ class LogInComponent extends Component {
               .signInWithEmailAndPassword(this.state.email, this.state.password)
               .then(user => {
                 if (user && user.emailVerified) {
+                  this.props.setUserData(user.uid).then( () => {
+                      this.props.setInitialDataFetched(true);
+                  })
+
                   const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [NavigationActions.navigate({ routeName: "Main" })]
@@ -105,7 +111,11 @@ function mapStatetoProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators({
+    setEmail: setEmail,
+    setUserData: setUserData,
+    setInitialDataFetched: setInitialDataFetched
+  }, dispatch);
 }
 
 export default connect(mapStatetoProps, matchDispatchToProps)(LogInComponent);

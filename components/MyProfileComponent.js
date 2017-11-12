@@ -11,7 +11,7 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getPlacesNearbyNextPage } from "../actions/Index";
+import { setEmail } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
@@ -29,9 +29,8 @@ class MyProfileComponent extends Component {
         </Text>
         <Button
           onPress={() => {
-            console.log("popsuo sie");
             firebase.auth().signOut().then( (resp) => {
-                console.log('popsulo sie 2', resp)
+                //this.props.setEmail(null);
                 const resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [NavigationActions.navigate({ routeName: "Main" })]
@@ -55,17 +54,13 @@ class MyProfileComponent extends Component {
 
 function mapStatetoProps(state) {
   return {
-    address: state.LocationReducer.address,
-    coords: state.LocationReducer.coords,
-    showMore: state.LocationReducer.showMore,
-    pageToken: state.LocationReducer.pageToken
   };
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      getPlacesNearbyNextPage: getPlacesNearbyNextPage
+      setEmail: setEmail
     },
     dispatch
   );

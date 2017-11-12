@@ -33,8 +33,8 @@ class MainScreen extends Component {
     this.setState({ fontLoaded: true });
   }
 
-  componentWillMound() {
-    this._loadAssetsAsync();
+  componentWillMount() {
+    this._loadAssetsAsync();    
   }
 
   async _loadAssetsAsync() {

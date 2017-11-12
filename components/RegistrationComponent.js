@@ -5,8 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
+import { setUserId } from '../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
+
+function addUserToDatabase(email, postKey){
+  return new Promise(resolve => {
+     let updates = {};
+     updates['/users/' + postKey] = {
+       email: email
+     };
+     resolve(firebase.database().ref().update(updates));
+   })
+ }
 
 class RegistrationComponent extends Component {
   constructor(props) {
@@ -14,7 +25,8 @@ class RegistrationComponent extends Component {
     state = {
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      postKey: ''
     };
   }
 
@@ -74,6 +86,14 @@ class RegistrationComponent extends Component {
                       console.log("email verification sent to user");
                     });
                   }
+
+                  addUserToDatabase(this.state.email, user.uid).then( () => {
+                    //console.log('used added correctly');
+                    //this.props.setUserId(uid);
+                    //console.log('current user', user);
+                  })
+
+
                   const navigateAction = NavigationActions.navigate({
                     routeName: "LogIn"
                   });
@@ -114,7 +134,9 @@ function mapStatetoProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators({
+    setUserId:setUserId
+  }, dispatch);
 }
 
 export default connect(mapStatetoProps, matchDispatchToProps)(

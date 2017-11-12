@@ -20,7 +20,7 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getPlacesNearbyNextPage, getDistance } from "../actions/Index";
+import { getPlacesNearbyNextPage, getDistance, setUserData, addFavourite } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
@@ -29,14 +29,17 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
 import firebase from 'firebase';
 
-function addAddressToFavourites(email, address) {
-  firebase.database().ref('users/').set({
-      email: email,
-      favourites: [
-        address, address
-      ]
+function addAddressToFavourites(user, address, uid) {
+  let favs = user.favourites;
+  favs.push(address);
+  return new Promise( resolve => {
+    resolve(firebase.database().ref().child('users').child(uid).set({
+      email: user.email,
+      favourites: favs,
+      lastSearched: user.lastSearched
+    }))
   });
-}
+ }
 
 class ResultsComponent extends Component {
   constructor(props) {
@@ -53,6 +56,18 @@ class ResultsComponent extends Component {
         </View>
       )
     };
+  }
+
+  componentWillMount() {
+    if(this.props.userData.favourites.length !== 0){
+      this.props.userData.favourites.map( (currentFav) => {
+        if(currentFav === this.props.address){
+          this.setState({
+            iconColor: '#fbc02d'
+          })
+        }
+      })
+    }
   }
 
   render() {
@@ -164,10 +179,15 @@ class ResultsComponent extends Component {
                     })
                   }
                   else{
-                    addAddressToFavourites(firebase.auth().currentUser.email, this.props.address);
-                    this.setState({
-                      iconColor: '#fbc02d'
+
+                    //this.props.addFavourite(this.props.address);
+                    addAddressToFavourites(this.props.userData, this.props.address, firebase.auth().currentUser.uid).then( () => {
+                      this.setState({
+                        iconColor: '#fbc02d'
+                      });
+                      this.props.addFavourite(this.props.address);
                     })
+
                   }
                 } else {
                   alert("You have to be signed in to add an address to favourites");
@@ -208,7 +228,8 @@ function mapStatetoProps(state) {
     coords: state.LocationReducer.coords,
     showMore: state.LocationReducer.showMore,
     pageToken: state.LocationReducer.pageToken,
-    nearbyPlaces: state.LocationReducer.nearbyPlaces
+    nearbyPlaces: state.LocationReducer.nearbyPlaces,
+    userData: state.UserConfigReducer
   };
 }
 
@@ -216,7 +237,9 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       getPlacesNearbyNextPage: getPlacesNearbyNextPage,
-      getDistance: getDistance
+      getDistance: getDistance,
+      setUserData: setUserData,
+      addFavourite: addFavourite
     },
     dispatch
   );
