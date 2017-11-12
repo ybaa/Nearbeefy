@@ -20,7 +20,7 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getPlacesNearbyNextPage, getDistance, setUserData, addFavourite } from "../actions/Index";
+import { getPlacesNearbyNextPage, getDistance, setUserData, addFavourite, removeFavourite } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
@@ -163,9 +163,10 @@ class ResultsComponent extends Component {
               onPress={() => {
                 if(firebase.auth().currentUser !== null){
                   if(this.state.iconColor === '#fbc02d'){
-                    //removeFromFavourites
-                    this.setState({
-                      iconColor: 'black'
+                    this.props.removeFavourite(firebase.auth().currentUser.uid, this.props.address, this.props.userData).then( () => {
+                      this.setState({
+                        iconColor: 'black'
+                      })
                     })
                   }
                   else{
@@ -225,7 +226,8 @@ function matchDispatchToProps(dispatch) {
       getPlacesNearbyNextPage: getPlacesNearbyNextPage,
       getDistance: getDistance,
       setUserData: setUserData,
-      addFavourite: addFavourite
+      addFavourite: addFavourite,
+      removeFavourite: removeFavourite
     },
     dispatch
   );

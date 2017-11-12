@@ -22,7 +22,13 @@ export default function UserConfigReducer(
         });
         break;
 
-      case "ADD_FAVOURITE":
+      case "ADD_FAVOURITE_FULFILLED":
+        state = Object.assign({}, state, {
+          favourites: action.payload
+        });
+        break;
+
+      case "REMOVE_FAVOURITE_FULFILLED":
         state = Object.assign({}, state, {
           favourites: action.payload
         });

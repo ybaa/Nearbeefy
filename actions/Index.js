@@ -169,10 +169,35 @@ export const addFavourite = (uid, address, userData) => {
     }))
   });
 
-
   return {
     type: "ADD_FAVOURITE",
     payload: promise.then( () => {
+      return favs
+    })
+  };
+};
+
+
+
+export const removeFavourite = (uid, address, userData) => {
+  let favs = [];
+  userData.favourites.map( current => {
+    if(current !== address){
+      favs.push(current);
+    }
+  });
+  
+  let removePromise = new Promise( resolve => {
+    resolve(firebase.database().ref().child('users').child(uid).set({
+      email: userData.email,
+      favourites: favs,
+      lastSearched: userData.lastSearched
+    }))
+  });
+
+  return {
+    type: "REMOVE_FAVOURITE",
+    payload: removePromise.then( () => {
       return favs
     })
   };
@@ -186,7 +211,6 @@ export const setInitialDataFetched = (fetched) => {
     }
   };
 };
-
 
 export const setUserData = (userId) => {
   let promise = new Promise( resolve => {
