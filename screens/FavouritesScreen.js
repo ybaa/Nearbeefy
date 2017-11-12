@@ -5,15 +5,41 @@ import { STATUS_BAR_HEIGHT } from "../constants";
 import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import { Icon } from "react-native-elements";
 import firebase from "firebase";
+import FavouritesComponent from '../components/FavouritesComponent'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { setUserData, setInitialDataFetched } from '../actions/Index';
 
-const cacheImage = images =>
-  images.map(image => {
-    if (typeof image === "string") return Image.prefetch(image);
-
-    return Expo.Asset.fromModule(image).downloadAsync();
-  });
 
 class FavouritesScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fontLoaded: false
+    };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      "Quicksand-Light": require("../assets/fonts/Quicksand-Light.ttf"),
+      "Quicksand-Regular": require("../assets/fonts/Quicksand-Regular.ttf")
+    });
+    this.setState({ fontLoaded: true });
+  }
+
+  componentWillMount() {
+    this._loadAssetsAsync();
+  }
+
+  async _loadAssetsAsync() {
+    const imagesAssets = cacheImage([icon]);
+    await Promise.all([...imagesAssets]);
+    this.setState({
+      appIsReady: true
+    });
+  }
+
+
   static navigationOptions = ({ navigation }) => ({
     title: "Favourites",
     tabBarLabel: "Favourites",
@@ -73,13 +99,41 @@ class FavouritesScreen extends Component {
   });
 
   render() {
+
+
     return (
+
       <View style={{ flex: 1, backgroundColor: "#eee" }}>
-        <Text>favourites screen</Text>
+        {this.state.fontLoaded ? (
+          <FavouritesComponent
+            navi={this.props.navigation}
+          />
+        ) : null}
       </View>
     );
+
+
+
   }
 }
+
+function mapStatetoProps(state) {
+  return {
+    fetchedInitialData: state.UserConfigReducer.fetchedInitialData
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      setUserData: setUserData,
+      setInitialDataFetched: setInitialDataFetched
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStatetoProps, matchDispatchToProps)(FavouritesScreen);
 
 const style = {
   backIconStyle: {
@@ -107,5 +161,3 @@ const style = {
     marginLeft: 10
   }
 };
-
-export default FavouritesScreen;
