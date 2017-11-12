@@ -5,7 +5,7 @@ import { STATUS_BAR_HEIGHT } from "../constants";
 import ResultsComponent from "../components/ResultsComponent";
 import firebase from "firebase";
 import { Icon, CheckBox, Button } from "react-native-elements";
-import { sortResults } from "../actions/Index";
+import { sortResults, setCategoryToSearch } from "../actions/Index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -29,6 +29,9 @@ class ResultsScreen extends Component {
       modalVisible: false
     };
   }
+componentWillMount(){
+  this.props.setCategoryToSearch(null);
+}
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -209,7 +212,8 @@ function mapStatetoProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      sortResults: sortResults
+      sortResults: sortResults,
+      setCategoryToSearch: setCategoryToSearch
     },
     dispatch
   );

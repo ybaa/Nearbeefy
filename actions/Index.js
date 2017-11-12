@@ -186,7 +186,7 @@ export const removeFavourite = (uid, address, userData) => {
       favs.push(current);
     }
   });
-  
+
   let removePromise = new Promise( resolve => {
     resolve(firebase.database().ref().child('users').child(uid).set({
       email: userData.email,
@@ -221,5 +221,23 @@ export const setUserData = (userId) => {
     payload: promise.then( (resp) => {
       return resp.val();
     } )
+  };
+};
+
+export const openFilterModal = (modalVisible) => {
+  return {
+    type: "OPEN_FILTER_MODAL",
+    payload: {
+      modalVisible: modalVisible
+    }
+  };
+};
+
+export const setCategoryToSearch = (category) => {
+  return {
+    type: "SET_CATEGORY_TO_SEARCH",
+    payload: {
+      category: category
+    }
   };
 };

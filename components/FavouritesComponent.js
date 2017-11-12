@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platform } from "react-native";
+import { View, Dimensions, StyleSheet, Platformm, ScrollView } from "react-native";
 import {
   Text,
   Button,
@@ -7,16 +7,19 @@ import {
   SearchBar,
   Icon,
   List,
-  ListItem
+  ListItem,
+  CheckBox,
+  Modal
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setUserData, setInitialDataFetched, encodeAddress, getPlacesNearby } from '../actions/Index';
+import { setUserData, setInitialDataFetched, encodeAddress, getPlacesNearby, openFilterModal, setCategoryToSearch } from '../actions/Index';
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
+import categories from "../constants/categories";
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -24,7 +27,8 @@ class FavouritesComponent extends Component {
   constructor(props){
     super();
     this.state = {
-      distancePrecision: 100
+      distancePrecision: 100,
+      categoriesState: categories
     }
   }
   render() {
@@ -46,7 +50,7 @@ class FavouritesComponent extends Component {
                 this.props.coords.latitude,
                 this.props.coords.longitude,
                 this.state.distancePrecision,
-                null
+                this.props.categoryToSearch
               );
               resolve(places);
             });
@@ -59,6 +63,36 @@ class FavouritesComponent extends Component {
           });
         }}
       />
+    });
+
+    let categoriesCheckBoxes = this.state.categoriesState.map(current => {
+      return (
+        <CheckBox
+          title={current.name}
+          checked={current.checked}
+          fontFamily="Quicksand-Light"
+          textStyle={{ fontWeight: "100" }}
+          onPress={() => {
+            let newState = this.state.categoriesState.map(category => {
+              if (category.name === current.name) {
+                this.props.setCategoryToSearch(current.name);
+                return {
+                  name: current.name,
+                  checked: !current.checked
+                };
+              } else {
+                return {
+                  name: category.name,
+                  checked: false
+                };
+              }
+            });
+            this.setState({
+              categoriesState: newState
+            });
+          }}
+        />
+      );
     });
 
     console.log("AUTH: ", firebase.auth().currentUser, this.props.fetchedInitialData);
@@ -86,9 +120,24 @@ class FavouritesComponent extends Component {
               });
             }}
           />
-          <Text style={style.radiusValue}>
-            Search in radius: {this.state.distancePrecision} m
-          </Text>
+          <View style={style.searchBarAndIcon}>
+            <View style={{ flex: 4 }}>
+              <Text style={style.radiusValue}>
+                Search in radius: {this.state.distancePrecision} m
+              </Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Icon
+                name="filter"
+                type="material-community"
+                size={20}
+                color="#000"
+                onPress={() => {
+                  this.props.openFilterModal(true);
+                }}
+              />
+            </View>
+          </View>
         </View>
         <List>
           {favouritesList}
@@ -100,7 +149,9 @@ class FavouritesComponent extends Component {
 
     return (
       <View>
-        {display}
+        <View>
+          {display}
+        </View>
 
       </View>
     );
@@ -111,7 +162,9 @@ function mapStatetoProps(state) {
   return {
     userData: state.UserConfigReducer,
     fetchedInitialData: state.UserConfigReducer.fetchedInitialData,
-    coords: state.LocationReducer.coords
+    coords: state.LocationReducer.coords,
+    modalVisible: state.FilterModalReducer.modalVisible,
+    categoryToSearch: state.FilterModalReducer.categoryToSearch
   };
 }
 
@@ -121,7 +174,9 @@ function matchDispatchToProps(dispatch) {
       setUserData: setUserData,
       setInitialDataFetched: setInitialDataFetched,
       encodeAddress: encodeAddress,
-      getPlacesNearby: getPlacesNearby
+      getPlacesNearby: getPlacesNearby,
+      openFilterModal: openFilterModal,
+      setCategoryToSearch: setCategoryToSearch
     },
     dispatch
   );
@@ -144,5 +199,48 @@ const style = StyleSheet.create({
   barAndRadiusStyle: {
     marginLeft: 20,
     marginRight: 20
+  },
+  modalStyle: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)"
+  },
+  modalContentStyle: {
+    flex: 1,
+    marginTop: 25,
+    marginBottom: 25,
+    marginLeft: 25,
+    marginRight: 25,
+    backgroundColor: "#fff",
+
+    alignItems: "center"
+  },
+  modalTitle: {
+    fontFamily: "Quicksand-Light",
+    fontSize: 20,
+    marginTop: 25,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: "center"
+  },
+  checkboxesStyle: {
+    marginLeft: 10,
+    marginRight: 10,
+    width: 240
+  },
+  acceptButton: {
+    marginTop: 20,
+    width: 210,
+    marginBottom: 20
+  },
+  searchBarAndIcon: {
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  searchBarStyle: {
+    backgroundColor: "#eee",
+    borderTopWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "#bbb"
   }
 });

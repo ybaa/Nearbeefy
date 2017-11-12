@@ -12,11 +12,12 @@ export default function LocationReducer(
   action
 ) {
   switch (action.type) {
-    case "CHANGE_ADDRESS":
-      state = Object.assign({}, state, {
-        address: action.payload.address
-      });
-      break;
+
+      case "CHANGE_ADDRESS":
+        state = Object.assign({}, state, {
+          address: action.payload.address
+        });
+        break;
 
     case "UPDATE_LOCATION_COORDS":
       state = Object.assign({}, state, {

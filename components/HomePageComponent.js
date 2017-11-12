@@ -24,7 +24,9 @@ import {
   getPlacesNearby,
   setEmail,
   setUserData,
-  setInitialDataFetched
+  setInitialDataFetched,
+  setCategoryToSearch,
+  openFilterModal
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
@@ -41,11 +43,11 @@ class HomePageComponent extends Component {
       typedAddress: "",
       location: null,
       errorMessage: null,
-      modalVisible: false,
       categoriesState: categories,
-      categoryToSearch: null
     };
   }
+
+
 
   componentWillMount() {
     if (Platform.OS === "android" && !Constants.isDevice) {
@@ -90,9 +92,7 @@ class HomePageComponent extends Component {
           onPress={() => {
             let newState = this.state.categoriesState.map(category => {
               if (category.name === current.name) {
-                this.setState({
-                  categoryToSearch: current.name
-                });
+                this.props.setCategoryToSearch(current.name)
                 return {
                   name: current.name,
                   checked: !current.checked
@@ -112,14 +112,15 @@ class HomePageComponent extends Component {
       );
     });
 
+    console.log('MODAL VIS: ',this.props.modalVisible);
     return (
       <View style={style.mainCardStyle}>
         <Modal
           animationType="slide"
           transparent={true}
-          visible={this.state.modalVisible}
+          visible={this.props.modalVisible}
           onRequestClose={() => {
-            this.setState({ modalVisible: false });
+            this.props.openFilterModal(false);
           }}
         >
           <ScrollView style={style.modalStyle}>
@@ -128,9 +129,7 @@ class HomePageComponent extends Component {
               <View style={style.checkboxesStyle}>{categoriesCheckBoxes}</View>
               <Button
                 onPress={() => {
-                  this.setState({
-                    modalVisible: false
-                  });
+                  this.props.openFilterModal(false);
                 }}
                 title="Accept and close"
                 fontFamily="Quicksand-Light"
@@ -220,9 +219,7 @@ class HomePageComponent extends Component {
                 size={20}
                 color="#000"
                 onPress={() => {
-                  this.setState({
-                    modalVisible: true
-                  });
+                this.props.openFilterModal(true);
                 }}
               />
             </View>
@@ -241,7 +238,7 @@ class HomePageComponent extends Component {
                     this.props.coords.latitude,
                     this.props.coords.longitude,
                     this.state.distancePrecision,
-                    this.state.categoryToSearch
+                    this.props.categoryToSearch
                   );
                   resolve(places);
                 });
@@ -273,7 +270,9 @@ function mapStatetoProps(state) {
     coords: state.LocationReducer.coords,
     showMore: state.LocationReducer.showMore,
     pageToken: state.LocationReducer.pageToken,
-    fetchedInitialData: state.UserConfigReducer.fetchedInitialData
+    fetchedInitialData: state.UserConfigReducer.fetchedInitialData,
+    modalVisible: state.FilterModalReducer.modalVisible,
+    categoryToSearch: state.FilterModalReducer.categoryToSearch
   };
 }
 
@@ -286,7 +285,9 @@ function matchDispatchToProps(dispatch) {
       getPlacesNearby: getPlacesNearby,
       setEmail: setEmail,
       setUserData: setUserData,
-      setInitialDataFetched: setInitialDataFetched
+      setInitialDataFetched: setInitialDataFetched,
+      setCategoryToSearch: setCategoryToSearch,
+      openFilterModal: openFilterModal
     },
     dispatch
   );
