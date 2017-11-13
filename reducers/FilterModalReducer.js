@@ -1,7 +1,10 @@
+import categories from "../constants/categories";
+
 export default function FilterModalReducer(
   state = {
     modalVisible: false,
-    categoryToSearch: null
+    categoryToSearch: null,
+    categories: categories
   },
   action
 ) {
@@ -12,11 +15,17 @@ export default function FilterModalReducer(
       });
       break;
 
-      case "SET_CATEGORY_TO_SEARCH":
-        state = Object.assign({}, state, {
-          categoryToSearch: action.payload.category
-        });
-        break;
+    case "SET_CATEGORY_TO_SEARCH":
+      state = Object.assign({}, state, {
+        categoryToSearch: action.payload.category
+      });
+      break;
+
+    case "SET_CATEGORIES_STATE":
+      state = Object.assign({}, state, {
+        categories: action.payload.categories
+      });
+      break;
 
 
 

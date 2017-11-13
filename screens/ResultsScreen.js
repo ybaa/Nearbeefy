@@ -5,9 +5,10 @@ import { STATUS_BAR_HEIGHT } from "../constants";
 import ResultsComponent from "../components/ResultsComponent";
 import firebase from "firebase";
 import { Icon, CheckBox, Button } from "react-native-elements";
-import { sortResults, setCategoryToSearch } from "../actions/Index";
+import { sortResults, setCategoryToSearch, setCategoriesState } from "../actions/Index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import categories from "../constants/categories";
 
 const cacheImage = images =>
   images.map(image => {
@@ -31,6 +32,7 @@ class ResultsScreen extends Component {
   }
 componentWillMount(){
   this.props.setCategoryToSearch(null);
+  this.props.setCategoriesState(categories);  
 }
 
   componentDidMount() {
@@ -213,7 +215,8 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       sortResults: sortResults,
-      setCategoryToSearch: setCategoryToSearch
+      setCategoryToSearch: setCategoryToSearch,
+      setCategoriesState: setCategoriesState
     },
     dispatch
   );

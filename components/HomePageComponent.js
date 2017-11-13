@@ -26,7 +26,8 @@ import {
   setUserData,
   setInitialDataFetched,
   setCategoryToSearch,
-  openFilterModal
+  openFilterModal,
+  setCategoriesState
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
@@ -42,8 +43,7 @@ class HomePageComponent extends Component {
       distancePrecision: 100,
       typedAddress: "",
       location: null,
-      errorMessage: null,
-      categoriesState: categories,
+      errorMessage: null
     };
   }
 
@@ -82,7 +82,7 @@ class HomePageComponent extends Component {
       })
     }
 
-    let categoriesCheckBoxes = this.state.categoriesState.map(current => {
+    let categoriesCheckBoxes = this.props.categories.map(current => {
       return (
         <CheckBox
           title={current.name}
@@ -90,7 +90,7 @@ class HomePageComponent extends Component {
           fontFamily="Quicksand-Light"
           textStyle={{ fontWeight: "100" }}
           onPress={() => {
-            let newState = this.state.categoriesState.map(category => {
+            let newState = this.props.categories.map(category => {
               if (category.name === current.name) {
                 this.props.setCategoryToSearch(current.name)
                 return {
@@ -104,9 +104,7 @@ class HomePageComponent extends Component {
                 };
               }
             });
-            this.setState({
-              categoriesState: newState
-            });
+            this.props.setCategoriesState(newState);
           }}
         />
       );
@@ -272,7 +270,8 @@ function mapStatetoProps(state) {
     pageToken: state.LocationReducer.pageToken,
     fetchedInitialData: state.UserConfigReducer.fetchedInitialData,
     modalVisible: state.FilterModalReducer.modalVisible,
-    categoryToSearch: state.FilterModalReducer.categoryToSearch
+    categoryToSearch: state.FilterModalReducer.categoryToSearch,
+    categories: state.FilterModalReducer.categories
   };
 }
 
@@ -287,7 +286,8 @@ function matchDispatchToProps(dispatch) {
       setUserData: setUserData,
       setInitialDataFetched: setInitialDataFetched,
       setCategoryToSearch: setCategoryToSearch,
-      openFilterModal: openFilterModal
+      openFilterModal: openFilterModal,
+      setCategoriesState: setCategoriesState
     },
     dispatch
   );

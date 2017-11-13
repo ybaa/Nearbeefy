@@ -233,6 +233,15 @@ export const openFilterModal = (modalVisible) => {
   };
 };
 
+export const setCategoriesState = (categories) => {
+  return {
+    type: "SET_CATEGORIES_STATE",
+    payload: {
+      categories: categories
+    }
+  };
+};
+
 export const setCategoryToSearch = (category) => {
   return {
     type: "SET_CATEGORY_TO_SEARCH",

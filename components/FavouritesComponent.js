@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platformm, ScrollView } from "react-native";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  Platformm,
+  ScrollView
+} from "react-native";
 import {
   Text,
   Button,
@@ -13,13 +19,22 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setUserData, setInitialDataFetched, encodeAddress, getPlacesNearby, openFilterModal, setCategoryToSearch } from '../actions/Index';
+import {
+  setUserData,
+  setInitialDataFetched,
+  encodeAddress,
+  getPlacesNearby,
+  openFilterModal,
+  setCategoryToSearch,
+  setCategoriesState
+} from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
 import categories from "../constants/categories";
+
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -28,7 +43,6 @@ class FavouritesComponent extends Component {
     super();
     this.state = {
       distancePrecision: 100,
-      categoriesState: categories
     }
   }
   render() {
@@ -65,7 +79,7 @@ class FavouritesComponent extends Component {
       />
     });
 
-    let categoriesCheckBoxes = this.state.categoriesState.map(current => {
+    let categoriesCheckBoxes = this.props.categories.map(current => {
       return (
         <CheckBox
           title={current.name}
@@ -87,9 +101,7 @@ class FavouritesComponent extends Component {
                 };
               }
             });
-            this.setState({
-              categoriesState: newState
-            });
+            this.props.setCategoriesState(newState);
           }}
         />
       );
@@ -164,7 +176,8 @@ function mapStatetoProps(state) {
     fetchedInitialData: state.UserConfigReducer.fetchedInitialData,
     coords: state.LocationReducer.coords,
     modalVisible: state.FilterModalReducer.modalVisible,
-    categoryToSearch: state.FilterModalReducer.categoryToSearch
+    categoryToSearch: state.FilterModalReducer.categoryToSearch,
+    categories: state.FilterModalReducer.categories
   };
 }
 
@@ -176,7 +189,8 @@ function matchDispatchToProps(dispatch) {
       encodeAddress: encodeAddress,
       getPlacesNearby: getPlacesNearby,
       openFilterModal: openFilterModal,
-      setCategoryToSearch: setCategoryToSearch
+      setCategoryToSearch: setCategoryToSearch,
+      setCategoriesState: setCategoriesState
     },
     dispatch
   );
