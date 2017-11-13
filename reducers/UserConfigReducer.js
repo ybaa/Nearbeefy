@@ -48,6 +48,11 @@ export default function UserConfigReducer(
         });
         break;
 
+      case "ADD_ADDRESS_TO_HISTORY_FULFILLED":
+        state = Object.assign({}, state, {
+          lastSearched: action.payload
+        });
+        break;
 
 
     default:

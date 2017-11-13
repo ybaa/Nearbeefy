@@ -5,10 +5,16 @@ import { STATUS_BAR_HEIGHT } from "../constants";
 import ResultsComponent from "../components/ResultsComponent";
 import firebase from "firebase";
 import { Icon, CheckBox, Button } from "react-native-elements";
-import { sortResults, setCategoryToSearch, setCategoriesState } from "../actions/Index";
+import {
+  sortResults,
+  setCategoryToSearch,
+  setCategoriesState,
+  addAddressToHistory
+} from "../actions/Index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import categories from "../constants/categories";
+
 
 const cacheImage = images =>
   images.map(image => {
@@ -32,7 +38,10 @@ class ResultsScreen extends Component {
   }
 componentWillMount(){
   this.props.setCategoryToSearch(null);
-  this.props.setCategoriesState(categories);  
+  this.props.setCategoriesState(categories);
+  if(firebase.auth().currentUser !== null){
+      this.props.addAddressToHistory(firebase.auth().currentUser.uid, this.props.address, this.props.userData);
+  }
 }
 
   componentDidMount() {
@@ -207,7 +216,9 @@ componentWillMount(){
 }
 function mapStatetoProps(state) {
   return {
-    nearbyPlaces: state.LocationReducer.nearbyPlaces
+    nearbyPlaces: state.LocationReducer.nearbyPlaces,
+    userData: state.UserConfigReducer,
+    address: state.LocationReducer.address
   };
 }
 
@@ -216,7 +227,8 @@ function matchDispatchToProps(dispatch) {
     {
       sortResults: sortResults,
       setCategoryToSearch: setCategoryToSearch,
-      setCategoriesState: setCategoriesState
+      setCategoriesState: setCategoriesState,
+      addAddressToHistory: addAddressToHistory
     },
     dispatch
   );

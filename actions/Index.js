@@ -250,3 +250,38 @@ export const setCategoryToSearch = (category) => {
     }
   };
 };
+
+
+
+export const addAddressToHistory = (uid, address, userData) => {
+  let history = userData.lastSearched;
+  //history.push(address);
+  history.reverse();
+  let historyWithoutRepetitions = [];
+  history.map( current => {
+    if(current !== address){
+      historyWithoutRepetitions.push(current);
+    }
+  });
+  historyWithoutRepetitions.splice(0,0,address);
+
+  console.log('HISTORY: ',history, historyWithoutRepetitions);
+
+  if(historyWithoutRepetitions.length > 3){
+    historyWithoutRepetitions.splice(2,1);
+  }
+  let promise = new Promise( resolve => {
+    resolve(firebase.database().ref().child('users').child(uid).set({
+      email: userData.email,
+      favourites: userData.favourites,
+      lastSearched: historyWithoutRepetitions
+    }))
+  });
+
+  return {
+    type: "ADD_ADDRESS_TO_HISTORY",
+    payload: promise.then( () => {
+      return historyWithoutRepetitions
+    })
+  };
+};

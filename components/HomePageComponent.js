@@ -13,7 +13,9 @@ import {
   Slider,
   SearchBar,
   Icon,
-  CheckBox
+  CheckBox,
+  List,
+  ListItem
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -110,8 +112,43 @@ class HomePageComponent extends Component {
       );
     });
 
-    console.log('MODAL VIS: ',this.props.modalVisible);
+    let historyList = <Text>Your search history is empty</Text>;    
+    if(this.props.lastSearched.length > 0){
+      historyList = this.props.lastSearched.map( (current,index) => {
+        return  <ListItem
+          key = {index}
+          title = {current}
+          fontFamily="Quicksand-Regular"
+          onPress = { () => {
+            let promise = new Promise(resolve => {
+              let x = this.props.encodeAddress(current);
+              resolve(x);
+            });
+
+            promise.then(() => {
+              let placesPromise = new Promise(resolve => {
+                let places = this.props.getPlacesNearby(
+                  this.props.coords.latitude,
+                  this.props.coords.longitude,
+                  this.state.distancePrecision,
+                  this.props.categoryToSearch
+                );
+                resolve(places);
+              });
+
+              placesPromise.then(() => {
+                this.props.navi.dispatch(
+                  NavigationActions.navigate({ routeName: "Results" })
+                );
+              });
+            });
+          }}
+        />
+      });
+    }
+
     return (
+    <View>
       <View style={style.mainCardStyle}>
         <Modal
           animationType="slide"
@@ -258,6 +295,12 @@ class HomePageComponent extends Component {
           />
         </View>
       </View>
+        <View style={style.mainCardStyle}>
+          <List>
+            {historyList}
+          </List>
+        </View>
+      </View>
     );
   }
 }
@@ -271,7 +314,8 @@ function mapStatetoProps(state) {
     fetchedInitialData: state.UserConfigReducer.fetchedInitialData,
     modalVisible: state.FilterModalReducer.modalVisible,
     categoryToSearch: state.FilterModalReducer.categoryToSearch,
-    categories: state.FilterModalReducer.categories
+    categories: state.FilterModalReducer.categories,
+    lastSearched: state.UserConfigReducer.lastSearched
   };
 }
 

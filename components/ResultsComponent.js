@@ -60,6 +60,7 @@ class ResultsComponent extends Component {
   }
 
   render() {
+    console.log("LOCATIONS LENGTH: ", this.props.nearbyPlaces.length);
     var database = firebase.database();
 
     if (this.props.showMore) {

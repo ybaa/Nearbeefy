@@ -48,7 +48,7 @@ class FavouritesComponent extends Component {
   render() {
 
     let favouritesList = this.props.userData.favourites.map( (current,index) => {
-      return <ListItem
+      return  <ListItem
         key = {index}
         title = {current}
         fontFamily="Quicksand-Regular"
