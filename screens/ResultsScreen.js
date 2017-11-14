@@ -39,7 +39,8 @@ class ResultsScreen extends Component {
 componentWillMount(){
   this.props.setCategoryToSearch(null);
   this.props.setCategoriesState(categories);
-  if(firebase.auth().currentUser !== null){
+
+  if(firebase.auth().currentUser !== null && this.props.nearbyPlaces.length === 0){
       this.props.addAddressToHistory(firebase.auth().currentUser.uid, this.props.address, this.props.userData);
   }
 }
@@ -59,6 +60,9 @@ componentWillMount(){
     const { state, setParams, navigate } = navigation;
     const params = state.params || {};
     console.log("params", params);
+    if(Object.keys(params).length === 0 && params.constructor == Object){
+      console.log('PUSTAK');
+    }
     return {
       title: "Results",
       headerStyle: {

@@ -20,14 +20,22 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getPlacesNearbyNextPage, getDistance, setUserData, addFavourite, removeFavourite } from "../actions/Index";
+import {
+  getPlacesNearbyNextPage,
+  getDistance,
+  setUserData,
+  addFavourite,
+  removeFavourite,
+  addAddressToHistory
+} from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
 import MapView from "react-native-maps";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
-import firebase from 'firebase';
+import firebase from "firebase";
+
 
 
 class ResultsComponent extends Component {
@@ -60,28 +68,34 @@ class ResultsComponent extends Component {
   }
 
   render() {
-    console.log("LOCATIONS LENGTH: ", this.props.nearbyPlaces.length);
     var database = firebase.database();
-
-    if (this.props.showMore) {
-      this.props.getPlacesNearbyNextPage(this.props.pageToken);
-    } else {
-      if (this.state.distancesDownloaded === false) {
-        this.setState({
-          distancesDownloaded: true
-        });
-
-        let destinations = this.props.nearbyPlaces.map(place => {
-          return place.latitude + "," + place.longitude;
-        });
-        destinations = destinations.join("|");
-        this.props.getDistance(this.props.address, destinations).then(() => {
+    console.log('NAVI:',this.props.navi.state.params);
+    if(typeof this.props.navi.state.params !== 'undefined' ) {
+      if (this.props.showMore) {
+        console.log("RESULTS COMPONENT, TOKEN: ", this.props.pageToken);
+          this.props.getPlacesNearbyNextPage(this.props.pageToken);
+      } else {
+        if (this.state.distancesDownloaded === false) {
           this.setState({
-            loadingCircle: <View />
+            distancesDownloaded: true
           });
-        });
+          console.log('pobieram dystans, show more', this.props.showMore);
+          let destinations = this.props.nearbyPlaces.map(place => {
+            return place.latitude + "," + place.longitude;
+          });
+          destinations = destinations.join("|");
+          this.props.getDistance(this.props.address, destinations).then(() => {
+            if(firebase.auth().currentUser !== null){
+                this.props.addAddressToHistory(firebase.auth().currentUser.uid, this.props.address, this.props.userData);
+            }
+            this.setState({
+              loadingCircle: <View />
+            });
+          });
+        }
       }
     }
+
 
     let placesList = this.props.nearbyPlaces.map((place, index) => {
       return (
@@ -92,7 +106,7 @@ class ResultsComponent extends Component {
           subtitle={place.types.join(", ")}
           avatarStyle={{ backgroundColor: "#fff" }}
           subtitleStyle={{ fontWeight: "100" }}
-          fontFamily="Quicksand-Regular"          
+          fontFamily="Quicksand-Regular"
           badge={{
             value: place.distance,
             containerStyle: { marginTop: 5, backgroundColor: "#fff" },
@@ -228,7 +242,8 @@ function matchDispatchToProps(dispatch) {
       getDistance: getDistance,
       setUserData: setUserData,
       addFavourite: addFavourite,
-      removeFavourite: removeFavourite
+      removeFavourite: removeFavourite,
+      addAddressToHistory: addAddressToHistory
     },
     dispatch
   );

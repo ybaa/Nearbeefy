@@ -86,7 +86,7 @@ export default function LocationReducer(
 
     case "GET_DISTANCE_FULFILLED":
       let newState = state.nearbyPlaces.map((place, index) => {
-        if (typeof action.payload.data[index].distance !== "undefined") {
+        if (typeof action.payload.data[index] !== 'undefined' && typeof action.payload.data[index].distance !== 'undefined') {
           return {
             name: place.name,
             types: place.types,
@@ -132,7 +132,6 @@ export default function LocationReducer(
             distanceB = parseInt(distanceB);
           }
 
-          console.log("distance ab", distanceA, distanceB);
           return distanceA - distanceB;
         });
       } else if (action.payload.distanceDesc) {
