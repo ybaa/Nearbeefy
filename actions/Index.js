@@ -88,15 +88,12 @@ export const getPlacesNearby = (lat, long, radius, category) => {
 };
 
 export const getPlacesNearbyNextPage = pageToken => {
-  console.log("PAGE TOKEN: ", pageToken);
 let query = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=" +pageToken +  "&key=" + API_KEY;
   return {
     type: "GET_PLACES_NEARBY_NEXT_PAGE",
     payload: axios.get(query).then(response => {
-      console.log(response);
       let showMore = false;
-      let token;
-      console.log("TOKEN ACTION",response.data.next_page_token)
+      let token;      
       if (response.data.next_page_token) {
         showMore = true;
         token = response.data.next_page_token;
