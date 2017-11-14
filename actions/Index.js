@@ -254,8 +254,7 @@ export const setCategoryToSearch = (category) => {
 
 
 export const addAddressToHistory = (uid, address, userData) => {
-  let history = userData.lastSearched;
-  //history.push(address);
+  let history = userData.lastSearched;  
   history.reverse();
   let historyWithoutRepetitions = [];
   history.map( current => {

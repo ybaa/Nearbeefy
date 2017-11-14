@@ -107,13 +107,16 @@ class FavouritesComponent extends Component {
       );
     });
 
-    console.log("AUTH: ", firebase.auth().currentUser, this.props.fetchedInitialData);
-    if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
-      let user = firebase.auth().currentUser;
-      this.props.setUserData(user.uid).then( () => {
-          this.props.setInitialDataFetched(true);
-      })
-    }
+
+    setTimeout( () => {
+      if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
+        let user = firebase.auth().currentUser;
+        this.props.setUserData(user.uid).then( () => {
+            this.props.setInitialDataFetched(true);
+        })
+      }
+    }, 2000 );
+    
 
     let display = <Text>"You have to be signed in to have your favourites addresses"</Text>
     if(firebase.auth().currentUser !== null){

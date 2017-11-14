@@ -77,12 +77,16 @@ class HomePageComponent extends Component {
   };
 
   render() {
-    if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
-      let user = firebase.auth().currentUser;
-      this.props.setUserData(user.uid).then( () => {
-          this.props.setInitialDataFetched(true);
-      })
-    }
+    setTimeout( () => {
+      if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
+        let user = firebase.auth().currentUser;
+        this.props.setUserData(user.uid).then( () => {
+            this.props.setInitialDataFetched(true);
+        })
+      }
+    }, 2000 );
+
+
 
     let categoriesCheckBoxes = this.props.categories.map(current => {
       return (
@@ -112,7 +116,7 @@ class HomePageComponent extends Component {
       );
     });
 
-    let historyList = <Text>Your search history is empty</Text>;    
+    let historyList = <Text style={style.emptyHistoryStyle}>Your search history is empty</Text>;
     if(this.props.lastSearched.length > 0){
       historyList = this.props.lastSearched.map( (current,index) => {
         return  <ListItem
@@ -295,7 +299,8 @@ class HomePageComponent extends Component {
           />
         </View>
       </View>
-        <View style={style.mainCardStyle}>
+        <View style={style.historyCardStyle}>
+          <Text style = {style.LastSearchedStyle}>Last searched: </Text>
           <List>
             {historyList}
           </List>
@@ -399,7 +404,6 @@ const style = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     backgroundColor: "#fff",
-
     alignItems: "center"
   },
   modalTitle: {
@@ -420,5 +424,32 @@ const style = StyleSheet.create({
     marginTop: 20,
     width: 210,
     marginBottom: 20
-  }
+  },
+  emptyHistoryStyle: {
+    fontFamily: "Quicksand-Light",
+    textAlign: 'center',
+    backgroundColor: '#eee',
+    padding: 20,
+
+  },
+  LastSearchedStyle:{
+    fontFamily: "Quicksand-Light",
+    backgroundColor: '#eee',
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 5
+  },
+  historyCardStyle: {
+    margin: 10,
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 3,
+    borderRightColor: "#ddd",
+    borderRightWidth: 3,
+    borderTopColor: "#ddd",
+    borderTopWidth: 1,
+    borderLeftColor: "#ddd",
+    borderLeftWidth: 1,
+    backgroundColor: "#eee",
+  },
 });

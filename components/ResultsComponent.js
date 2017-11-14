@@ -92,7 +92,7 @@ class ResultsComponent extends Component {
           subtitle={place.types.join(", ")}
           avatarStyle={{ backgroundColor: "#fff" }}
           subtitleStyle={{ fontWeight: "100" }}
-          fontFamily="Quicksand-Regular"
+          fontFamily="Quicksand-Regular"          
           badge={{
             value: place.distance,
             containerStyle: { marginTop: 5, backgroundColor: "#fff" },
