@@ -224,6 +224,14 @@ export const setUserData = (userId) => {
   };
 };
 
+
+export const clearUserState = () => {
+  return {
+    type: "CLEAR_USER_STATE",
+    payload: {}
+  };
+};
+
 export const openFilterModal = (modalVisible) => {
   return {
     type: "OPEN_FILTER_MODAL",
@@ -254,7 +262,7 @@ export const setCategoryToSearch = (category) => {
 
 
 export const addAddressToHistory = (uid, address, userData) => {
-  let history = userData.lastSearched;  
+  let history = userData.lastSearched;
   history.reverse();
   let historyWithoutRepetitions = [];
   history.map( current => {

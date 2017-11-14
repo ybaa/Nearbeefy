@@ -22,6 +22,14 @@ export default function UserConfigReducer(
         });
         break;
 
+      case "CLEAR_USER_STATE":
+        state = Object.assign({}, state, {
+          email: null,
+          favourites: [],
+          lastSearched: [],
+        });
+        break;
+
       case "ADD_FAVOURITE_FULFILLED":
         state = Object.assign({}, state, {
           favourites: action.payload

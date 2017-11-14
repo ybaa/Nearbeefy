@@ -11,7 +11,7 @@ import {
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setEmail } from "../actions/Index";
+import { clearUserState} from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import axios from "axios";
 import { API_KEY } from "../constants/index";
@@ -30,7 +30,7 @@ class MyProfileComponent extends Component {
         <Button
           onPress={() => {
             firebase.auth().signOut().then( (resp) => {
-                //this.props.setEmail(null);
+              this.props.clearUserState();
                 const resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [NavigationActions.navigate({ routeName: "Main" })]
@@ -60,7 +60,7 @@ function mapStatetoProps(state) {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      setEmail: setEmail
+      clearUserState: clearUserState
     },
     dispatch
   );
