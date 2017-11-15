@@ -35,7 +35,6 @@ class MyProfileComponent extends Component {
                   index: 0,
                   actions: [NavigationActions.navigate({ routeName: "Main" })]
                 });
-
                 this.props.navi.dispatch(resetAction);
               })
               .catch( (error) => {

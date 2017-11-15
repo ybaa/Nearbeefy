@@ -81,10 +81,27 @@ class LogInComponent extends Component {
           icon={{ name: "login", type: "simple-line-icon", color: "#000" }}
           borderRadius={3}
         />
+        <Text style={style.goToRegistrationText}>
+          Have you forgotten your password?
+        </Text>
+        <Button
+          onPress={() => {
+            const navigateAction = NavigationActions.navigate({
+              routeName: "ChangePassword"
+            });
+            this.props.navi.dispatch(navigateAction);
+          }}
+          title="Reset your password"
+          fontFamily="Quicksand-Light"
+          color="#fff"
+          backgroundColor="#ef5350"
+          borderRadius={3}
+          buttonStyle={style.logInButton}
+          icon={{ name: "account-key", type: "material-community"}}
+        />
 
         <Text style={style.goToRegistrationText}>
-          {" "}
-          Do not have any account yet?{" "}
+          Do not have any account yet?
         </Text>
         <Button
           onPress={() => {

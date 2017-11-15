@@ -69,17 +69,14 @@ class ResultsComponent extends Component {
 
   render() {
     var database = firebase.database();
-    console.log('NAVI:',this.props.navi.state.params);
     if(typeof this.props.navi.state.params !== 'undefined' ) {
       if (this.props.showMore) {
-        console.log("RESULTS COMPONENT, TOKEN: ", this.props.pageToken);
           this.props.getPlacesNearbyNextPage(this.props.pageToken);
       } else {
         if (this.state.distancesDownloaded === false) {
           this.setState({
             distancesDownloaded: true
-          });
-          console.log('pobieram dystans, show more', this.props.showMore);
+          });          
           let destinations = this.props.nearbyPlaces.map(place => {
             return place.latitude + "," + place.longitude;
           });
