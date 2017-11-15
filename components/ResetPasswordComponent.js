@@ -10,7 +10,7 @@ import { setUserId } from '../actions/Index';
 const SCREE_WIDTH = Dimensions.get("window").width;
 
 
-class ChangePasswordComponent extends Component {
+class ResetPasswordComponent extends Component {
   constructor(props) {
     super(props);
     state = {
@@ -52,7 +52,7 @@ class ChangePasswordComponent extends Component {
                 routeName: "LogIn"
               });
               this.props.navi.dispatch(navigateAction);
-              
+
             }).catch( (error) => {
               if(typeof this.state.email !== 'undefined'){
                 alert('Insert email above');
@@ -88,7 +88,7 @@ function matchDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapStatetoProps, matchDispatchToProps)(ChangePasswordComponent);
+export default connect(mapStatetoProps, matchDispatchToProps)(ResetPasswordComponent);
 
 const style = StyleSheet.create({
   bigLogo: {

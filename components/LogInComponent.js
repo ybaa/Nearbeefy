@@ -87,7 +87,7 @@ class LogInComponent extends Component {
         <Button
           onPress={() => {
             const navigateAction = NavigationActions.navigate({
-              routeName: "ChangePassword"
+              routeName: "ResetPassword"
             });
             this.props.navi.dispatch(navigateAction);
           }}

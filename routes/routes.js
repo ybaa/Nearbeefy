@@ -6,7 +6,7 @@ import LogInScreen from '../screens/LogInScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import ChangePasswordScreen from '../screens/ChangePasswordScreen'
+import ResetPasswordScreen from '../screens/ResetPasswordScreen'
 
   const Tabs = TabNavigator({
         Main: { screen: MainScreen },
@@ -33,7 +33,7 @@ import ChangePasswordScreen from '../screens/ChangePasswordScreen'
     Register: {screen: RegisterScreen},
     Results: {screen: ResultsScreen},
     Profile: {screen: ProfileScreen},
-    ChangePassword: {screen: ChangePasswordScreen}
+    ResetPassword: {screen: ResetPasswordScreen}
   });
 
   export default MainNavigator;

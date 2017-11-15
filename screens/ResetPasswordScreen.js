@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Platform, Text, Image } from "react-native";
 import { STATUS_BAR_HEIGHT } from "../constants";
 import { Icon } from "react-native-elements";
-import ChangePasswordComponent from '../components/ChangePasswordComponent';
+import ResetPasswordComponent from '../components/ResetPasswordComponent';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -13,7 +13,7 @@ const cacheImage = images =>
     return Expo.Asset.fromModule(image).downloadAsync();
   });
 
-class ChangePasswordScreen extends Component {
+class ResetPasswordScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ class ChangePasswordScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: "#ddd" }}>
-        <ChangePasswordComponent navi={this.props.navigation} />
+        <ResetPasswordComponent navi={this.props.navigation} />
       </View>
     );
   }
@@ -69,4 +69,4 @@ const style = {
   }
 };
 
-export default connect(mapStatetoProps, matchDispatchToProps)(ChangePasswordScreen);
+export default connect(mapStatetoProps, matchDispatchToProps)(ResetPasswordScreen);
