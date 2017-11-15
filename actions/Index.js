@@ -93,7 +93,7 @@ let query = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pageto
     type: "GET_PLACES_NEARBY_NEXT_PAGE",
     payload: axios.get(query).then(response => {
       let showMore = false;
-      let token;      
+      let token;
       if (response.data.next_page_token) {
         showMore = true;
         token = response.data.next_page_token;
@@ -267,14 +267,13 @@ export const addAddressToHistory = (uid, address, userData) => {
   let history = userData.lastSearched;
   history.reverse();
   let historyWithoutRepetitions = [];
+
   history.map( current => {
     if(current !== address){
       historyWithoutRepetitions.push(current);
     }
   });
   historyWithoutRepetitions.splice(0,0,address);
-
-  console.log('HISTORY: ',history, historyWithoutRepetitions);
 
   if(historyWithoutRepetitions.length > 3){
     historyWithoutRepetitions.splice(2,1);

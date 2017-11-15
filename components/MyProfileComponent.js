@@ -23,7 +23,7 @@ const SCREE_WIDTH = Dimensions.get("window").width;
 class MyProfileComponent extends Component {
   render() {
     return (
-      <View>
+      <View style = {style.mainView}>
         <Text style={{ fontFamily: "Quicksand-Light", fontSize: 24 }}>
           My Profile content
         </Text>
@@ -41,10 +41,24 @@ class MyProfileComponent extends Component {
                 console.log("ERROR:", error);
               });
           }}
-          title="sign out"
+          title="Sign out"
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
+          buttonStyle={style.changePassButton}
+        />
+        <Button
+          onPress={() => {
+            const navigateAction = NavigationActions.navigate({
+              routeName: "ChangePassword"
+            });
+            this.props.navi.dispatch(navigateAction);
+          }}
+          title="Change your password"
+          fontFamily="Quicksand-Light"
+          color="#fff"
+          backgroundColor="#4caf50"
+          buttonStyle={style.changePassButton}
         />
       </View>
     );
@@ -66,3 +80,16 @@ function matchDispatchToProps(dispatch) {
 }
 
 export default connect(mapStatetoProps, matchDispatchToProps)(MyProfileComponent);
+
+const style = StyleSheet.create({
+  mainView:{
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  changePassButton: {
+    marginTop: 10,
+    marginBottom: 10,
+    width: 210
+  }
+});

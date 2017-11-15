@@ -9,24 +9,13 @@ import { setUserId } from '../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
-function addUserToDatabase(email, postKey){
-  return new Promise(resolve => {
-     let updates = {};
-     updates['/users/' + postKey] = {
-       email: email
-     };
-     resolve(firebase.database().ref().update(updates));
-   })
- }
 
-class RegistrationComponent extends Component {
+class ChangePasswordComponent extends Component {
   constructor(props) {
     super(props);
     state = {
-      email: "",
       password: "",
-      confirmPassword: "",
-      postKey: ''
+      confirmPassword: ""
     };
   }
 
@@ -37,88 +26,59 @@ class RegistrationComponent extends Component {
           flex: 1,
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#4caf50"
+          backgroundColor: "#eee"
         }}
       >
         <Image
           style={style.bigLogo}
           source={require("../assets/icons/bigRectangleLogoWithTextTransparent.png")}
         />
-        <TextInput
-          style={style.inputStyle}
-          placeholder="email"
-          onChangeText={email => {
-            this.setState({ email: email });
-          }}
-          placeholderTextColor="#fff"
-        />
+
         <TextInput
           style={style.inputStyle}
           placeholder="password"
+          placeholderTextColor="#000"
           onChangeText={password => {
             this.setState({ password: password });
           }}
-          placeholderTextColor="#fff"
           secureTextEntry={true}
         />
         <TextInput
           style={style.inputStyle}
           placeholder="confirm password"
+          placeholderTextColor="#000"
           onChangeText={confirm => {
             this.setState({ confirmPassword: confirm });
           }}
-          placeholderTextColor="#fff"
           secureTextEntry={true}
         />
         <Button
           onPress={() => {
             if (this.state.password === this.state.confirmPassword) {
-              firebase
-                .auth()
-                .createUserWithEmailAndPassword(
-                  this.state.email,
-                  this.state.password
-                )
-                .then(user => {
-                  alert("Registration succeeded!");
-                  if (user && user.emailVerified === false) {
-                    user.sendEmailVerification().then(function() {
-                      console.log("email verification sent to user");
-                    });
-                  }
+              let user = firebase.auth().currentUser;
 
-                  addUserToDatabase(this.state.email, user.uid).then( () => {
-                    //console.log('used added correctly');
-                    //this.props.setUserId(uid);
-                    //console.log('current user', user);
-                  })
-
-
-                  const navigateAction = NavigationActions.navigate({
-                    routeName: "LogIn"
-                  });
-                  this.props.navi.dispatch(navigateAction);
-                })
-                .catch(function(error) {
-                  // Handle Errors here.
-                  var errorCode = error.code;
-                  var errorMessage = error.message;
-                  alert(errorMessage);
-                  // ...
+              user.updatePassword(this.state.password).then( () => {
+                alert('Your password has been succesfully changed');
+                const navigateAction = NavigationActions.navigate({
+                  routeName: "Profile"
                 });
+                this.props.navi.dispatch(navigateAction);
+              }).catch( (error) => {
+                alert('Cannot change your password now. Please, try again later');
+              });
             } else {
               alert("password and confirmation are different");
             }
           }}
-          title="Register"
+          title="Accept"
           fontFamily="Quicksand-Light"
-          color="#000"
-          backgroundColor="#ffee58"
+          color="#fff"
+          backgroundColor="#4caf50"
           buttonStyle={style.registerButton}
           icon={{
-            name: "user-follow",
-            type: "simple-line-icon",
-            color: "#000"
+            name: "md-checkmark-circle-outline",
+            type: "ionicon",
+            color: "#fff"
           }}
           borderRadius={3}
         />
@@ -140,7 +100,7 @@ function matchDispatchToProps(dispatch) {
 }
 
 export default connect(mapStatetoProps, matchDispatchToProps)(
-  RegistrationComponent
+  ChangePasswordComponent
 );
 
 const style = StyleSheet.create({
@@ -154,11 +114,10 @@ const style = StyleSheet.create({
   inputStyle: {
     width: 210,
     height: 50,
-    color: "#fff",
+    color: "#000",
     fontFamily: "Quicksand-Light",
-    borderBottomColor: '#ddd',
     borderBottomWidth: 1,
-    marginBottom: 13
+    borderBottomColor: '#333'
   },
   registerButton: {
     marginTop: 20,

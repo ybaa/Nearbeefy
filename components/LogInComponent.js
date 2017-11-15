@@ -96,7 +96,7 @@ class LogInComponent extends Component {
           color="#fff"
           backgroundColor="#ef5350"
           borderRadius={3}
-          buttonStyle={style.logInButton}
+          buttonStyle={style.otherButton}
           icon={{ name: "account-key", type: "material-community"}}
         />
 
@@ -115,7 +115,7 @@ class LogInComponent extends Component {
           color="#fff"
           backgroundColor="#2979ff"
           borderRadius={3}
-          buttonStyle={style.logInButton}
+          buttonStyle={style.otherButton}
           icon={{ name: "user-follow", type: "simple-line-icon" }}
         />
       </View>
@@ -155,9 +155,16 @@ const style = StyleSheet.create({
     width: 210,
     height: 50,
     color: "#fff",
-    fontFamily: "Quicksand-Light"
+    fontFamily: "Quicksand-Light",
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1
   },
   logInButton: {
+    marginTop: 20,
+    marginBottom: 10,
+    width: 210
+  },
+  otherButton: {
     marginTop: 10,
     marginBottom: 10,
     width: 210
