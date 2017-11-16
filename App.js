@@ -6,10 +6,12 @@ import { BackHandler } from 'react-native';
 import * as firebase from 'firebase';
 import store from './store';
 import MainScreen from './screens/MainScreen';
-import AddLocationScreen from './screens/AddLocationScreen';
 import FavouritesScreen from './screens/FavouritesScreen';
 import LogInScreen from './screens/LogInScreen';
 import MainNavigator from './routes/routes';
+import { i18nActions, Loc } from 'redux-react-native-i18n';
+import lang from './languages/possibleLanguages';
+import dictionary from './languages/dictionary';
 
 
 class App extends Component {

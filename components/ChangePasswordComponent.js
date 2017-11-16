@@ -6,6 +6,8 @@ import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import { setUserId } from '../actions/Index';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -31,12 +33,12 @@ class ChangePasswordComponent extends Component {
       >
         <Image
           style={style.bigLogo}
-          source={require("../assets/icons/bigRectangleLogoWithTextTransparent.png")}
+          source={require("../assets/icons/bigRectangleLogoWithBlackText2.png")}
         />
 
         <TextInput
           style={style.inputStyle}
-          placeholder="password"
+          placeholder={translate(dictionary, 'password', this.props.language).password}
           placeholderTextColor="#000"
           onChangeText={password => {
             this.setState({ password: password });
@@ -45,7 +47,7 @@ class ChangePasswordComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="confirm password"
+          placeholder={translate(dictionary, 'confirmPassword', this.props.language).confirmPassword}
           placeholderTextColor="#000"
           onChangeText={confirm => {
             this.setState({ confirmPassword: confirm });
@@ -71,7 +73,7 @@ class ChangePasswordComponent extends Component {
               alert("password and confirmation are different");
             }
           }}
-          title="Accept"
+          title={translate(dictionary, 'accept', this.props.language).accept}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
@@ -90,7 +92,8 @@ class ChangePasswordComponent extends Component {
 
 function mapStatetoProps(state) {
   return {
-    username: state.UserConfigReducer.username
+    username: state.UserConfigReducer.username,
+    language: state.UserConfigReducer.language
   };
 }
 

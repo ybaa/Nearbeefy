@@ -6,6 +6,8 @@ import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import { setUserId } from '../actions/Index';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -34,7 +36,7 @@ class ResetPasswordComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="email"
+          placeholder={translate(dictionary, 'email', this.props.language).email}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -47,7 +49,7 @@ class ResetPasswordComponent extends Component {
             let emailAddress = this.state.email;
 
             auth.sendPasswordResetEmail(emailAddress).then( () => {
-              alert('Your password has been reset. Check your mailbox');
+              alert("Your password has been reset. Check your mailbox");
               const navigateAction = NavigationActions.navigate({
                 routeName: "LogIn"
               });
@@ -55,13 +57,13 @@ class ResetPasswordComponent extends Component {
 
             }).catch( (error) => {
               if(typeof this.state.email !== 'undefined'){
-                alert('Insert email above');
+                alert("Insert email above");
               } else {
-                alert('Cannot reser your password now. Please, try again later or verify the email you have typed');
+                  alert("Cannot reset your password now. Please, try again later or verify the email you have typed");
               }
             });
           }}
-          title="Reset password"
+          title={translate(dictionary, 'resetPassword', this.props.language).resetPassword}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#ef5350"
@@ -80,6 +82,7 @@ class ResetPasswordComponent extends Component {
 
 function mapStatetoProps(state) {
   return {
+    language: state.UserConfigReducer.language
   };
 }
 
@@ -102,7 +105,9 @@ const style = StyleSheet.create({
     width: 210,
     height: 50,
     color: "#fff",
-    fontFamily: "Quicksand-Light"
+    fontFamily: "Quicksand-Light",
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1
   },
   registerButton: {
     marginTop: 20,

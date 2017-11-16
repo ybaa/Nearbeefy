@@ -14,7 +14,8 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import categories from "../constants/categories";
-
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const cacheImage = images =>
   images.map(image => {
@@ -59,12 +60,8 @@ componentWillMount(){
   static navigationOptions = ({ navigation }) => {
     const { state, setParams, navigate } = navigation;
     const params = state.params || {};
-    console.log("params", params);
-    if(Object.keys(params).length === 0 && params.constructor == Object){
-      console.log('PUSTAK');
-    }
     return {
-      title: "Results",
+      title: translate(dictionary, 'results', 'pl').results,
       headerStyle: {
         height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
         backgroundColor: "#4caf50"
@@ -143,10 +140,10 @@ componentWillMount(){
           >
             <View style={style.modalStyle}>
               <View style={style.modalContentStyle}>
-                <Text style={style.modalTitle}> Sort </Text>
+                <Text style={style.modalTitle}> {translate(dictionary, 'sort', this.props.language).sort} </Text>
                 <View style={style.checkboxesStyle}>
                   <CheckBox
-                    title="distance ascending"
+                    title={translate(dictionary, 'distanceAscending', this.props.language).distanceAscending}
                     checked={this.state.sortDistanceAscending}
                     fontFamily="Quicksand-Light"
                     textStyle={{ fontWeight: "100" }}
@@ -159,7 +156,7 @@ componentWillMount(){
                     }}
                   />
                   <CheckBox
-                    title="distance descending"
+                    title={translate(dictionary, 'distanceDescending', this.props.language).distanceDescending}
                     checked={this.state.sortDistanceDescending}
                     fontFamily="Quicksand-Light"
                     textStyle={{ fontWeight: "100" }}
@@ -172,7 +169,7 @@ componentWillMount(){
                     }}
                   />
                   <CheckBox
-                    title="category"
+                    title={translate(dictionary, 'byCategory', this.props.language).byCategory}
                     checked={this.state.sortByCategory}
                     fontFamily="Quicksand-Light"
                     textStyle={{ fontWeight: "100" }}
@@ -196,7 +193,7 @@ componentWillMount(){
                       modalVisible: false
                     });
                   }}
-                  title="Accept and close"
+                  title={translate(dictionary, 'acceptAndClose', this.props.language).acceptAndClose} 
                   fontFamily="Quicksand-Light"
                   color="#000"
                   backgroundColor="#ffee58"
@@ -220,7 +217,8 @@ function mapStatetoProps(state) {
   return {
     nearbyPlaces: state.LocationReducer.nearbyPlaces,
     userData: state.UserConfigReducer,
-    address: state.LocationReducer.address
+    address: state.LocationReducer.address,
+    language: state.UserConfigReducer.language
   };
 }
 
@@ -257,7 +255,7 @@ const style = {
     marginRight: 10,
     marginTop: 25,
     marginLeft: 10
-  },  
+  },
   headerRightIconSort: {
     marginRight: 20,
     marginTop: 27,

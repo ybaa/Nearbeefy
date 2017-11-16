@@ -6,6 +6,8 @@ import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import { Icon } from "react-native-elements";
 import MyProfileComponent from "../components/MyProfileComponent";
 import firebase from 'firebase';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const cacheImage = images =>
   images.map(image => {
@@ -43,7 +45,7 @@ class ProfileScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: "Profile",
+    title: translate(dictionary, 'profile', 'pl').profile,
     headerStyle: {
       height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: "#4caf50"

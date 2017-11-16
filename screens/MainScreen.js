@@ -8,6 +8,9 @@ import { Icon } from "react-native-elements";
 import firebase from "firebase";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
+
 
 const cacheImage = images =>
   images.map(image => {
@@ -45,52 +48,58 @@ class MainScreen extends Component {
     });
   }
 
-  static navigationOptions = ({ navigation }) => ({
-    title: "Find location",
-    tabBarLabel: "Find",
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="search" type="evilicon" size={28} color="#fff" />
-    ),
-    headerStyle: {
-      height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
-      backgroundColor: "#4caf50"
-    },
-    headerTitleStyle: {
-      marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : 0,
-      color: "white"
-    },
-    headerLeft: (
-      <Image
-        source={require("../assets/icons/transparentSmallLogo.png")}
-        style={style.navHeaderLeft}
-      />
-    ),
-    headerRight: (
-      <View style={style.navHeaderRight}>
-        <Icon
-          name="user"
-          type="evilicon"
-          size={32}
-          color="#fff"
-          style={style.headerRightIconUser}
-          onPress={() => {
-            if(firebase.auth().currentUser !== null){
-              navigation.navigate("Profile");
-            } else {
-              navigation.navigate("LogIn");
-            }
-          }}
+
+  static navigationOptions =  ({ navigation }) => {
+    return {
+      title: translate(dictionary, 'findLocation', 'pl').findLocation,
+      tabBarLabel: translate(dictionary, 'findLabel', 'pl').findLabel,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="search" type="evilicon" size={28} color="#fff" />
+      ),
+      headerStyle: {
+        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
+        backgroundColor: "#4caf50"
+      },
+      headerTitleStyle: {
+        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : 0,
+        color: "white"
+      },
+      headerLeft: (
+        <Image
+          source={require("../assets/icons/transparentSmallLogo.png")}
+          style={style.navHeaderLeft}
         />
-        <Icon
-          name="md-more"
-          type="ionicon"
-          size={32}
-          color="#fff"
-          style={style.headerRightIconDots}
-        />
-      </View>
-    )
-  });
+      ),
+      headerRight: (
+        <View style={style.navHeaderRight}>
+          <Icon
+            name="user"
+            type="evilicon"
+            size={32}
+            color="#fff"
+            style={style.headerRightIconUser}
+            onPress={() => {
+              if(firebase.auth().currentUser !== null){
+                navigation.navigate("Profile");
+              } else {
+                navigation.navigate("LogIn");
+              }
+            }}
+          />
+          <Icon
+            name="md-more"
+            type="ionicon"
+            size={32}
+            color="#fff"
+            style={style.headerRightIconDots}
+            onPress = { () => {
+
+            }}
+          />
+        </View>
+      )
+    }
+  };
 
   render() {
     return (
@@ -136,14 +145,13 @@ const style = {
 
 function mapStatetoProps(state) {
   return {
-    navigateToMainScreen: state.UserConfigReducer.navigateToMainScreen
+    language: state.UserConfigReducer.language
   };
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-
     },
     dispatch
   );

@@ -5,6 +5,8 @@ import { Icon } from "react-native-elements";
 import ResetPasswordComponent from '../components/ResetPasswordComponent';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const cacheImage = images =>
   images.map(image => {
@@ -21,30 +23,32 @@ class ResetPasswordScreen extends Component {
     };
   }
 
-  static navigationOptions = navigation => ({
-    title: "Log in",
-    headerStyle: {
-      height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
-      backgroundColor: "#4caf50"
-    },
-    headerTitleStyle: {
-      marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : 0,
-      color: "white"
-    },
-    headerLeft: (
-      <Icon
-        name="ios-arrow-back"
-        type="ionicon"
-        size={32}
-        color="#fff"
-        style={style.backIconStyle}
-        onPress={() => {
-          console.log("navigation", navigation);
-          navigation.navigation.goBack();
-        }}
-      />
-    )
-  });
+  static navigationOptions = navigation => {
+    return {
+      title: translate(dictionary, 'resetPassword', 'pl').resetPassword,
+      headerStyle: {
+        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
+        backgroundColor: "#4caf50"
+      },
+      headerTitleStyle: {
+        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : 0,
+        color: "white"
+      },
+      headerLeft: (
+        <Icon
+          name="ios-arrow-back"
+          type="ionicon"
+          size={32}
+          color="#fff"
+          style={style.backIconStyle}
+          onPress={() => {
+            console.log("navigation", navigation);
+            navigation.navigation.goBack();
+          }}
+        />
+      )
+    }
+  };
 
   render() {
     return (

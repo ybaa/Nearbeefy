@@ -35,7 +35,8 @@ import MapView from "react-native-maps";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
 import firebase from "firebase";
-
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 
 class ResultsComponent extends Component {
@@ -48,7 +49,7 @@ class ResultsComponent extends Component {
       modalContent: <View />,
       loadingCircle: (
         <View style={{ flexDirection: "row", marginTop: 5 }}>
-          <Text>Loading distances...</Text>
+          <Text>{translate(dictionary, 'loadingDistances', this.props.language).loadingDistances}</Text>
           <ActivityIndicator />
         </View>
       )
@@ -76,7 +77,7 @@ class ResultsComponent extends Component {
         if (this.state.distancesDownloaded === false) {
           this.setState({
             distancesDownloaded: true
-          });          
+          });
           let destinations = this.props.nearbyPlaces.map(place => {
             return place.latitude + "," + place.longitude;
           });
@@ -121,13 +122,13 @@ class ResultsComponent extends Component {
                 >
                   <Text style={style.modalName}> {place.name} </Text>
                   <Text style={style.modalTypes}>
-                    types: {place.types.join(", ")}
+                    {translate(dictionary, 'types', this.props.language).types} {place.types.join(", ")}
                   </Text>
                   <Text style={style.modalDistance}>
-                    distance: {place.distance}
+                    {translate(dictionary, 'distance', this.props.language).distance} {place.distance}
                   </Text>
                   <Text style={style.modalDuration}>
-                    time to get there: {place.duration}
+                    {translate(dictionary, 'timeToGet', this.props.language).timeToGet} {place.duration}
                   </Text>
                   <MapViewComponent
                     destinationLatitude={place.latitude}
@@ -141,7 +142,7 @@ class ResultsComponent extends Component {
                         modalVisible: false
                       });
                     }}
-                    title="Close"
+                    title={translate(dictionary, 'close', this.props.language).close}
                     fontFamily="Quicksand-Light"
                     color="#fff"
                     backgroundColor="#e57373"
@@ -228,7 +229,8 @@ function mapStatetoProps(state) {
     showMore: state.LocationReducer.showMore,
     pageToken: state.LocationReducer.pageToken,
     nearbyPlaces: state.LocationReducer.nearbyPlaces,
-    userData: state.UserConfigReducer
+    userData: state.UserConfigReducer,
+    language: state.UserConfigReducer.language
   };
 }
 

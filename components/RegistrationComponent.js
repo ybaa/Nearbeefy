@@ -6,6 +6,8 @@ import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import { setUserId, addUserToDatabase } from '../actions/Index';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -37,7 +39,7 @@ class RegistrationComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="email"
+          placeholder={translate(dictionary, 'email', this.props.language).email}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -45,7 +47,7 @@ class RegistrationComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="password"
+          placeholder={translate(dictionary, 'password', this.props.language).password}
           onChangeText={password => {
             this.setState({ password: password });
           }}
@@ -54,7 +56,7 @@ class RegistrationComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="confirm password"
+          placeholder={translate(dictionary, 'confirmPassword', this.props.language).confirmPassword}
           onChangeText={confirm => {
             this.setState({ confirmPassword: confirm });
           }}
@@ -94,7 +96,7 @@ class RegistrationComponent extends Component {
               alert("password and confirmation are different");
             }
           }}
-          title="Register"
+          title={translate(dictionary, 'register', this.props.language).register}
           fontFamily="Quicksand-Light"
           color="#000"
           backgroundColor="#ffee58"
@@ -113,7 +115,8 @@ class RegistrationComponent extends Component {
 
 function mapStatetoProps(state) {
   return {
-    username: state.UserConfigReducer.username
+    username: state.UserConfigReducer.username,
+    language: state.UserConfigReducer.language
   };
 }
 

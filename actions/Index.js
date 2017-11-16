@@ -272,7 +272,7 @@ export const addUserToDatabase = (email, uid) => {
   return {
     type: "ADD_USER_TO_DATABASE",
     payload: addUserPromise.then( () => {
-      
+
     })
   };
 };
@@ -306,5 +306,14 @@ export const addAddressToHistory = (uid, address, userData) => {
     payload: promise.then( () => {
       return historyWithoutRepetitions
     })
+  };
+};
+
+export const changeLanguage = (lang) => {
+  return {
+    type: "CHANGE_LANGUAGE",
+    payload: {
+      lang: lang
+    }
   };
 };

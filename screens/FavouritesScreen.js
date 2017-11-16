@@ -9,7 +9,8 @@ import FavouritesComponent from '../components/FavouritesComponent'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setUserData, setInitialDataFetched } from '../actions/Index';
-
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 class FavouritesScreen extends Component {
   constructor(props) {
@@ -41,8 +42,8 @@ class FavouritesScreen extends Component {
 
 
   static navigationOptions = ({ navigation }) => ({
-    title: "Favourites",
-    tabBarLabel: "Favourites",
+    title: translate(dictionary, 'favourites', 'pl').favourites,
+    tabBarLabel: translate(dictionary, 'favourites', 'pl').favourites,
     tabBarIcon: ({ tintColor }) => (
       <Icon
         name="favorite-border"

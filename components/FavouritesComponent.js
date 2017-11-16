@@ -34,6 +34,8 @@ import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
 import categories from "../constants/categories";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 
 const SCREE_WIDTH = Dimensions.get("window").width;
@@ -116,7 +118,7 @@ class FavouritesComponent extends Component {
         })
       }
     }, 2000 );
-    
+
 
     let display = <Text>"You have to be signed in to have your favourites addresses"</Text>
     if(firebase.auth().currentUser !== null){
@@ -138,7 +140,7 @@ class FavouritesComponent extends Component {
           <View style={style.searchBarAndIcon}>
             <View style={{ flex: 4 }}>
               <Text style={style.radiusValue}>
-                Search in radius: {this.state.distancePrecision} m
+                {translate(dictionary, 'searchInRadius', this.props.language).searchInRadius} {this.state.distancePrecision} m
               </Text>
             </View>
             <View style={{ flex: 1 }}>
@@ -180,7 +182,8 @@ function mapStatetoProps(state) {
     coords: state.LocationReducer.coords,
     modalVisible: state.FilterModalReducer.modalVisible,
     categoryToSearch: state.FilterModalReducer.categoryToSearch,
-    categories: state.FilterModalReducer.categories
+    categories: state.FilterModalReducer.categories,
+    language: state.UserConfigReducer.language
   };
 }
 

@@ -29,12 +29,16 @@ import {
   setInitialDataFetched,
   setCategoryToSearch,
   openFilterModal,
-  setCategoriesState
+  setCategoriesState,
+  changeLanguage
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
 import categories from "../constants/categories";
 import firebase from 'firebase';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
+
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -49,8 +53,6 @@ class HomePageComponent extends Component {
     };
   }
 
-
-
   componentWillMount() {
     if (Platform.OS === "android" && !Constants.isDevice) {
       this.setState({
@@ -60,7 +62,6 @@ class HomePageComponent extends Component {
     } else {
       this._getLocationAsync();
     }
-
 
 
   }
@@ -84,7 +85,7 @@ class HomePageComponent extends Component {
             this.props.setInitialDataFetched(true);
         })
       }
-    }, 2000 );
+    }, 1000 );
 
 
 
@@ -116,7 +117,7 @@ class HomePageComponent extends Component {
       );
     });
 
-    let historyList = <Text style={style.emptyHistoryStyle}>Your search history is empty</Text>;
+    let historyList = <Text style={style.emptyHistoryStyle}>{translate(dictionary, 'emptyHistory', this.props.language).emptyHistory}</Text>;
     if(this.props.lastSearched.length > 0){
       historyList = this.props.lastSearched.map( (current,index) => {
         return  <ListItem
@@ -152,7 +153,7 @@ class HomePageComponent extends Component {
     }
 
     return (
-    <View>
+    <View>    
       <View style={style.mainCardStyle}>
         <Modal
           animationType="slide"
@@ -164,13 +165,13 @@ class HomePageComponent extends Component {
         >
           <ScrollView style={style.modalStyle}>
             <View style={style.modalContentStyle}>
-              <Text style={style.modalTitle}> Choose type: </Text>
+              <Text style={style.modalTitle}> {translate(dictionary, 'chooseType', this.props.language).chooseType} </Text>
               <View style={style.checkboxesStyle}>{categoriesCheckBoxes}</View>
               <Button
                 onPress={() => {
                   this.props.openFilterModal(false);
                 }}
-                title="Accept and close"
+                title={translate(dictionary, 'acceptAndClose', this.props.language).acceptAndClose}
                 fontFamily="Quicksand-Light"
                 color="#000"
                 backgroundColor="#ffee58"
@@ -194,7 +195,7 @@ class HomePageComponent extends Component {
                   typedAddress: newAddress
                 });
               }}
-              placeholder="Type address here..."
+              placeholder={translate(dictionary, 'typeAddress', this.props.language).typeAddress}
               containerStyle={style.searchBarStyle}
               inputStyle={style.searchBarInput}
             />
@@ -248,7 +249,7 @@ class HomePageComponent extends Component {
           <View style={style.searchBarAndIcon}>
             <View style={{ flex: 4 }}>
               <Text style={style.radiusValue}>
-                Search in radius: {this.state.distancePrecision} m
+                {translate(dictionary, 'searchInRadius', this.props.language).searchInRadius} {this.state.distancePrecision} m
               </Text>
             </View>
             <View style={{ flex: 1 }}>
@@ -289,7 +290,7 @@ class HomePageComponent extends Component {
                 });
               });
             }}
-            title="get places nearby"
+            title={translate(dictionary, 'getPlacesNearby', this.props.language).getPlacesNearby}
             fontFamily="Quicksand-Light"
             color="#fff"
             backgroundColor="#4caf50"
@@ -300,7 +301,7 @@ class HomePageComponent extends Component {
         </View>
       </View>
         <View style={style.historyCardStyle}>
-          <Text style = {style.LastSearchedStyle}>Last searched: </Text>
+          <Text style = {style.LastSearchedStyle}> {translate(dictionary, 'lastSearched', this.props.language).lastSearched} </Text>
           <List>
             {historyList}
           </List>
@@ -320,7 +321,8 @@ function mapStatetoProps(state) {
     modalVisible: state.FilterModalReducer.modalVisible,
     categoryToSearch: state.FilterModalReducer.categoryToSearch,
     categories: state.FilterModalReducer.categories,
-    lastSearched: state.UserConfigReducer.lastSearched
+    lastSearched: state.UserConfigReducer.lastSearched,
+    language: state.UserConfigReducer.language
   };
 }
 
@@ -336,7 +338,8 @@ function matchDispatchToProps(dispatch) {
       setInitialDataFetched: setInitialDataFetched,
       setCategoryToSearch: setCategoryToSearch,
       openFilterModal: openFilterModal,
-      setCategoriesState: setCategoriesState
+      setCategoriesState: setCategoriesState,
+      changeLanguage: changeLanguage
     },
     dispatch
   );

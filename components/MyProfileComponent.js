@@ -17,6 +17,8 @@ import axios from "axios";
 import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -41,7 +43,7 @@ class MyProfileComponent extends Component {
                 console.log("ERROR:", error);
               });
           }}
-          title="Sign out"
+          title={translate(dictionary, 'signOut', this.props.language).signOut}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
@@ -54,7 +56,7 @@ class MyProfileComponent extends Component {
             });
             this.props.navi.dispatch(navigateAction);
           }}
-          title="Change your password"
+          title={translate(dictionary, 'changePassword', this.props.language).changePassword}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
@@ -67,6 +69,7 @@ class MyProfileComponent extends Component {
 
 function mapStatetoProps(state) {
   return {
+    language: state.UserConfigReducer.language
   };
 }
 

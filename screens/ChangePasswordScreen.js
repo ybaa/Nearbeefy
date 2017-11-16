@@ -5,6 +5,8 @@ import { Icon } from "react-native-elements";
 import ChangePasswordComponent from '../components/ChangePasswordComponent';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const cacheImage = images =>
   images.map(image => {
@@ -22,7 +24,7 @@ class ChangePasswordScreen extends Component {
   }
 
   static navigationOptions = navigation => ({
-    title: "Log in",
+    title: translate(dictionary, 'changingPassword', 'pl').changingPassword,
     headerStyle: {
       height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: "#4caf50"

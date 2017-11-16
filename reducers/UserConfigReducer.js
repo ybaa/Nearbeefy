@@ -5,7 +5,8 @@ export default function UserConfigReducer(
     id: null,
     favourites: [],
     lastSearched: [],
-    fetchedInitialData: false
+    fetchedInitialData: false,
+    language: 'pl'
   },
   action
 ) {
@@ -63,6 +64,12 @@ export default function UserConfigReducer(
       case "ADD_ADDRESS_TO_HISTORY_FULFILLED":
         state = Object.assign({}, state, {
           lastSearched: action.payload
+        });
+        break;
+
+      case "CHANGE_LANGUAGE":
+        state = Object.assign({}, state, {
+          language: action.payload.lang
         });
         break;
 

@@ -1,6 +1,5 @@
 import { StackNavigator, TabNavigator, addNavigationHelpers } from 'react-navigation';
 import MainScreen from '../screens/MainScreen';
-import AddLocationScreen from '../screens/AddLocationScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
 import LogInScreen from '../screens/LogInScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -11,7 +10,6 @@ import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 
   const Tabs = TabNavigator({
         Main: { screen: MainScreen },
-        AddLocation: { screen: AddLocationScreen },
         Favourites: {screen: FavouritesScreen}
       },{
         tabBarPosition: 'bottom',
@@ -27,8 +25,7 @@ import ChangePasswordScreen from '../screens/ChangePasswordScreen';
       });
 
   const MainNavigator = StackNavigator({
-    Main: { screen: Tabs },
-    AddLocation: { screen: AddLocationScreen },
+    Main: { screen: Tabs },    
     Favourites: {screen: FavouritesScreen},
     LogIn: {screen: LogInScreen},
     Register: {screen: RegisterScreen},

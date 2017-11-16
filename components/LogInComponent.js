@@ -6,6 +6,8 @@ import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import {setEmail, setUserData, setInitialDataFetched} from '../actions/Index';
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
@@ -28,7 +30,7 @@ class LogInComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="email"
+          placeholder={translate(dictionary, 'email', this.props.language).email}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -36,7 +38,7 @@ class LogInComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder="password"
+          placeholder={translate(dictionary, 'password', this.props.language).password}
           onChangeText={password => {
             this.setState({ password: password });
           }}
@@ -63,17 +65,17 @@ class LogInComponent extends Component {
                   alert("You have to verify your email first");
                 }
               })
-              .catch(function(error) {
+              .catch( (error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 if (errorCode === "auth/wrong-password") {
-                  alert("Wrong password.");
+                  alert("Wrong password");
                 } else {
                   alert(errorMessage);
                 }
               });
           }}
-          title="Log in"
+          title={translate(dictionary, 'logInButton', this.props.language).logInButton}
           fontFamily="Quicksand-Light"
           color="#000"
           backgroundColor="#ffee58"
@@ -82,7 +84,7 @@ class LogInComponent extends Component {
           borderRadius={3}
         />
         <Text style={style.goToRegistrationText}>
-          Have you forgotten your password?
+          {translate(dictionary, 'forgottenPassword', this.props.language).forgottenPassword}
         </Text>
         <Button
           onPress={() => {
@@ -91,7 +93,7 @@ class LogInComponent extends Component {
             });
             this.props.navi.dispatch(navigateAction);
           }}
-          title="Reset your password"
+          title={translate(dictionary, 'resetPassword', this.props.language).resetPassword}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#ef5350"
@@ -101,7 +103,7 @@ class LogInComponent extends Component {
         />
 
         <Text style={style.goToRegistrationText}>
-          Do not have any account yet?
+          {translate(dictionary, 'doNotHaveAccount', this.props.language).doNotHaveAccount}
         </Text>
         <Button
           onPress={() => {
@@ -110,7 +112,7 @@ class LogInComponent extends Component {
             });
             this.props.navi.dispatch(navigateAction);
           }}
-          title="Click here to register"
+          title={translate(dictionary, 'register', 'pl').register}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#2979ff"
@@ -124,7 +126,9 @@ class LogInComponent extends Component {
 }
 
 function mapStatetoProps(state) {
-  return {};
+  return {
+    language: state.UserConfigReducer.language
+  };
 }
 
 function matchDispatchToProps(dispatch) {

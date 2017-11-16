@@ -8,6 +8,8 @@ import LogInComponent from "../components/LogInComponent";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import { bindActionCreators } from "redux";
+import translate from 'translatr';
+import dictionary from '../languages/dictionary';
 
 const cacheImage = images =>
   images.map(image => {
@@ -37,7 +39,7 @@ class LogInScreen extends Component {
   }
 
   static navigationOptions = navigation => ({
-    title: "Log in",
+    title: translate(dictionary, 'logIn', 'pl').logIn,
     headerStyle: {
       height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
       backgroundColor: "#4caf50"
