@@ -261,6 +261,21 @@ export const setCategoryToSearch = (category) => {
   };
 };
 
+export const addUserToDatabase = (email, uid) => {
+  let addUserPromise = new Promise( resolve => {
+    let updates = {};
+    updates['/users/' + uid] = {
+      email: email
+    };
+    resolve(firebase.database().ref().update(updates));
+  });
+  return {
+    type: "ADD_USER_TO_DATABASE",
+    payload: addUserPromise.then( () => {
+      
+    })
+  };
+};
 
 
 export const addAddressToHistory = (uid, address, userData) => {

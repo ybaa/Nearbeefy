@@ -5,19 +5,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { StackNavigator, NavigationActions } from "react-navigation";
-import { setUserId } from '../actions/Index';
+import { setUserId, addUserToDatabase } from '../actions/Index';
 
 const SCREE_WIDTH = Dimensions.get("window").width;
 
-function addUserToDatabase(email, postKey){
-  return new Promise(resolve => {
-     let updates = {};
-     updates['/users/' + postKey] = {
-       email: email
-     };
-     resolve(firebase.database().ref().update(updates));
-   })
- }
 
 class RegistrationComponent extends Component {
   constructor(props) {
@@ -80,31 +71,24 @@ class RegistrationComponent extends Component {
                   this.state.password
                 )
                 .then(user => {
-                  alert("Registration succeeded!");
+                  alert("Registration succeeded! Check your mailbox and verify your account.");
                   if (user && user.emailVerified === false) {
-                    user.sendEmailVerification().then(function() {
-                      console.log("email verification sent to user");
+                    user.sendEmailVerification().then( () => {
+                      this.props.addUserToDatabase(this.state.email, user.uid).then( () => {
+                        const navigateAction = NavigationActions.navigate({
+                          routeName: "LogIn"
+                        });
+                        this.props.navi.dispatch(navigateAction);
+                      })
                     });
                   }
 
-                  addUserToDatabase(this.state.email, user.uid).then( () => {
-                    //console.log('used added correctly');
-                    //this.props.setUserId(uid);
-                    //console.log('current user', user);
-                  })
 
-
-                  const navigateAction = NavigationActions.navigate({
-                    routeName: "LogIn"
-                  });
-                  this.props.navi.dispatch(navigateAction);
                 })
-                .catch(function(error) {
-                  // Handle Errors here.
+                .catch( (error) => {
                   var errorCode = error.code;
                   var errorMessage = error.message;
                   alert(errorMessage);
-                  // ...
                 });
             } else {
               alert("password and confirmation are different");
@@ -135,7 +119,8 @@ function mapStatetoProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    setUserId:setUserId
+    setUserId:setUserId,
+    addUserToDatabase: addUserToDatabase
   }, dispatch);
 }
 

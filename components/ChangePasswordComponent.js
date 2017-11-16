@@ -59,10 +59,11 @@ class ChangePasswordComponent extends Component {
 
               user.updatePassword(this.state.password).then( () => {
                 alert('Your password has been succesfully changed');
-                const navigateAction = NavigationActions.navigate({
-                  routeName: "Profile"
+                const resetAction = NavigationActions.reset({
+                  index: 0,
+                  actions: [NavigationActions.navigate({ routeName: "Main" })]
                 });
-                this.props.navi.dispatch(navigateAction);
+                this.props.navi.dispatch(resetAction);
               }).catch( (error) => {
                 alert('Cannot change your password now. Please, try again later');
               });

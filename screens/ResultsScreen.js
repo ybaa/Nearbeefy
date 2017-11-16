@@ -110,9 +110,7 @@ componentWillMount(){
             style={style.headerRightIconSort}
             onPress={() => {
               params.changeModalVisibility();
-              // this.setState({
-              //   modalVisible: true
-              // })
+
             }}
           />
         </View>
@@ -243,7 +241,7 @@ export default connect(mapStatetoProps, matchDispatchToProps)(ResultsScreen);
 const style = {
   backIconStyle: {
     marginTop: 25,
-    marginLeft: 20
+    paddingLeft: 15
   },
   navHeaderLeft: {
     width: 40,
@@ -259,7 +257,7 @@ const style = {
     marginRight: 10,
     marginTop: 25,
     marginLeft: 10
-  },
+  },  
   headerRightIconSort: {
     marginRight: 20,
     marginTop: 27,

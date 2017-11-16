@@ -34,7 +34,7 @@ class MainScreen extends Component {
   }
 
   componentWillMount() {
-    this._loadAssetsAsync();    
+    this._loadAssetsAsync();
   }
 
   async _loadAssetsAsync() {
@@ -107,6 +107,10 @@ class MainScreen extends Component {
 }
 
 const style = {
+  backIconStyle: {
+    marginTop: 25,
+    paddingLeft: 15
+  },
   navHeaderLeft: {
     width: 40,
     height: 40,
@@ -123,9 +127,10 @@ const style = {
     marginLeft: 10
   },
   headerRightIconDots: {
-    marginRight: 20,
+    paddingRight: 10,
+    marginRight: 10,
     marginTop: 22,
-    marginLeft: 10
+    paddingLeft: 10
   }
 };
 

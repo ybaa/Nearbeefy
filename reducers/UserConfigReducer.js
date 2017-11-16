@@ -48,6 +48,10 @@ export default function UserConfigReducer(
         });
         break;
 
+      case "ADD_USER_TO_DATABASE_FULFILLED":
+        state = Object.assign({}, state);
+        break;
+
       case "SET_USER_DATA_FULFILLED":
         state = Object.assign({}, state, {
           email: action.payload.email,

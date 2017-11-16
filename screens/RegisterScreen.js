@@ -65,7 +65,7 @@ function matchDispatchToProps(dispatch) {
 const style = {
   backIconStyle: {
     marginTop: 25,
-    marginLeft: 20
+    paddingLeft: 15
   }
 };
 

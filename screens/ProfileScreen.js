@@ -5,6 +5,7 @@ import { STATUS_BAR_HEIGHT } from "../constants";
 import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import { Icon } from "react-native-elements";
 import MyProfileComponent from "../components/MyProfileComponent";
+import firebase from 'firebase';
 
 const cacheImage = images =>
   images.map(image => {
@@ -53,28 +54,30 @@ class ProfileScreen extends Component {
     },
     headerLeft: (
       <Icon
-        name="menu"
-        type="material-icons"
+        name="ios-arrow-back"
+        type="ionicon"
         size={32}
         color="#fff"
-        style={styles.imageStyle}
+        style={style.backIconStyle}
+        onPress={() => {
+          navigation.navigate("Main");
+        }}
       />
     ),
     headerRight: (
-      <Icon
-        name="user"
-        type="evilicon"
-        size={32}
-        color="#fff"
-        style={styles.imageStyle}
-        onPress={() => {
-          navigation.navigate("LogIn");
-        }}
-      />
+      <View style={style.navHeaderRight}>
+        <Icon
+          name="md-more"
+          type="ionicon"
+          size={32}
+          color="#fff"
+          style={style.headerRightIconDots}
+        />
+      </View>
     )
   });
 
-  render() {      
+  render() {
     return (
       <View style={{ flex: 1, backgroundColor: "#ddd" }}>
         {this.state.fontLoaded ? (
@@ -85,11 +88,33 @@ class ProfileScreen extends Component {
   }
 }
 
-const styles = {
-  imageStyle: {
+const style = {
+  backIconStyle: {
+    marginTop: 25,
+    paddingLeft: 15
+  },
+  navHeaderLeft: {
+    width: 40,
+    height: 40,
+    marginLeft: 15,
+    marginTop: 20
+  },
+  navHeaderRight: {
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  headerRightIconUser: {
+    marginRight: 10,
     marginTop: 25,
     marginLeft: 10
+  },
+  headerRightIconDots: {
+    paddingRight: 10,
+    marginRight: 10,
+    marginTop: 22,
+    paddingLeft: 10
   }
 };
+
 
 export default ProfileScreen;

@@ -138,7 +138,7 @@ export default connect(mapStatetoProps, matchDispatchToProps)(FavouritesScreen);
 const style = {
   backIconStyle: {
     marginTop: 25,
-    marginLeft: 20
+    paddingLeft: 15
   },
   navHeaderLeft: {
     width: 40,
@@ -156,8 +156,9 @@ const style = {
     marginLeft: 10
   },
   headerRightIconDots: {
-    marginRight: 20,
+    paddingRight: 10,
+    marginRight: 10,
     marginTop: 22,
-    marginLeft: 10
+    paddingLeft: 10
   }
 };
