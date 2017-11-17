@@ -7,25 +7,56 @@ import ResultsScreen from '../screens/ResultsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import {Platform} from "react-native";
 
-  const Tabs = TabNavigator({
+let Tabs;
+if(Platform.OS === "android" ){
+   Tabs = TabNavigator({
         Main: { screen: MainScreen },
         Favourites: {screen: FavouritesScreen}
       },{
         tabBarPosition: 'bottom',
+        swipeEnabled: true,
         tabBarOptions: {
           showIcon: true,
           style: {
-            backgroundColor: '#4caf50'
+            backgroundColor: '#4caf50',
+            height: 65
           },
           labelStyle: {
             fontSize: 10
-          }
+          },
         }
       });
+}else {
+   Tabs = TabNavigator({
+        Main: { screen: MainScreen },
+        Favourites: {screen: FavouritesScreen}
+      },{
+        tabBarPosition: 'bottom',
+        swipeEnabled: true,
+        tabBarOptions: {
+          tabStyle: {
+            paddingTop:10
+          },
+          showIcon: true,
+          activeTintColor: '#fff',
+          inactiveTintColor: '#ccc',
+          style: {
+            backgroundColor: '#4caf50',
+            height: 65
+          },
+          labelStyle: {
+            fontSize: 10,
+            paddingBottom: 10
+          },
+        }
+      });
+}
+
 
   const MainNavigator = StackNavigator({
-    Main: { screen: Tabs },    
+    Main: { screen: Tabs },
     Favourites: {screen: FavouritesScreen},
     LogIn: {screen: LogInScreen},
     Register: {screen: RegisterScreen},

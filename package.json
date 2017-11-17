@@ -1,7 +1,7 @@
 {
   "name": "Nearbeefy",
   "version": "0.0.0",
-  "description": "Hello Expo!",
+  "description": "Nearbeefy is an application which allows you to check informations about locations near the typed address.",
   "author": "Martyna Łagożna",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",

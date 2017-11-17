@@ -57,11 +57,11 @@ class MainScreen extends Component {
         <Icon name="search" type="evilicon" size={28} color="#fff" />
       ),
       headerStyle: {
-        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 54,
+        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
         backgroundColor: "#4caf50"
       },
       headerTitleStyle: {
-        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : 0,
+        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT -7,
         color: "white"
       },
       headerLeft: (
