@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { View, Platform, Text, Image, Button } from "react-native";
+import { View, Platform, Image} from "react-native";
 import Expo, { Font } from "expo";
 import { STATUS_BAR_HEIGHT } from "../constants";
 import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import { Icon } from "react-native-elements";
 import MyProfileComponent from "../components/MyProfileComponent";
-import firebase from 'firebase';
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
 import { NavigationActions } from "react-navigation";
@@ -36,7 +35,7 @@ class ProfileScreen extends Component {
     });
   }
 
-  componentWillMound() {
+  componentWillMount() {
     this._loadAssetsAsync();
   }
 

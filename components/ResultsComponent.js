@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 import {
   View,
-  Dimensions,
-  StyleSheet,
-  Platform,
   ScrollView,
   Modal,
-  Image,
   ActivityIndicator
 } from "react-native";
 import {
   Text,
   Button,
-  Slider,
-  SearchBar,
   Icon,
   List,
   ListItem
@@ -28,11 +22,6 @@ import {
   removeFavourite,
   addAddressToHistory
 } from "../actions/Index";
-import { Constants, Location, Permissions } from "expo";
-import axios from "axios";
-import { API_KEY } from "../constants/index";
-import MapView from "react-native-maps";
-import { StackNavigator, NavigationActions } from "react-navigation";
 import MapViewComponent from "./MapViewComponent";
 import firebase from "firebase";
 import translate from 'translatr';

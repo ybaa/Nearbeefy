@@ -4,12 +4,10 @@ import { Text, Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
-import { StackNavigator, NavigationActions } from "react-navigation";
-import {setEmail, setUserData, setInitialDataFetched} from '../actions/Index';
+import { NavigationActions } from "react-navigation";
+import { setUserData, setInitialDataFetched} from '../actions/Index';
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
-
-const SCREE_WIDTH = Dimensions.get("window").width;
 
 
 class LogInComponent extends Component {
@@ -133,7 +131,6 @@ function mapStatetoProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    setEmail: setEmail,
     setUserData: setUserData,
     setInitialDataFetched: setInitialDataFetched
   }, dispatch);

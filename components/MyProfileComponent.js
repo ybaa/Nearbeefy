@@ -1,26 +1,17 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet } from "react-native";
 import {
   Text,
-  Button,
-  Slider,
-  SearchBar,
-  Icon,
-  List,
-  ListItem
+  Button
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { clearUserState} from "../actions/Index";
-import { Constants, Location, Permissions } from "expo";
-import axios from "axios";
-import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
 
-const SCREE_WIDTH = Dimensions.get("window").width;
 
 class MyProfileComponent extends Component {
   render() {

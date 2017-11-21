@@ -3,14 +3,10 @@ import {
   View,
   Dimensions,
   StyleSheet,
-  Platformm,
-  ScrollView
 } from "react-native";
 import {
   Text,
-  Button,
   Slider,
-  SearchBar,
   Icon,
   List,
   ListItem,
@@ -26,60 +22,62 @@ import {
   getPlacesNearby,
   openFilterModal,
   setCategoryToSearch,
-  setCategoriesState
+  setCategoriesState,
+  removeFavourite
 } from "../actions/Index";
-import { Constants, Location, Permissions } from "expo";
-import axios from "axios";
-import { API_KEY } from "../constants/index";
 import firebase from "firebase";
 import { NavigationActions } from "react-navigation";
-import categories from "../constants/categories";
-import translate from 'translatr';
-import dictionary from '../languages/dictionary';
+import translate from "translatr";
+import dictionary from "../languages/dictionary";
 
-
-const SCREE_WIDTH = Dimensions.get("window").width;
 
 class FavouritesComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super();
     this.state = {
-      distancePrecision: 100,
-    }
+      distancePrecision: 100
+    };
   }
   render() {
+    let favouritesList = this.props.userData.favourites.map(
+      (current, index) => {
+        return (
+          <ListItem
+            key={index}
+            title={current}
+            leftIcon={{name: "close", type: "material-community"}}
+            leftIconOnPress={() => {
+              this.props.removeFavourite(firebase.auth().currentUser.uid, current, this.props.userData);
+            }}
+            fontFamily="Quicksand-Regular"
+            onPress={() => {
+              let promise = new Promise(resolve => {
+                let x = this.props.encodeAddress(current);
+                resolve(x);
+              });
 
-    let favouritesList = this.props.userData.favourites.map( (current,index) => {
-      return  <ListItem
-        key = {index}
-        title = {current}
-        fontFamily="Quicksand-Regular"
-        onPress = { () => {
-          let promise = new Promise(resolve => {
-            let x = this.props.encodeAddress(current);
-            resolve(x);
-          });
+              promise.then(() => {
+                let placesPromise = new Promise(resolve => {
+                  let places = this.props.getPlacesNearby(
+                    this.props.coords.latitude,
+                    this.props.coords.longitude,
+                    this.state.distancePrecision,
+                    this.props.categoryToSearch
+                  );
+                  resolve(places);
+                });
 
-          promise.then(() => {
-            let placesPromise = new Promise(resolve => {
-              let places = this.props.getPlacesNearby(
-                this.props.coords.latitude,
-                this.props.coords.longitude,
-                this.state.distancePrecision,
-                this.props.categoryToSearch
-              );
-              resolve(places);
-            });
-
-            placesPromise.then(() => {
-              this.props.navi.dispatch(
-                NavigationActions.navigate({ routeName: "Results" })
-              );
-            });
-          });
-        }}
-      />
-    });
+                placesPromise.then(() => {
+                  this.props.navi.dispatch(
+                    NavigationActions.navigate({ routeName: "Results" })
+                  );
+                });
+              });
+            }}
+          />
+        );
+      }
+    );
 
     let categoriesCheckBoxes = this.props.categories.map(current => {
       return (
@@ -109,67 +107,68 @@ class FavouritesComponent extends Component {
       );
     });
 
-
-    setTimeout( () => {
-      if(firebase.auth().currentUser !== null && !this.props.fetchedInitialData){
+    setTimeout(() => {
+      if (
+        firebase.auth().currentUser !== null &&
+        !this.props.fetchedInitialData
+      ) {
         let user = firebase.auth().currentUser;
-        this.props.setUserData(user.uid).then( () => {
-            this.props.setInitialDataFetched(true);
-        })
+        this.props.setUserData(user.uid).then(() => {
+          this.props.setInitialDataFetched(true);
+        });
       }
-    }, 2000 );
+    }, 2000);
 
-
-    let display = <Text style={style.unsignedUserText}> {translate(dictionary, 'logInFirst', this.props.language).logInFirst} </Text>
-    if(firebase.auth().currentUser !== null){
-      display = <View>
-        <View style={style.barAndRadiusStyle}>
-          <Slider
-            maximumValue={500}
-            value={this.state.distancePrecision}
-            thumbTintColor="#ffee58"
-            style={style.sliderStyle}
-            minimumTrackTintColor="#494949"
-            thumbStyle={style.sliderThumbStyle}
-            onValueChange={value => {
-              this.setState({
-                distancePrecision: parseInt(value)
-              });
-            }}
-          />
-          <View style={style.searchBarAndIcon}>
-            <View style={{ flex: 4 }}>
-              <Text style={style.radiusValue}>
-                {translate(dictionary, 'searchInRadius', this.props.language).searchInRadius} {this.state.distancePrecision} m
-              </Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Icon
-                name="filter"
-                type="material-community"
-                size={20}
-                color="#000"
-                onPress={() => {
-                  this.props.openFilterModal(true);
-                }}
-              />
+    let display = (
+      <Text style={style.unsignedUserText}>
+        { translate(dictionary, "logInFirst", this.props.language).logInFirst }
+      </Text>
+    );
+    if (firebase.auth().currentUser !== null) {
+      display = (
+        <View>
+          <View style={style.barAndRadiusStyle}>
+            <Slider
+              maximumValue={500}
+              value={this.state.distancePrecision}
+              thumbTintColor="#ffee58"
+              style={style.sliderStyle}
+              minimumTrackTintColor="#494949"
+              thumbStyle={style.sliderThumbStyle}
+              onValueChange={value => {
+                this.setState({
+                  distancePrecision: parseInt(value)
+                });
+              }}
+            />
+            <View style={style.searchBarAndIcon}>
+              <View style={{ flex: 4 }}>
+                <Text style={style.radiusValue}>
+                  { translate(dictionary, "searchInRadius", this.props.language).searchInRadius }
+                  {this.state.distancePrecision} m
+                </Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Icon
+                  name="filter"
+                  type="material-community"
+                  size={20}
+                  color="#000"
+                  onPress={() => {
+                    this.props.openFilterModal(true);
+                  }}
+                />
+              </View>
             </View>
           </View>
+          <List>{favouritesList}</List>
         </View>
-        <List>
-          {favouritesList}
-        </List>
-      </View>
+      );
     }
-
-
 
     return (
       <View>
-        <View>
-          {display}
-        </View>
-
+        <View>{display}</View>
       </View>
     );
   }
@@ -196,13 +195,16 @@ function matchDispatchToProps(dispatch) {
       getPlacesNearby: getPlacesNearby,
       openFilterModal: openFilterModal,
       setCategoryToSearch: setCategoryToSearch,
-      setCategoriesState: setCategoriesState
+      setCategoriesState: setCategoriesState,
+      removeFavourite: removeFavourite
     },
     dispatch
   );
 }
 
-export default connect(mapStatetoProps, matchDispatchToProps)(FavouritesComponent);
+export default connect(mapStatetoProps, matchDispatchToProps)(
+  FavouritesComponent
+);
 
 const style = StyleSheet.create({
   sliderStyle: {

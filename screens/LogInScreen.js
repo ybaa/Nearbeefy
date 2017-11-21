@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { View, Platform, Text, Image } from "react-native";
+import { View, Platform, Image } from "react-native";
 import Expo, { Font } from "expo";
 import { STATUS_BAR_HEIGHT } from "../constants";
 import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
 import { Icon } from "react-native-elements";
 import LogInComponent from "../components/LogInComponent";
 import { connect } from "react-redux";
-import firebase from "firebase";
 import { bindActionCreators } from "redux";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
@@ -27,7 +26,7 @@ class LogInScreen extends Component {
     };
   }
 
-  componentWillMound() {
+  componentWillMount() {
     this._loadAssetsAsync();
   }
 

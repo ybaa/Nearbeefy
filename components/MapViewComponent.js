@@ -1,22 +1,9 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platform } from "react-native";
-import {
-  Text,
-  Button,
-  Slider,
-  SearchBar,
-  Icon,
-  List,
-  ListItem
-} from "react-native-elements";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Constants, Location, Permissions } from "expo";
-import axios from "axios";
-import { API_KEY } from "../constants/index";
 import { MapView } from "expo";
 
-const SCREE_WIDTH = Dimensions.get("window").width;
 
 class MapViewComponent extends Component {
   render() {

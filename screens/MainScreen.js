@@ -44,13 +44,13 @@ class MainScreen extends Component {
         this.setState({
           en: true,
           pl: false
-        })
+        });
         break;
       case "pl":
         this.setState({
           en: false,
           pl: true
-        })
+        });
         break;
     }
     this.props.openOptionsModal(true);
@@ -73,13 +73,13 @@ class MainScreen extends Component {
         this.setState({
           en: true,
           pl: false
-        })
+        });
         break;
       case "pl":
         this.setState({
           en: false,
           pl: true
-        })
+        });
         break;
     }
   }

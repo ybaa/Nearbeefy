@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Image, TextInput } from "react-native";
-import { Text, Button } from "react-native-elements";
+import { View, StyleSheet, Image, TextInput } from "react-native";
+import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
-import { StackNavigator, NavigationActions } from "react-navigation";
-import { setUserId } from '../actions/Index';
+import { NavigationActions } from "react-navigation";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
-
-const SCREE_WIDTH = Dimensions.get("window").width;
-
 
 class ResetPasswordComponent extends Component {
   constructor(props) {

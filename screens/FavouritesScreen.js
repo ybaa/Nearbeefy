@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Platform, Text, Image, Modal } from "react-native";
+import { View, Platform} from "react-native";
 import Expo, { Font } from "expo";
 import { STATUS_BAR_HEIGHT } from "../constants";
 import icon from "../assets/icons/bigRectangleLogoWithTextTransparent.png";
-import { Icon, CheckBox } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import firebase from "firebase";
 import FavouritesComponent from '../components/FavouritesComponent'
 import { connect } from "react-redux";

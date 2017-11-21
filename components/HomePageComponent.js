@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   View,
-  Dimensions,
   StyleSheet,
   Platform,
   Modal,
@@ -24,7 +23,6 @@ import {
   reverseCoordsEncoding,
   encodeAddress,
   getPlacesNearby,
-  setEmail,
   setUserData,
   setInitialDataFetched,
   setCategoryToSearch,
@@ -33,13 +31,10 @@ import {
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
-import categories from "../constants/categories";
 import firebase from 'firebase';
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
 
-
-const SCREE_WIDTH = Dimensions.get("window").width;
 
 class HomePageComponent extends Component {
   constructor(props) {
@@ -344,7 +339,6 @@ function matchDispatchToProps(dispatch) {
       reverseCoordsEncoding: reverseCoordsEncoding,
       encodeAddress: encodeAddress,
       getPlacesNearby: getPlacesNearby,
-      setEmail: setEmail,
       setUserData: setUserData,
       setInitialDataFetched: setInitialDataFetched,
       setCategoryToSearch: setCategoryToSearch,

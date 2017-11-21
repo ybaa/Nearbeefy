@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Platform, Text, Image } from "react-native";
+import { View, Platform } from "react-native";
 import { STATUS_BAR_HEIGHT } from "../constants";
 import { Icon } from "react-native-elements";
 import RegistrationComponent from "../components/RegistrationComponent";
@@ -9,12 +9,6 @@ import translate from 'translatr';
 import dictionary from '../languages/dictionary';
 import { NavigationActions } from "react-navigation";
 
-const cacheImage = images =>
-  images.map(image => {
-    if (typeof image === "string") return Image.prefetch(image);
-
-    return Expo.Asset.fromModule(image).downloadAsync();
-  });
 
 class RegisterScreen extends Component {
   constructor(props) {

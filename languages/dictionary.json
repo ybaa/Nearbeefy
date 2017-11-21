@@ -43,7 +43,8 @@
     "changingPassword": "Change password",
     "changeLangauge": "Change language",
     "noResults": " No results in this area",
-    "logInFirst": "You have to be signed in to have your favourites addresses."
+    "logInFirst": "You have to be signed in to have your favourites addresses.",
+    "newPassword": "New password"
   },
   "pl": {
     "typeAddress": "Wpisz adres...",
@@ -89,6 +90,7 @@
     "changingPassword": "Zmiana hasla",
     "changeLangauge": "Zmien język",
     "noResults": "Brak wynikow w tym obszarze",
-    "logInFirst": "Aby miec dostęp do ulubionych, musisz byc zalogowany."
+    "logInFirst": "Aby miec dostęp do ulubionych, musisz byc zalogowany.",
+    "newPassword": "Nowe haslo"
   }
 }

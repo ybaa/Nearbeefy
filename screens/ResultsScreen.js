@@ -18,12 +18,6 @@ import translate from 'translatr';
 import dictionary from '../languages/dictionary';
 import { NavigationActions } from "react-navigation";
 
-const cacheImage = images =>
-  images.map(image => {
-    if (typeof image === "string") return Image.prefetch(image);
-
-    return Expo.Asset.fromModule(image).downloadAsync();
-  });
 
 class ResultsScreen extends Component {
   constructor(props) {

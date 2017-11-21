@@ -2,15 +2,6 @@ import axios from 'axios';
 import { API_KEY } from '../constants/index';
 import firebase from 'firebase';
 
-export const changeAddress = (address) => {
-  return {
-    type: 'CHANGE_ADDRESS',
-    payload: {
-      'address': address
-    }
-  }
-};
-
 
 
 export const updateLocationCoords = (lat, long) => {
@@ -142,23 +133,6 @@ export const sortResults = (distanceAsc, distanceDesc, category) => {
   };
 };
 
-export const setEmail = (email) => {
-  return {
-    type: "SET_EMAIL",
-    payload: {
-      email: email
-    }
-  };
-};
-
-export const setUserId = (id) => {
-  return {
-    type: "SET_USER_ID",
-    payload: {
-      id: id
-    }
-  };
-};
 
 export const addFavourite = (uid, address, userData) => {
   let favs = userData.favourites;

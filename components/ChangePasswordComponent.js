@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Image, TextInput } from "react-native";
-import { Text, Button } from "react-native-elements";
+import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import firebase from "firebase";
-import { StackNavigator, NavigationActions } from "react-navigation";
-import { setUserId } from '../actions/Index';
-import translate from 'translatr';
-import dictionary from '../languages/dictionary';
-
-const SCREE_WIDTH = Dimensions.get("window").width;
-
+import { NavigationActions } from "react-navigation";
+import translate from "translatr";
+import dictionary from "../languages/dictionary";
 
 class ChangePasswordComponent extends Component {
   constructor(props) {
@@ -38,7 +34,9 @@ class ChangePasswordComponent extends Component {
 
         <TextInput
           style={style.inputStyle}
-          placeholder={translate(dictionary, 'password', this.props.language).password}
+          placeholder={
+            translate(dictionary, "newPassword", this.props.language).newPassword
+          }
           placeholderTextColor="#000"
           onChangeText={password => {
             this.setState({ password: password });
@@ -47,7 +45,10 @@ class ChangePasswordComponent extends Component {
         />
         <TextInput
           style={style.inputStyle}
-          placeholder={translate(dictionary, 'confirmPassword', this.props.language).confirmPassword}
+          placeholder={
+            translate(dictionary, "confirmPassword", this.props.language)
+              .confirmPassword
+          }
           placeholderTextColor="#000"
           onChangeText={confirm => {
             this.setState({ confirmPassword: confirm });
@@ -59,21 +60,25 @@ class ChangePasswordComponent extends Component {
             if (this.state.password === this.state.confirmPassword) {
               let user = firebase.auth().currentUser;
 
-              user.updatePassword(this.state.password).then( () => {
-                alert('Your password has been succesfully changed');
-                const resetAction = NavigationActions.reset({
-                  index: 0,
-                  actions: [NavigationActions.navigate({ routeName: "Main" })]
+              user.updatePassword(this.state.password)
+                .then(() => {
+                  alert("Your password has been succesfully changed");
+                  const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: "Main" })]
+                  });
+                  this.props.navi.dispatch(resetAction);
+                })
+                .catch(error => {
+                  alert(
+                    "Cannot change your password now. Please, try again later"
+                  );
                 });
-                this.props.navi.dispatch(resetAction);
-              }).catch( (error) => {
-                alert('Cannot change your password now. Please, try again later');
-              });
             } else {
               alert("password and confirmation are different");
             }
           }}
-          title={translate(dictionary, 'accept', this.props.language).accept}
+          title={translate(dictionary, "accept", this.props.language).accept}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#4caf50"
@@ -98,9 +103,11 @@ function mapStatetoProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({
-    setUserId:setUserId
-  }, dispatch);
+  return bindActionCreators(
+    {
+    },
+    dispatch
+  );
 }
 
 export default connect(mapStatetoProps, matchDispatchToProps)(
@@ -121,7 +128,7 @@ const style = StyleSheet.create({
     color: "#000",
     fontFamily: "Quicksand-Light",
     borderBottomWidth: 1,
-    borderBottomColor: '#333'
+    borderBottomColor: "#333"
   },
   registerButton: {
     marginTop: 20,
