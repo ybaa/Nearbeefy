@@ -57,7 +57,8 @@ export default function UserConfigReducer(
         state = Object.assign({}, state, {
           email: action.payload.email,
           favourites: action.payload.favourites || [],
-          lastSearched: action.payload.lastSearched || []
+          lastSearched: action.payload.lastSearched || [],
+          language: action.payload.language
         });
         break;
 
@@ -68,6 +69,12 @@ export default function UserConfigReducer(
         break;
 
       case "CHANGE_LANGUAGE":
+        state = Object.assign({}, state, {
+          language: action.payload.lang
+        });
+        break;
+
+      case "SYNC_LANGUAGE_WITH_DATABASE_FULFILLED":
         state = Object.assign({}, state, {
           language: action.payload.lang
         });

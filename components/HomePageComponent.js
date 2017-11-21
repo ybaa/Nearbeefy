@@ -29,8 +29,7 @@ import {
   setInitialDataFetched,
   setCategoryToSearch,
   openFilterModal,
-  setCategoriesState,
-  changeLanguage
+  setCategoriesState
 } from "../actions/Index";
 import { Constants, Location, Permissions } from "expo";
 import { NavigationActions } from "react-navigation";
@@ -83,6 +82,18 @@ class HomePageComponent extends Component {
         let user = firebase.auth().currentUser;
         this.props.setUserData(user.uid).then( () => {
             this.props.setInitialDataFetched(true);
+
+            const setParamsActionMain = NavigationActions.setParams({
+              params: { lang: this.props.language},
+              key: "Main",
+             });
+           this.props.navi.dispatch(setParamsActionMain);
+
+           const setParamsActionFavs = NavigationActions.setParams({
+             params: { lang: this.props.language},
+             key: "Favourites",
+            });
+          this.props.navi.dispatch(setParamsActionFavs);
         })
       }
     }, 1000 );
@@ -338,8 +349,7 @@ function matchDispatchToProps(dispatch) {
       setInitialDataFetched: setInitialDataFetched,
       setCategoryToSearch: setCategoryToSearch,
       openFilterModal: openFilterModal,
-      setCategoriesState: setCategoriesState,
-      changeLanguage: changeLanguage
+      setCategoriesState: setCategoriesState
     },
     dispatch
   );

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
-import { changeLanguage, openOptionsModal } from '../actions/Index'
+import { changeLanguage, openOptionsModal, syncLanguageWithDatabase } from '../actions/Index'
 import { NavigationActions } from "react-navigation";
 
 
@@ -39,6 +39,20 @@ class MainScreen extends Component {
     this.setState({
       modalVisible: true
     });
+    switch(this.props.language){
+      case "en":
+        this.setState({
+          en: true,
+          pl: false
+        })
+        break;
+      case "pl":
+        this.setState({
+          en: false,
+          pl: true
+        })
+        break;
+    }
     this.props.openOptionsModal(true);
   }
 
@@ -53,12 +67,6 @@ class MainScreen extends Component {
       changeModalVisibility: this._changeModalVisibility,
       lang: this.props.language
     });
-  }
-
-
-
-  componentWillMount() {
-    this._loadAssetsAsync();
 
     switch(this.props.language){
       case "en":
@@ -73,8 +81,15 @@ class MainScreen extends Component {
           pl: true
         })
         break;
-
     }
+  }
+
+
+
+  componentWillMount() {
+    this._loadAssetsAsync();
+
+
   }
 
   async _loadAssetsAsync() {
@@ -141,12 +156,6 @@ class MainScreen extends Component {
   };
 
   render() {
-    // if(typeof this.props.navigation !== 'undefined'){
-    //   this.props.navigation.setParams({
-    //     lang: this.props.language
-    //   });
-    // }
-
 
     return (
       <View style={{ flex: 1, backgroundColor: "#eee" }}>
@@ -156,6 +165,17 @@ class MainScreen extends Component {
           visible={this.props.modalVisible}
           onRequestClose={() => {
             this.props.openOptionsModal(false);
+            const setParamsActionMain = NavigationActions.setParams({
+              params: { lang: this.props.language},
+              key: "Main",
+             });
+           this.props.navigation.dispatch(setParamsActionMain);
+
+           const setParamsActionFavs = NavigationActions.setParams({
+             params: { lang: this.props.language},
+             key: "Favourites",
+            });
+          this.props.navigation.dispatch(setParamsActionFavs);
           }}
         >
           <View style={style.modalStyle}>
@@ -172,7 +192,11 @@ class MainScreen extends Component {
                       en: true,
                       pl: false
                     });
-                    this.props.changeLanguage('en');
+                    if(firebase.auth().currentUser !== null){
+                      this.props.syncLanguageWithDatabase('en', firebase.auth().currentUser.uid, this.props.userData);
+                    } else {
+                      this.props.changeLanguage('en');
+                    }
                   }}
                 />
                 <CheckBox
@@ -185,7 +209,12 @@ class MainScreen extends Component {
                       en: false,
                       pl: true
                     });
-                    this.props.changeLanguage('pl');
+                    if(firebase.auth().currentUser !== null){
+                      this.props.syncLanguageWithDatabase('pl', firebase.auth().currentUser.uid, this.props.userData);
+                    } else {
+                      this.props.changeLanguage('pl');
+                    }
+
                   }}
                 />
 
@@ -295,7 +324,8 @@ const style = {
 function mapStatetoProps(state) {
   return {
     language: state.UserConfigReducer.language,
-    modalVisible: state.AdditionalOptionsModalReducer.modalVisible
+    modalVisible: state.AdditionalOptionsModalReducer.modalVisible,
+    userData: state.UserConfigReducer
   };
 }
 
@@ -303,7 +333,8 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       changeLanguage: changeLanguage,
-      openOptionsModal: openOptionsModal
+      openOptionsModal: openOptionsModal,
+      syncLanguageWithDatabase: syncLanguageWithDatabase
     },
     dispatch
   );

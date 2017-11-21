@@ -167,7 +167,8 @@ export const addFavourite = (uid, address, userData) => {
     resolve(firebase.database().ref().child('users').child(uid).set({
       email: userData.email,
       favourites: favs,
-      lastSearched: userData.lastSearched
+      lastSearched: userData.lastSearched,
+      language: userData.language
     }))
   });
 
@@ -193,7 +194,8 @@ export const removeFavourite = (uid, address, userData) => {
     resolve(firebase.database().ref().child('users').child(uid).set({
       email: userData.email,
       favourites: favs,
-      lastSearched: userData.lastSearched
+      lastSearched: userData.lastSearched,
+      language: userData.language
     }))
   });
 
@@ -306,7 +308,8 @@ export const addAddressToHistory = (uid, address, userData) => {
     resolve(firebase.database().ref().child('users').child(uid).set({
       email: userData.email,
       favourites: userData.favourites,
-      lastSearched: historyWithoutRepetitions
+      lastSearched: historyWithoutRepetitions,
+      language: userData.language
     }))
   });
 
@@ -324,5 +327,24 @@ export const changeLanguage = (lang) => {
     payload: {
       lang: lang
     }
+  };
+};
+
+export const syncLanguageWithDatabase = (lang, uid, userData) => {
+  let changeLanguagePromise = new Promise( resolve => {
+    resolve(firebase.database().ref().child('users').child(uid).set({
+      email: userData.email,
+      favourites: userData.favourites,
+      lastSearched: userData.lastSearched,
+      language: lang
+    }))
+  });
+  return {
+    type: "SYNC_LANGUAGE_WITH_DATABASE",
+    payload: changeLanguagePromise.then( () => {
+      return {
+        lang: lang
+      }
+    })
   };
 };

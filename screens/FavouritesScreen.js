@@ -26,7 +26,7 @@ class FavouritesScreen extends Component {
     this.setState({
       modalVisible: true
     });
-    this.props.openOptionsModal(this.state.modalVisible);
+    this.props.openOptionsModal(true);
   }
 
   async componentDidMount() {
@@ -56,7 +56,7 @@ class FavouritesScreen extends Component {
 
   static navigationOptions = ({ navigation }) => {
     const { state, setParams, navigate } = navigation;
-    const params = state.params || {};    
+    const params = state.params || {};
     return {
       title: translate(dictionary, 'favourites', params.lang || 'en').favourites,
       tabBarLabel: translate(dictionary, 'favourites', params.lang || 'en').favourites,
