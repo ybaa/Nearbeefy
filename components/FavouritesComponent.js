@@ -120,7 +120,7 @@ class FavouritesComponent extends Component {
     }, 2000 );
 
 
-    let display = <Text>"You have to be signed in to have your favourites addresses"</Text>
+    let display = <Text style={style.unsignedUserText}> {translate(dictionary, 'logInFirst', this.props.language).logInFirst} </Text>
     if(firebase.auth().currentUser !== null){
       display = <View>
         <View style={style.barAndRadiusStyle}>
@@ -262,5 +262,11 @@ const style = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 1,
     borderBottomColor: "#bbb"
+  },
+  unsignedUserText: {
+    fontFamily: "Quicksand-Light",
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: "center"
   }
 });

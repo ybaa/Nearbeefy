@@ -79,7 +79,7 @@ componentWillMount(){
           size={32}
           color="#fff"
           style={style.backIconStyle}
-          onPress={() => {            
+          onPress={() => {
             const backAction = NavigationActions.back();
             navigation.dispatch(backAction)
           }}
@@ -123,7 +123,7 @@ componentWillMount(){
     if (this.props.nearbyPlaces.length === 0) {
       display = (
         <View>
-          <Text>Nothing to show here</Text>
+          <Text style={style.unsignedUserText}> {translate(dictionary, 'noResults', this.props.language).noResults} </Text>
         </View>
       );
     } else {
@@ -295,5 +295,11 @@ const style = {
   acceptButton: {
     marginTop: 200,
     width: 210
+  },
+  unsignedUserText: {
+    fontFamily: "Quicksand-Light",
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: "center"
   }
 };

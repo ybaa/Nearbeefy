@@ -244,7 +244,7 @@ class MainScreen extends Component {
                 icon={{
                   name: "ios-arrow-back",
                   type: "ionicon",
-                  color: "#000"
+                  color: "#fff"
                 }}
               />
             </View>

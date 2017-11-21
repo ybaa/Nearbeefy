@@ -41,7 +41,9 @@
     "profile": "Profile",
     "accept": "Accept",
     "changingPassword": "Change password",
-    "changeLangauge": "Change language"    
+    "changeLangauge": "Change language",
+    "noResults": " No results in this area",
+    "logInFirst": "You have to be signed in to have your favourites addresses."
   },
   "pl": {
     "typeAddress": "Wpisz adres...",
@@ -85,6 +87,8 @@
     "profile": "Profil",
     "accept": "Zaakceptuj",
     "changingPassword": "Zmiana hasla",
-    "changeLangauge": "Zmien język"
+    "changeLangauge": "Zmien język",
+    "noResults": "Brak wynikow w tym obszarze",
+    "logInFirst": "Aby miec dostęp do ulubionych, musisz byc zalogowany."
   }
 }
