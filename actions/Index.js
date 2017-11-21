@@ -261,6 +261,15 @@ export const setCategoryToSearch = (category) => {
   };
 };
 
+export const openOptionsModal = (modalVisible) => {
+  return {
+    type: "OPEN_OPTIONS_MODAL",
+    payload: {
+      modalVisible: modalVisible
+    }
+  };
+};
+
 export const addUserToDatabase = (email, uid) => {
   let addUserPromise = new Promise( resolve => {
     let updates = {};

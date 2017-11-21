@@ -16,6 +16,7 @@ import { bindActionCreators } from "redux";
 import categories from "../constants/categories";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
+import { NavigationActions } from "react-navigation";
 
 const cacheImage = images =>
   images.map(image => {
@@ -48,7 +49,8 @@ componentWillMount(){
 
   componentDidMount() {
     this.props.navigation.setParams({
-      changeModalVisibility: this._changeModalVisibility
+      changeModalVisibility: this._changeModalVisibility,
+      lang: this.props.language
     });
   }
   _changeModalVisibility() {
@@ -61,7 +63,7 @@ componentWillMount(){
     const { state, setParams, navigate } = navigation;
     const params = state.params || {};
     return {
-      title: translate(dictionary, 'results', 'pl').results,
+      title: translate(dictionary, 'results',  params.lang || 'en').results,
       headerStyle: {
         height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
         backgroundColor: "#4caf50"
@@ -77,8 +79,9 @@ componentWillMount(){
           size={32}
           color="#fff"
           style={style.backIconStyle}
-          onPress={() => {
-            navigation.navigate("Main");
+          onPress={() => {            
+            const backAction = NavigationActions.back();
+            navigation.dispatch(backAction)
           }}
         />
       ),

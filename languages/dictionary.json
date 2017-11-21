@@ -40,7 +40,8 @@
     "changePassword": "Change your password",
     "profile": "Profile",
     "accept": "Accept",
-    "changingPassword": "Change password"
+    "changingPassword": "Change password",
+    "changeLangauge": "Change language"    
   },
   "pl": {
     "typeAddress": "Wpisz adres...",
@@ -83,6 +84,7 @@
     "changePassword": "Zmien haslo",
     "profile": "Profil",
     "accept": "Zaakceptuj",
-    "changingPassword": "Zmiana hasla"
+    "changingPassword": "Zmiana hasla",
+    "changeLangauge": "Zmien język"
   }
 }

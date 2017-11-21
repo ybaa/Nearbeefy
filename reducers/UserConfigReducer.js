@@ -6,7 +6,7 @@ export default function UserConfigReducer(
     favourites: [],
     lastSearched: [],
     fetchedInitialData: false,
-    language: 'pl'
+    language: 'en'
   },
   action
 ) {

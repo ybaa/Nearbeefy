@@ -153,7 +153,7 @@ class HomePageComponent extends Component {
     }
 
     return (
-    <View>    
+    <View>
       <View style={style.mainCardStyle}>
         <Modal
           animationType="slide"

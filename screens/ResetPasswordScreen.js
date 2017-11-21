@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
+import { NavigationActions } from "react-navigation";
 
 const cacheImage = images =>
   images.map(image => {
@@ -23,9 +24,17 @@ class ResetPasswordScreen extends Component {
     };
   }
 
-  static navigationOptions = navigation => {
+  componentDidMount() {
+    this.props.navigation.setParams({
+      lang: this.props.language
+    });
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    const { state, setParams, navigate } = navigation;
+    const params = state.params || {};
     return {
-      title: translate(dictionary, 'resetPassword', 'pl').resetPassword,
+      title: translate(dictionary, 'resetPassword', params.lang || 'en').resetPassword,
       headerStyle: {
         height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
         backgroundColor: "#4caf50"
@@ -42,8 +51,8 @@ class ResetPasswordScreen extends Component {
           color="#fff"
           style={style.backIconStyle}
           onPress={() => {
-            console.log("navigation", navigation);
-            navigation.navigation.goBack();
+            const backAction = NavigationActions.back();
+            navigation.dispatch(backAction)
           }}
         />
       )
@@ -60,7 +69,9 @@ class ResetPasswordScreen extends Component {
 }
 
 function mapStatetoProps(state) {
-  return {};
+  return {
+    language: state.UserConfigReducer.language
+  };
 }
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch);

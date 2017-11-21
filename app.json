@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "Nearbeefy",
-    "description": "An empty new project",
+    "description": "Nearbeefy is an application which allows you to check informations about locations near the typed address.",
     "slug": "Nearbeefy",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "20.0.0",
     "version": "1.0.0",
     "orientation": "portrait",

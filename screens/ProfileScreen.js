@@ -8,6 +8,7 @@ import MyProfileComponent from "../components/MyProfileComponent";
 import firebase from 'firebase';
 import translate from 'translatr';
 import dictionary from '../languages/dictionary';
+import { NavigationActions } from "react-navigation";
 
 const cacheImage = images =>
   images.map(image => {
@@ -30,6 +31,9 @@ class ProfileScreen extends Component {
       "Quicksand-Light": require("../assets/fonts/Quicksand-Light.ttf")
     });
     this.setState({ fontLoaded: true });
+    this.props.navigation.setParams({
+      lang: this.props.language
+    });
   }
 
   componentWillMound() {
@@ -44,40 +48,35 @@ class ProfileScreen extends Component {
     });
   }
 
-  static navigationOptions = ({ navigation }) => ({
-    title: translate(dictionary, 'profile', 'pl').profile,
-    headerStyle: {
-      height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
-      backgroundColor: "#4caf50"
-    },
-    headerTitleStyle: {
-      marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT -7,
-      color: "white"
-    },
-    headerLeft: (
-      <Icon
-        name="ios-arrow-back"
-        type="ionicon"
-        size={32}
-        color="#fff"
-        style={style.backIconStyle}
-        onPress={() => {
-          navigation.navigate("Main");
-        }}
-      />
-    ),
-    headerRight: (
-      <View style={style.navHeaderRight}>
+  static navigationOptions = ({ navigation }) => {
+    const { state, setParams, navigate } = navigation;
+    const params = state.params || {};
+    return {
+      title: translate(dictionary, 'profile', params.lang || 'en').profile,
+      headerStyle: {
+        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
+        backgroundColor: "#4caf50"
+      },
+      headerTitleStyle: {
+        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT -7,
+        color: "white"
+      },
+      headerLeft: (
         <Icon
-          name="md-more"
+          name="ios-arrow-back"
           type="ionicon"
           size={32}
           color="#fff"
-          style={style.headerRightIconDots}
+          style={style.backIconStyle}
+          onPress={() => {
+            const backAction = NavigationActions.back();
+            navigation.dispatch(backAction)
+          }}
         />
-      </View>
-    )
-  });
+      )
+    }
+  }
+
 
   render() {
     return (

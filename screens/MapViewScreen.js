@@ -15,82 +15,20 @@ const cacheImage = images =>
   });
 
 class MapViewScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      appIsReady: false,
-      fontLoaded: false
-    };
-  }
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      "Quicksand-Light": require("../assets/fonts/Quicksand-Light.ttf")
-    });
-    this.setState({ fontLoaded: true });
+  static navigationOptions = ({ navigation }) =>  {
+    return {
+      title: "Map",
+      headerStyle: {
+        height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
+        backgroundColor: "#4caf50"
+      },
+      headerTitleStyle: {
+        marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT -7,
+        color: "white"
+      }
+    }
   }
-
-  componentWillMound() {
-    this._loadAssetsAsync();
-  }
-
-  async _loadAssetsAsync() {
-    const imagesAssets = cacheImage([icon]);
-    await Promise.all([...imagesAssets]);
-    this.setState({
-      appIsReady: true
-    });
-  }
-
-  static navigationOptions = ({ navigation }) => ({
-    title: "Map",
-    headerStyle: {
-      height: Platform.OS === "android" ? 54 + STATUS_BAR_HEIGHT : 67+STATUS_BAR_HEIGHT,
-      backgroundColor: "#4caf50"
-    },
-    headerTitleStyle: {
-      marginTop: Platform.OS === "android" ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT -7,
-      color: "white"
-    },
-    headerLeft: (
-      <Icon
-        name="ios-arrow-back"
-        type="ionicon"
-        size={32}
-        color="#fff"
-        style={style.backIconStyle}
-        onPress={() => {
-          console.log("navigation", navigation);
-          navigation.navigation.goBack();
-        }}
-      />
-    ),
-    headerRight: (
-      <View style={style.navHeaderRight}>
-        <Icon
-          name="user"
-          type="evilicon"
-          size={32}
-          color="#fff"
-          style={style.headerRightIconUser}
-          onPress={() => {
-            if(firebase.auth().currentUser !== null){
-              navigation.navigate("Profile");
-            } else {
-              navigation.navigate("LogIn");
-            }
-          }}
-        />
-        <Icon
-          name="md-more"
-          type="ionicon"
-          size={32}
-          color="#fff"
-          style={style.headerRightIconDots}
-        />
-      </View>
-    )
-  });
 
   render() {
     return <MapViewComponent />;
