@@ -46,7 +46,7 @@ class FavouritesComponent extends Component {
             key={index}
             title={current}
             leftIcon={{name: "close", type: "material-community"}}
-            leftIconOnPress={() => {
+            leftIconOnPress={ () => {
               this.props.removeFavourite(firebase.auth().currentUser.uid, current, this.props.userData);
             }}
             fontFamily="Quicksand-Regular"
