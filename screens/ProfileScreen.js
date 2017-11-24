@@ -79,7 +79,7 @@ class ProfileScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "#ddd" }}>
+      <View style={{ flex: 1, backgroundColor: "#eee" }}>
         {this.state.fontLoaded ? (
           <MyProfileComponent navi={this.props.navigation} />
         ) : null}

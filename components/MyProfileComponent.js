@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import {
   Text,
-  Button
+  Button,
+  Icon
 } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -17,9 +18,17 @@ class MyProfileComponent extends Component {
   render() {
     return (
       <View style = {style.mainView}>
-        <Text style={{ fontFamily: "Quicksand-Light", fontSize: 24 }}>
-          My Profile content
+        <Text style={{ fontFamily: "Quicksand-Light", fontSize: 24, marginTop: 20 }}>
+          {translate(dictionary, 'hello', this.props.language).hello} {firebase.auth().currentUser.email} !
         </Text>
+        <Icon
+          name="user-o"
+          type="font-awesome"
+          size={50}
+          style={style.userIconStyle}
+          color="#000"
+
+        />
         <Button
           onPress={() => {
             firebase.auth().signOut().then( (resp) => {
@@ -85,5 +94,9 @@ const style = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     width: 210
+  },
+  userIconStyle: {
+    padding: 20,
+    margin: 20
   }
 });

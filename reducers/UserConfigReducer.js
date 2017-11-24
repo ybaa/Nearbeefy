@@ -11,18 +11,7 @@ export default function UserConfigReducer(
   action
 ) {
   switch (action.type) {
-    case "SET_EMAIL":
-      state = Object.assign({}, state, {
-        email: action.payload.email
-      });
-      break;
-
-      case "SET_USER_ID":
-        state = Object.assign({}, state, {
-          id: action.payload.id
-        });
-        break;
-
+    
       case "CLEAR_USER_STATE":
         state = Object.assign({}, state, {
           email: null,

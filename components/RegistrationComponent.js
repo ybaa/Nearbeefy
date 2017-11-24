@@ -73,7 +73,7 @@ class RegistrationComponent extends Component {
                   alert("Registration succeeded! Check your mailbox and verify your account.");
                   if (user && user.emailVerified === false) {
                     user.sendEmailVerification().then( () => {
-                      this.props.addUserToDatabase(this.state.email, user.uid).then( () => {
+                      this.props.addUserToDatabase(this.state.email, user.uid, this.props.language).then( () => {
                         const navigateAction = NavigationActions.navigate({
                           routeName: "LogIn"
                         });

@@ -246,11 +246,12 @@ export const openOptionsModal = (modalVisible) => {
   };
 };
 
-export const addUserToDatabase = (email, uid) => {
+export const addUserToDatabase = (email, uid, lang) => {
   let addUserPromise = new Promise( resolve => {
     let updates = {};
     updates['/users/' + uid] = {
-      email: email
+      email: email,
+      language: lang
     };
     resolve(firebase.database().ref().update(updates));
   });

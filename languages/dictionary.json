@@ -44,7 +44,8 @@
     "changeLangauge": "Change language",
     "noResults": " No results in this area",
     "logInFirst": "You have to be signed in to have your favourites addresses.",
-    "newPassword": "New password"
+    "newPassword": "New password",
+    "hello": "Hello"
   },
   "pl": {
     "typeAddress": "Wpisz adres...",
@@ -91,6 +92,7 @@
     "changeLangauge": "Zmien język",
     "noResults": "Brak wynikow w tym obszarze",
     "logInFirst": "Aby miec dostęp do ulubionych, musisz byc zalogowany.",
-    "newPassword": "Nowe haslo"
+    "newPassword": "Nowe haslo",
+    "hello": "Witaj"
   }
 }
