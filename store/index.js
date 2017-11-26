@@ -4,6 +4,6 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 
-const store = createStore(reducers,{},applyMiddleware(createLogger(), thunk, promise()));
+const store = createStore(reducers,{},applyMiddleware( thunk, promise()));
 
 export default store;

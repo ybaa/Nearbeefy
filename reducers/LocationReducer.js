@@ -27,7 +27,6 @@ export default function LocationReducer(
           latitude: action.payload.lat
         })
       });
-      console.log(state);
       break;
 
     case "REVERSE_COORDS_ENCODING_FULFILLED":
@@ -38,7 +37,6 @@ export default function LocationReducer(
           latitude: state.coords.lati
         })
       });
-      console.log(state);
       break;
 
     case "ENCODE_ADDRESS_FULFILLED":
@@ -49,7 +47,6 @@ export default function LocationReducer(
           latitude: action.payload.latitude
         })
       });
-      console.log(state);
       break;
 
     case "GET_PLACES_NEARBY_FULFILLED":
@@ -63,7 +60,6 @@ export default function LocationReducer(
         showMore: action.payload.showMore,
         pageToken: action.payload.pageToken
       });
-      console.log(state);
       break;
 
     case "GET_PLACES_NEARBY_NEXT_PAGE_FULFILLED":
@@ -81,7 +77,6 @@ export default function LocationReducer(
         showMore: action.payload.showMore,
         pageToken: action.payload.pageToken
       });
-      console.log(state);
       break;
 
     case "GET_DISTANCE_FULFILLED":
@@ -156,8 +151,7 @@ export default function LocationReducer(
             distanceB = distanceB.match(/\d+(\.\d+)?/g);
             distanceB = parseInt(distanceB);
           }
-
-          console.log("distance ab", distanceA, distanceB);
+          
           return distanceB - distanceA;
         });
       } else if (action.payload.category) {

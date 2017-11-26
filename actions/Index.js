@@ -48,8 +48,7 @@ export const getPlacesNearby = (lat, long, radius, category) => {
   }
   return {
     type: "GET_PLACES_NEARBY",
-    payload: axios.get(query).then(response => {
-      console.log(response);
+    payload: axios.get(query).then(response => {      
       let pageToken;
       let showMore = false;
       if (response.data.next_page_token) {
