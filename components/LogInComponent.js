@@ -110,7 +110,7 @@ class LogInComponent extends Component {
             });
             this.props.navi.dispatch(navigateAction);
           }}
-          title={translate(dictionary, 'register', 'pl').register}
+          title={translate(dictionary, 'register', this.props.language).register}
           fontFamily="Quicksand-Light"
           color="#fff"
           backgroundColor="#2979ff"
